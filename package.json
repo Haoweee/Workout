@@ -1,0 +1,63 @@
+{
+  "name": "workout-app",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Workout application monorepo",
+  "scripts": {
+    "dev:server": "pnpm --filter server dev",
+    "dev:web": "pnpm --filter web dev",
+    "dev": "concurrently \"pnpm dev:server\" \"pnpm dev:web\"",
+    "build": "pnpm --filter server build && pnpm --filter web build",
+    "build:server": "pnpm --filter server build",
+    "build:web": "pnpm --filter web build",
+    "test": "pnpm --filter server test && pnpm --filter web test",
+    "test:server": "pnpm --filter server test",
+    "test:web": "pnpm --filter web test",
+    "lint": "pnpm --filter server lint && pnpm --filter web lint",
+    "lint:server": "pnpm --filter server lint",
+    "lint:web": "pnpm --filter web lint",
+    "lint:fix": "pnpm --filter server lint:fix && pnpm --filter web lint:fix",
+    "typecheck": "pnpm --filter server type-check && pnpm --filter web type-check",
+    "typecheck:server": "pnpm --filter server type-check",
+    "typecheck:web": "pnpm --filter web type-check",
+    "format": "prettier --write \"server/src/**/*.ts\" \"web/src/**/*.{ts,tsx}\" \"*.{js,ts,json,md}\"",
+    "format:check": "prettier --check \"server/src/**/*.ts\" \"web/src/**/*.{ts,tsx}\" \"*.{js,ts,json,md}\"",
+    "validate": "pnpm lint && pnpm typecheck && pnpm test",
+    "clean": "pnpm --filter server clean && pnpm --filter web clean",
+    "start": "pnpm --filter server start",
+    "start:prod": "pnpm --filter server start:prod",
+    "db:migrate": "cd server && npx prisma migrate deploy",
+    "db:generate": "cd server && npx prisma generate",
+    "db:studio": "cd server && npx prisma studio",
+    "db:reset": "cd server && npx prisma migrate reset",
+    "import:exercises": "pnpm --filter server import:exercises"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2",
+    "prettier": "^3.6.2"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "pnpm": ">=8.0.0"
+  },
+  "pnpm": {
+    "overrides": {
+      "js-yaml": ">=4.1.1"
+    }
+  },
+  "main": "ecosystem.config.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Haoweee/Workout.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Haoweee/Workout/issues"
+  },
+  "homepage": "https://github.com/Haoweee/Workout#readme"
+}

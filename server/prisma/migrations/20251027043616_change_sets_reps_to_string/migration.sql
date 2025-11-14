@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE "routine_exercises" ALTER COLUMN "sets" SET DATA TYPE TEXT,
+ALTER COLUMN "reps" SET DATA TYPE TEXT;

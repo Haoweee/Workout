@@ -1,0 +1,196 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String          @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  username      String          @unique
+  fullName      String          @map("full_name")
+  email         String          @unique @db.VarChar(320)
+  passwordHash  String          @map("password_hash")
+  avatarUrl     String?         @map("avatar_url")
+  bio           String?         @db.Text
+  isActive      Boolean         @default(true) @map("is_active")
+  createdAt     DateTime        @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt     DateTime        @updatedAt @map("updated_at") @db.Timestamptz(6)
+  routineVotes  RoutineVote[]
+  routines      Routine[]
+  workouts      Workout[]
+  customExercises UserCustomExercise[]
+
+  @@map("users")
+}
+
+model Exercise {
+  id               Int               @id @default(autoincrement())
+  name             String            @unique @db.VarChar(120)
+  force            Force?
+  level            Difficulty?
+  mechanic         Mechanic?
+  equipment        String?           @db.VarChar(80)
+  primaryMuscles   String[]          @map("primary_muscles")
+  secondaryMuscles String[]          @map("secondary_muscles")
+  instructions     String?
+  category         ExerciseType?
+  images           String[]
+  exerciseId       String            @unique @default("") @map("exercise_id") @db.VarChar(100)
+  routineExercises RoutineExercise[]
+  workoutSets      WorkoutSet[]
+
+  @@map("exercises")
+}
+
+model Routine {
+  id               String            @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  authorId         String            @map("author_id") @db.Uuid
+  title            String            @db.VarChar(140)
+  description      String?
+  difficulty       Difficulty?
+  visibility       Visibility        @default(PRIVATE)
+  isCloned         Boolean           @default(false) @map("is_cloned")
+  originalRoutineId String?          @map("original_routine_id") @db.Uuid
+  createdAt        DateTime          @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt        DateTime          @updatedAt @map("updated_at") @db.Timestamptz(6)
+  routineExercises RoutineExercise[]
+  votes            RoutineVote[]
+  author           User              @relation(fields: [authorId], references: [id])
+  workouts         Workout[]
+  originalRoutine  Routine?          @relation("RoutineClones", fields: [originalRoutineId], references: [id], onDelete: SetNull)
+  clonedRoutines   Routine[]         @relation("RoutineClones")
+
+  @@map("routines")
+}
+
+model RoutineExercise {
+  id                String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  routineId         String   @map("routine_id") @db.Uuid
+  exerciseId        Int?     @map("exercise_id")
+  customExerciseName String? @map("custom_exercise_name")
+  dayIndex          Int      @default(0) @map("day_index")
+  orderIndex        Int      @default(0) @map("order_index")
+  sets              String?  // Changed from Int? to String? to allow "3", "3-4", "AMRAP", etc.
+  reps              String?  // Changed from Int? to String? to allow "8", "8-10", "To failure", etc.
+  restSeconds       Int?     @map("rest_seconds")
+  notes             String?
+  exercise          Exercise? @relation(fields: [exerciseId], references: [id])
+  routine           Routine  @relation(fields: [routineId], references: [id], onDelete: Cascade)
+
+  @@unique([routineId, dayIndex, orderIndex])
+  @@map("routine_exercises")
+}
+
+model RoutineVote {
+  userId    String   @map("user_id") @db.Uuid
+  routineId String   @map("routine_id") @db.Uuid
+  value     Int      @db.SmallInt
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  routine   Routine  @relation(fields: [routineId], references: [id])
+  user      User     @relation(fields: [userId], references: [id])
+
+  @@id([userId, routineId])
+  @@index([routineId])
+  @@map("routine_votes")
+}
+
+model Workout {
+  id          String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId      String       @map("user_id") @db.Uuid
+  routineId   String?      @map("routine_id") @db.Uuid
+  title       String?      @db.VarChar(140)
+  visibility  Visibility   @default(PRIVATE)
+  startedAt   DateTime     @default(now()) @map("started_at") @db.Timestamptz(6)
+  finishedAt  DateTime?    @map("finished_at") @db.Timestamptz(6)
+  workoutSets WorkoutSet[]
+  routine     Routine?     @relation(fields: [routineId], references: [id])
+  user        User         @relation(fields: [userId], references: [id])
+
+  @@map("workouts")
+}
+
+model WorkoutSet {
+  id                      String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  workoutId               String   @map("workout_id") @db.Uuid
+  exerciseId              Int?     @map("exercise_id")
+  customExerciseName      String?  @map("custom_exercise_name") @db.VarChar(120)
+  customExerciseCategory  String?  @map("custom_exercise_category") @db.VarChar(20)
+  customExercisePrimaryMuscles String[] @map("custom_exercise_primary_muscles")
+  setNumber               Int      @default(1) @map("set_number")
+  reps                    Int?
+  weightKg                Decimal? @map("weight_kg") @db.Decimal(6, 2)
+  rpe                     Decimal? @db.Decimal(3, 1)
+  durationSec             Int?     @map("duration_sec")
+  notes                   String?
+  performedAt             DateTime @default(now()) @map("performed_at") @db.Timestamptz(6)
+  exercise                Exercise? @relation(fields: [exerciseId], references: [id])
+  workout                 Workout  @relation(fields: [workoutId], references: [id])
+
+  @@index([workoutId, exerciseId])
+  @@index([workoutId, customExerciseName])
+  @@map("workout_sets")
+}
+
+model UserCustomExercise {
+  id               String        @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId           String        @map("user_id") @db.Uuid
+  name             String        @db.VarChar(120)
+  description      String?       @db.Text
+  category         ExerciseType  @default(STRENGTH)
+  primaryMuscles   String[]      @map("primary_muscles")
+  secondaryMuscles String[]      @map("secondary_muscles")
+  equipment        String?       @db.VarChar(80)
+  instructions     String?       @db.Text
+  isPublic         Boolean       @default(false) @map("is_public")
+  createdAt        DateTime      @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt        DateTime      @updatedAt @map("updated_at") @db.Timestamptz(6)
+  user             User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, name])
+  @@map("user_custom_exercises")
+}
+
+model TokenBlacklist {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  token     String   @unique
+  userId    String   @map("user_id") @db.Uuid
+  expiresAt DateTime @map("expires_at") @db.Timestamptz(6)
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+
+  @@index([token])
+  @@index([expiresAt])
+  @@index([userId])
+  @@map("token_blacklist")
+}
+
+enum Visibility {
+  PUBLIC
+  UNLISTED
+  PRIVATE
+}
+
+enum ExerciseType {
+  STRENGTH
+  CARDIO
+  MOBILITY
+}
+
+enum Difficulty {
+  BEGINNER
+  INTERMEDIATE
+  ADVANCED
+}
+
+enum Force {
+  PUSH
+  PULL
+  STATIC
+}
+
+enum Mechanic {
+  COMPOUND
+  ISOLATION
+}

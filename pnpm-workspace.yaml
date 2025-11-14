@@ -1,0 +1,12 @@
+packages:
+  - server
+  - web
+
+onlyBuiltDependencies:
+  - '@prisma/client'
+  - '@prisma/engines'
+  - '@scarf/scarf'
+  - bcrypt
+  - esbuild
+  - prisma
+  - sharp
