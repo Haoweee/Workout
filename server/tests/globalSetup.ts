@@ -5,12 +5,25 @@ export default function globalSetup() {
 
   // Set test environment
   process.env.NODE_ENV = 'test';
-  process.env.DATABASE_URL = 'postgresql://haowee:@localhost:5432/chi_test';
+
+  // Use DATABASE_URL from environment, fallback to local default
+  const databaseUrl = process.env.DATABASE_URL || 'postgresql://haowee:@localhost:5432/chi_test';
+  process.env.DATABASE_URL = databaseUrl;
+
+  // Extract database name from URL for createdb command
+  const dbName = databaseUrl.split('/').pop()?.split('?')[0] || 'chi_test';
 
   try {
     // Create test database if it doesn't exist
     console.log('📦 Creating test database...');
-    execSync('createdb chi_test', { stdio: 'ignore' });
+
+    // In CI, the database is already created by the service
+    // Only try to create it locally
+    if (process.env.CI) {
+      console.log('📦 Running in CI, skipping database creation');
+    } else {
+      execSync(`createdb ${dbName}`, { stdio: 'ignore' });
+    }
   } catch (error) {
     // Database might already exist, that's okay
     console.log('📦 Test database already exists or error creating it');
@@ -21,7 +34,7 @@ export default function globalSetup() {
     console.log('🔄 Running test database migrations...');
     execSync('npx prisma migrate deploy', {
       stdio: 'inherit',
-      env: { ...process.env, DATABASE_URL: 'postgresql://haowee:@localhost:5432/chi_test' },
+      env: { ...process.env, DATABASE_URL: databaseUrl },
     });
 
     console.log('✅ Test environment setup complete');
