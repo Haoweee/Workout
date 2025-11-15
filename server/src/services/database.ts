@@ -6,10 +6,10 @@ class PrismaService {
   public prisma: PrismaClient;
 
   private constructor() {
-    // Use test database URL for testing
+    // Use test database URL for testing, fallback to local test DB if no env var
     const databaseUrl =
       process.env.NODE_ENV === 'test'
-        ? 'postgresql://haowee:@localhost:5432/chi_test'
+        ? process.env.DATABASE_URL || 'postgresql://haowee:@localhost:5432/chi_test'
         : process.env.DATABASE_URL;
 
     this.prisma = new PrismaClient({

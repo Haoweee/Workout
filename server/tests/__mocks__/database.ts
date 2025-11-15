@@ -4,7 +4,7 @@ import { PrismaClient } from '@prisma/client';
 const testPrismaInstance = new PrismaClient({
   datasources: {
     db: {
-      url: 'postgresql://haowee:@localhost:5432/chi_test',
+      url: process.env.DATABASE_URL || 'postgresql://haowee:@localhost:5432/chi_test',
     },
   },
 });
