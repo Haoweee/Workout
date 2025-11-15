@@ -207,7 +207,7 @@ docker build -t workout-server:latest .
 docker run -d \
   --name workout-server \
   -p 3000:3000 \
-  --env-file .env.production \
+  --env-file .env \
   workout-server:latest
 ```
 

@@ -358,9 +358,9 @@ npm install nodemailer @types/nodemailer
 cp .env.example .env
 
 # Environment for different stages
-.env                 # Development
+.env.local          # Development
 .env.test           # Testing
-.env.production     # Production
+.env                # Production (standard naming)
 ```
 
 ### Environment Variables Commands

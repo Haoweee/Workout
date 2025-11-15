@@ -80,7 +80,7 @@ SMTP_FROM="Workout App <noreply@yourdomain.com>"
 .env.example    # Template file
 
 # Production
-.env.production       # Production environment variables
+.env       # Production environment variables
 ```
 
 ---
@@ -101,6 +101,10 @@ sudo apt-get install -y nodejs
 
 # Install pnpm
 npm install -g pnpm
+
+# Set environment to production for all future shell sessions
+echo 'export NODE_ENV=production' >> ~/.bashrc
+source ~/.bashrc
 
 # Install PM2 for process management
 npm install -g pm2
@@ -446,7 +450,7 @@ aws s3 sync ./uploads/ s3://your-bucket/uploads/ --delete
 
 ```bash
 # Secure file permissions
-chmod 600 .env.production
+chmod 600 .env
 chmod 755 uploads/
 chown -R nodejs:nodejs uploads/
 

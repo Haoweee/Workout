@@ -236,7 +236,7 @@ pm2 logs workout-api
 
 ### Environment Variables (Production)
 
-Create `.env.production` in the server directory:
+Create `.env` in the server directory:
 
 ```env
 NODE_ENV=production
