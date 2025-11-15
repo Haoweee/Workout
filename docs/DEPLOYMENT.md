@@ -80,7 +80,7 @@ SMTP_FROM="Workout App <noreply@yourdomain.com>"
 .env.example    # Template file
 
 # Production
-.env.prod       # Production environment variables
+.env.production       # Production environment variables
 ```
 
 ---
@@ -153,24 +153,25 @@ Create `ecosystem.config.js`:
 module.exports = {
   apps: [
     {
-      name: "workout-api",
-      script: "./dist/index.js",
-      instances: "max",
-      exec_mode: "cluster",
+      name: 'workout-api',
+      script: './dist/src/index.js',
+      cwd: '/var/www/app-name/server',
+      instances: 'max',
+      exec_mode: 'cluster',
       env: {
-        NODE_ENV: "production",
+        NODE_ENV: 'production',
         PORT: 3000,
       },
-      env_file: ".env.prod",
-      log_date_format: "YYYY-MM-DD HH:mm:ss Z",
-      error_file: "./logs/err.log",
-      out_file: "./logs/out.log",
-      log_file: "./logs/combined.log",
+
+      log_date_format: 'YYYY-MM-DD HH:mm:ss Z',
+      error_file: './logs/err.log',
+      out_file: './logs/out.log',
+      log_file: './logs/combined.log',
       time: true,
       autorestart: true,
       watch: false,
-      max_memory_restart: "1G",
-      instance_var: "INSTANCE_ID",
+      max_memory_restart: '1G',
+      instance_var: 'INSTANCE_ID',
     },
   ],
 };
@@ -445,7 +446,7 @@ aws s3 sync ./uploads/ s3://your-bucket/uploads/ --delete
 
 ```bash
 # Secure file permissions
-chmod 600 .env.prod
+chmod 600 .env.production
 chmod 755 uploads/
 chown -R nodejs:nodejs uploads/
 

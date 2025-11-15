@@ -2,8 +2,8 @@ module.exports = {
   apps: [
     {
       name: 'workout-api',
-      script: './dist/index.js',
-      cwd: '/var/www/app/server',
+      script: './dist/src/index.js',
+      cwd: '/var/www/Workout/server',
       instances: 'max', // Use all CPU cores
       exec_mode: 'cluster',
 
