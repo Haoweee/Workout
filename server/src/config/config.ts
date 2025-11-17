@@ -3,7 +3,7 @@ import { z } from 'zod';
 // Environment validation schema
 const envSchema = z.object({
   NODE_ENV: z.enum(['development', 'production', 'test']).default('development'),
-  PORT: z.string().default('5000').transform(Number),
+  PORT: z.string().default('3000').transform(Number),
 
   // Database
   DATABASE_URL: z.string().optional(),

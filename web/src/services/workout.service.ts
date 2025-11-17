@@ -235,6 +235,24 @@ export const workoutService = {
     return await apiCall<void>(() => apiClient.delete(`/workouts/sets/${setId}`));
   },
 
+  // Delete workout set by exercise and set number
+  deleteWorkoutSetByExercise: async (
+    workoutId: string,
+    exerciseId: number | null,
+    customExerciseName: string | null,
+    setNumber: number
+  ): Promise<void> => {
+    return await apiCall<void>(() =>
+      apiClient.delete(`/workouts/${workoutId}/sets/by-exercise`, {
+        data: {
+          exerciseId,
+          customExerciseName,
+          setNumber: setNumber.toString(),
+        },
+      })
+    );
+  },
+
   // Get workout statistics
   getWorkoutStats: async (): Promise<WorkoutStats> => {
     return await apiCall<WorkoutStats>(() =>

@@ -65,20 +65,25 @@ export const RoutineForm: React.FC<RoutineFormProps> = ({ mode, existingRoutine,
     }
 
     const routineData = toApiFormat();
+
     let result: Routine | null = null;
 
-    if (mode === 'create') {
-      result = await createRoutine(routineData);
-    } else if (mode === 'edit' && existingRoutine) {
-      result = await updateRoutine(existingRoutine.id, routineData);
-    }
-
-    if (result) {
-      if (onSuccess) {
-        onSuccess(result);
-      } else {
-        navigate(`/routines/${result.id}`);
+    try {
+      if (mode === 'create') {
+        result = await createRoutine(routineData);
+      } else if (mode === 'edit' && existingRoutine) {
+        result = await updateRoutine(existingRoutine.id, routineData);
       }
+
+      if (result) {
+        if (onSuccess) {
+          onSuccess(result);
+        } else {
+          navigate(`/routines/${result.id}`);
+        }
+      }
+    } catch (error) {
+      console.error('Error in form submission:', error);
     }
   };
 
@@ -157,7 +162,7 @@ export const RoutineForm: React.FC<RoutineFormProps> = ({ mode, existingRoutine,
                 : 'Update Routine'}
           </Button>
 
-          <Button type="button" variant="outline" onClick={() => setShowTemplates(true)}>
+          <Button type="button" variant="outline" onClick={() => navigate(-1)}>
             Cancel
           </Button>
         </div>

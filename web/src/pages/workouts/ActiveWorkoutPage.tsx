@@ -1,5 +1,6 @@
 import { useParams } from 'react-router-dom';
-import { ArrowLeft, Check } from 'lucide-react';
+import { ArrowLeft, Check, Plus } from 'lucide-react';
+import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 
 import {
@@ -13,10 +14,13 @@ import {
   // WorkoutNotFound,
 } from '@/features/workouts';
 
+import { WorkoutAddExercise } from '@/features/workouts/workout-add-exercise';
+
 import { useActiveWorkout } from '@/hooks/useActiveWorkout';
 
 export const ActiveWorkoutPage = () => {
   const { id } = useParams<{ id: string }>();
+  const [showAddExercise, setShowAddExercise] = useState(false);
 
   const {
     // State
@@ -55,6 +59,9 @@ export const ActiveWorkoutPage = () => {
     navigateToExercise,
     navigateToPrevExercise,
     navigateToNextExercise,
+    addExercise,
+    addSetToCurrentExercise,
+    refreshWorkout,
   } = useActiveWorkout({ workoutId: id });
 
   if (loading) return <WorkoutDetailSkeleton />;
@@ -97,25 +104,75 @@ export const ActiveWorkoutPage = () => {
       {/* Completion Message */}
       <WorkoutCompletionMessage isVisible={showCompletionMessage} />
 
+      {/* Add Exercise Component */}
+      <WorkoutAddExercise
+        isVisible={showAddExercise}
+        onAddExercise={addExercise}
+        onClose={() => setShowAddExercise(false)}
+      />
+
+      {/* Add Exercise Button - Show when no exercises or when user wants to add more */}
+      {(!workout?.exercises || workout.exercises.length === 0 || !currentExercise) && (
+        <div className="mb-6">
+          <Button
+            onClick={() => setShowAddExercise(true)}
+            variant="outline"
+            className="w-full"
+            disabled={saving}
+          >
+            <Plus className="mr-2 h-4 w-4" />
+            Add Exercise to Workout
+          </Button>
+        </div>
+      )}
+
       {/* Current Exercise */}
       {currentExercise && currentSet && (
-        <WorkoutCurrentSetForm
-          exercise={currentExercise}
-          currentSet={currentSet}
-          activeSetIndex={activeSetIndex}
-          currentWeight={currentWeight}
-          setCurrentWeight={setCurrentWeight}
-          currentReps={currentReps}
-          setCurrentReps={setCurrentReps}
-          currentRPE={currentRPE}
-          setCurrentRPE={setCurrentRPE}
-          currentNotes={currentNotes}
-          setCurrentNotes={setCurrentNotes}
-          saving={saving}
-          onLogSet={logCurrentSet}
-          onStartRestTimer={startRestTimer}
-          showRestTimer={showRestTimer}
-        />
+        <>
+          <WorkoutCurrentSetForm
+            exercise={currentExercise}
+            currentSet={currentSet}
+            activeSetIndex={activeSetIndex}
+            currentWeight={currentWeight}
+            setCurrentWeight={setCurrentWeight}
+            currentReps={currentReps}
+            setCurrentReps={setCurrentReps}
+            currentRPE={currentRPE}
+            setCurrentRPE={setCurrentRPE}
+            currentNotes={currentNotes}
+            setCurrentNotes={setCurrentNotes}
+            saving={saving}
+            onLogSet={logCurrentSet}
+            onStartRestTimer={startRestTimer}
+            showRestTimer={showRestTimer}
+          />
+
+          {/* Add/Remove Set Buttons */}
+          <div className="mb-4 flex justify-center gap-2">
+            <Button onClick={addSetToCurrentExercise} variant="outline" size="sm" disabled={saving}>
+              <Plus className="mr-2 h-4 w-4" />
+              Add Set
+            </Button>
+
+            {/* TODO: Enable when set removal is implemented with proper set ID tracking */}
+            {/* currentExercise.sets.length > 1 && (
+              <Button
+                onClick={() => {
+                  if (currentSet?.setNumber && confirm('Are you sure you want to remove this set?')) {
+                    removeSetFromCurrentExercise(currentSet.setNumber);
+                  }
+                }}
+                variant="outline"
+                size="sm"
+                disabled={saving}
+                className="text-red-600 hover:text-red-700 hover:border-red-300"
+              >
+                <Trash2 className="mr-2 h-4 w-4" />
+                Remove Set
+              </Button>
+            ) */}
+          </div>
+        </>
       )}
 
       {/* Exercise Navigation */}
@@ -126,12 +183,28 @@ export const ActiveWorkoutPage = () => {
         onNext={navigateToNextExercise}
       />
 
+      {/* Add More Exercises Button */}
+      {workout?.exercises && workout.exercises.length > 0 && (
+        <div className="mb-4 text-center">
+          <Button
+            onClick={() => setShowAddExercise(true)}
+            variant="outline"
+            size="sm"
+            disabled={saving}
+          >
+            <Plus className="mr-2 h-4 w-4" />
+            Add Exercise
+          </Button>
+        </div>
+      )}
+
       {/* All Exercises Overview */}
       <WorkoutOverview
         workout={workout}
         activeExerciseIndex={activeExerciseIndex}
         activeSetIndex={activeSetIndex}
         onExerciseClick={navigateToExercise}
+        onWorkoutUpdate={refreshWorkout}
       />
 
       {/* Finish Workout Button */}

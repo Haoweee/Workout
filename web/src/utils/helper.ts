@@ -12,8 +12,8 @@ export interface DayInfo {
 export interface ExerciseInfo {
   exercise?: { name?: string };
   customExerciseName?: string;
-  sets?: number;
-  reps?: number;
+  sets?: string;
+  reps?: string;
 }
 
 export const DAYS_OF_WEEK = [
@@ -167,7 +167,15 @@ export const getDayExercises = (routine: Routine, dayIndex: number): ExerciseInf
   // Handle UserRoutineResponse structure (has 'days' array)
   if ('days' in routine && Array.isArray(routine.days)) {
     const day = routine.days.find((d) => d.dayIndex === dayIndex);
-    return day?.exercises || [];
+
+    return (day?.exercises || []).map(
+      (ex: ExerciseInfo): ExerciseInfo => ({
+        exercise: ex.exercise ? { name: ex.exercise.name } : undefined,
+        customExerciseName: ex.customExerciseName ?? undefined,
+        sets: ex.sets !== undefined ? String(ex.sets) : undefined,
+        reps: ex.reps !== undefined ? String(ex.reps) : undefined,
+      })
+    );
   }
 
   // Handle RoutineResponse structure (has 'routineExercises' array)
@@ -177,8 +185,8 @@ export const getDayExercises = (routine: Routine, dayIndex: number): ExerciseInf
       .map((ex) => ({
         exercise: ex.exercise ? { name: ex.exercise.name } : undefined,
         customExerciseName: ex.customExerciseName ?? undefined,
-        sets: ex.sets ? Number(ex.sets) : undefined,
-        reps: ex.reps ? Number(ex.reps) : undefined,
+        sets: ex.sets !== undefined ? String(ex.sets) : undefined,
+        reps: ex.reps !== undefined ? String(ex.reps) : undefined,
       }));
   }
 

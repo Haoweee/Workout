@@ -184,7 +184,14 @@ export const useActiveWorkout = ({ workoutId }: UseActiveWorkoutProps) => {
 
       const updatedProgress = getWorkoutProgress(updatedWorkout);
 
-      if (updatedProgress.completed === updatedProgress.total && updatedProgress.total > 0) {
+      // Don't auto-finish if the workout was started empty (has very few exercises)
+      const isLikelyEmptyWorkout = (workout.exercises?.length || 0) <= 2;
+
+      if (
+        updatedProgress.completed === updatedProgress.total &&
+        updatedProgress.total > 0 &&
+        !isLikelyEmptyWorkout
+      ) {
         // All sets completed, show completion message then automatically finish workout
         setShowCompletionMessage(true);
         setTimeout(() => {
@@ -192,7 +199,12 @@ export const useActiveWorkout = ({ workoutId }: UseActiveWorkoutProps) => {
         }, 2000); // 2 second delay to show completion message
       } else {
         // Start rest timer only if workout isn't finished
-        startRestTimer();
+        if (updatedProgress.completed === updatedProgress.total && updatedProgress.total > 0) {
+          // Just show completion message but don't auto-finish for small workouts
+          setShowCompletionMessage(true);
+        } else {
+          startRestTimer();
+        }
       }
     } catch (error) {
       console.error('Error saving set:', error);
@@ -284,6 +296,100 @@ export const useActiveWorkout = ({ workoutId }: UseActiveWorkoutProps) => {
     }
   };
 
+  const addExercise = async (exerciseName: string, isCustom = false) => {
+    if (!workout || !workoutId) return;
+
+    try {
+      setSaving(true);
+
+      // Create multiple sets for the new exercise (default to 3 sets)
+      const setsToCreate = 3;
+
+      for (let setNumber = 1; setNumber <= setsToCreate; setNumber++) {
+        const setData = {
+          exerciseId: isCustom ? undefined : undefined, // We'll need to handle exercise lookup later
+          customExerciseName: isCustom ? exerciseName : exerciseName, // For now, treat everything as custom
+          setNumber: setNumber,
+          reps: undefined,
+          weightKg: undefined,
+        };
+
+        await workoutService.addWorkoutSet(workoutId, setData);
+      }
+
+      // Refetch the workout to get the updated data
+      const updatedWorkout = await workoutService.getWorkoutById(workoutId);
+      setWorkout(processWorkoutData(updatedWorkout));
+
+      // Navigate to the new exercise (will be the last one)
+      const exerciseIndex = updatedWorkout.exercises?.length
+        ? updatedWorkout.exercises.length - 1
+        : 0;
+      setActiveExerciseIndex(exerciseIndex);
+      setActiveSetIndex(0);
+    } catch (error) {
+      console.error('Error adding exercise:', error);
+      ErrorToast({
+        message: 'Error adding exercise',
+        description: 'An error occurred while trying to add the exercise. Please try again.',
+      });
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const addSetToCurrentExercise = async () => {
+    if (!workout || !workoutId || !currentExercise) return;
+
+    try {
+      setSaving(true);
+
+      // Find the highest set number for the current exercise
+      const maxSetNumber = Math.max(...currentExercise.sets.map((set) => set.setNumber));
+      const newSetNumber = maxSetNumber + 1;
+
+      const setData = {
+        exerciseId: currentExercise.exerciseId || undefined,
+        customExerciseName: currentExercise.isCustom ? currentExercise.exerciseName : undefined,
+        setNumber: newSetNumber,
+        reps: undefined,
+        weightKg: undefined,
+      };
+
+      await workoutService.addWorkoutSet(workoutId, setData);
+
+      // Refetch the workout to get the updated data
+      const updatedWorkout = await workoutService.getWorkoutById(workoutId);
+      setWorkout(processWorkoutData(updatedWorkout));
+
+      // Navigate to the new set
+      setActiveSetIndex(newSetNumber - 1);
+    } catch (error) {
+      console.error('Error adding set:', error);
+      ErrorToast({
+        message: 'Error adding set',
+        description: 'An error occurred while trying to add a new set. Please try again.',
+      });
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  // TODO: Implement set removal when OptimizedWorkout includes set IDs
+  // Current implementation is commented out because OptimizedSet doesn't have
+  // the ID field needed for deletion via the deleteWorkoutSet API
+
+  const refreshWorkout = async () => {
+    if (!workoutId) return;
+
+    try {
+      const updatedWorkout = await workoutService.getWorkoutById(workoutId);
+      setWorkout(processWorkoutData(updatedWorkout));
+    } catch (error) {
+      console.error('Error refreshing workout:', error);
+    }
+  };
+
   return {
     // State
     workout,
@@ -322,5 +428,8 @@ export const useActiveWorkout = ({ workoutId }: UseActiveWorkoutProps) => {
     navigateToExercise,
     navigateToPrevExercise,
     navigateToNextExercise,
+    addExercise,
+    addSetToCurrentExercise,
+    refreshWorkout,
   };
 };

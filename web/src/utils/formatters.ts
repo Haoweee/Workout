@@ -31,7 +31,6 @@ export const formatDuration = (seconds: number): string => {
 };
 
 export const formatDate = (dateString: string): string => {
-  console.log('Formatting date:', dateString);
   return new Date(dateString).toLocaleDateString('en-US', {
     year: 'numeric',
     month: 'long',

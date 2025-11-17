@@ -1,8 +1,9 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { workoutService } from '@/services/workout.service';
 import { ErrorToast } from '@/components/errors/toast';
 import { useRoutine } from '@/hooks/useRoutine';
+import { useRoutines } from '@/hooks/useRoutines';
 import { getAvailableDays } from '@/utils';
 import type { Routine } from '@/types/api';
 
@@ -19,12 +20,23 @@ export const useStartWorkout = ({ routineId }: UseStartWorkoutProps) => {
   const [selectedDayIndex, setSelectedDayIndex] = useState<number | null>(null);
   const [creating, setCreating] = useState(false);
 
-  // Fetch routines data
+  // Fetch all user routines
+  const { routines: allRoutines, isLoading: routinesLoading, error: routinesError } = useRoutines();
+
+  // Fetch specific routine if routineId is provided
   const {
-    routine: routines,
-    isLoading: routineLoading,
-    error: routineError,
+    routine: specificRoutine,
+    isLoading: specificRoutineLoading,
+    error: specificRoutineError,
   } = useRoutine(routineId || undefined);
+
+  // Determine which routines to use and loading state
+  const routines = useMemo(() => {
+    return routineId ? (specificRoutine ? [specificRoutine] : []) : allRoutines;
+  }, [routineId, specificRoutine, allRoutines]);
+
+  const routineLoading = routineId ? specificRoutineLoading : routinesLoading;
+  const routineError = routineId ? specificRoutineError : routinesError;
 
   // Handle routine selection
   const handleRoutineSelect = useCallback((routine: Routine) => {
@@ -40,17 +52,10 @@ export const useStartWorkout = ({ routineId }: UseStartWorkoutProps) => {
 
   // Auto-select routine from URL parameter
   useEffect(() => {
-    if (routines && routineId) {
-      // If routine is an array, find the matching routine by id
-      if (Array.isArray(routines) && routines.length > 0) {
-        const foundRoutine = routines.find((r) => r.id === routineId);
-        if (foundRoutine) {
-          handleRoutineSelect(foundRoutine);
-        }
-      }
-      // If routine is a single object, check its id directly
-      else if (!Array.isArray(routines) && routines.id === routineId) {
-        handleRoutineSelect(routines);
+    if (routines && routines.length > 0 && routineId) {
+      const foundRoutine = routines.find((r) => r.id === routineId);
+      if (foundRoutine) {
+        handleRoutineSelect(foundRoutine);
       }
     }
   }, [routineId, routines, handleRoutineSelect]);

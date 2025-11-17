@@ -14,3 +14,4 @@ export { WorkoutStartWorkoutSkeleton } from './workouts-start-workout-skeleton';
 export { WorkoutStats } from './workouts-stats';
 export { WorkoutStatus } from './workouts-status';
 export { WorkoutTableSkeleton } from './workouts-table-loader';
+export { WorkoutAddExercise } from './workout-add-exercise';

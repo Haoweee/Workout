@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import { WorkoutService } from '@services/workoutService';
 import {
   AddWorkoutSetRequest,
-  CreateWorkoutRequest,
+  CreateWorkoutInput,
   UpdateWorkoutRequest,
   UpdateWorkoutSet,
 } from '@/types';
@@ -20,24 +20,33 @@ export class WorkoutController {
         return;
       }
 
-      const { routineId, title, visibility, dayIndex } = req.body as CreateWorkoutRequest;
+      const { routineId, title, visibility, dayIndex } = req.body as CreateWorkoutInput;
 
-      if (
-        typeof routineId !== 'string' ||
-        typeof title !== 'string' ||
-        typeof visibility !== 'string' ||
-        typeof dayIndex !== 'number'
-      ) {
-        res.status(400).json({ error: 'Missing or invalid workout input fields' });
+      // Default title to "Untitled" if not provided or empty
+      const workoutTitle = typeof title === 'string' && title.trim() ? title.trim() : 'Untitled';
+
+      // Validate visibility
+      const validVisibilities = ['PUBLIC', 'UNLISTED', 'PRIVATE'];
+      if (typeof visibility !== 'string' || !validVisibilities.includes(visibility)) {
+        res
+          .status(400)
+          .json({ error: 'Valid visibility is required (PUBLIC, UNLISTED, or PRIVATE)' });
         return;
       }
 
-      const workout = await WorkoutService.createWorkout(userId, {
-        routineId,
-        title,
-        visibility,
-        dayIndex,
-      });
+      // Prepare workout data with optional properties
+      const workoutData: CreateWorkoutInput = {
+        title: workoutTitle,
+        visibility: visibility as 'PUBLIC' | 'UNLISTED' | 'PRIVATE',
+        dayIndex: typeof dayIndex === 'number' ? dayIndex : 0,
+      };
+
+      // Only add routineId if it's provided (for empty workouts, it won't be)
+      if (routineId) {
+        workoutData.routineId = routineId;
+      }
+
+      const workout = await WorkoutService.createWorkout(userId, workoutData);
 
       res.status(201).json({
         message: 'Workout created successfully',
@@ -326,6 +335,51 @@ export class WorkoutController {
       });
     } catch (error) {
       logger.error('Error deleting workout set:', error);
+      res.status(400).json({
+        error: error instanceof Error ? error.message : 'Failed to delete workout set',
+      });
+    }
+  };
+
+  /**
+   * Delete workout set by exercise and set number
+   */
+  static deleteWorkoutSetByExercise = async (req: Request, res: Response): Promise<void> => {
+    try {
+      const { id } = req.params; // workout id
+      const { exerciseId, customExerciseName, setNumber } = req.body as {
+        exerciseId?: number;
+        customExerciseName?: string;
+        setNumber: string;
+      };
+      const userId = req.user?.userId;
+
+      if (!userId) {
+        res.status(401).json({ error: 'Authentication required' });
+        return;
+      }
+
+      if (!setNumber) {
+        res.status(400).json({ error: 'Set number is required' });
+        return;
+      }
+
+      if (!exerciseId && !customExerciseName) {
+        res.status(400).json({ error: 'Either exerciseId or customExerciseName is required' });
+        return;
+      }
+
+      await WorkoutService.deleteWorkoutSetByExercise(id!, userId, {
+        exerciseId: exerciseId || null,
+        customExerciseName: customExerciseName || null,
+        setNumber: parseInt(setNumber),
+      });
+
+      res.json({
+        message: 'Workout set deleted successfully',
+      });
+    } catch (error) {
+      logger.error('Error deleting workout set by exercise:', error);
       res.status(400).json({
         error: error instanceof Error ? error.message : 'Failed to delete workout set',
       });

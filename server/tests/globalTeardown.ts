@@ -7,7 +7,7 @@ export default function globalTeardown() {
     // Extract database name from DATABASE_URL, fallback to local default
     const databaseUrl = process.env.DATABASE_URL || 'postgresql://haowee:@localhost:5432/chi_test';
     const dbName = databaseUrl.split('/').pop()?.split('?')[0] || 'chi_test';
-    
+
     // Only drop database locally, not in CI
     if (!process.env.CI) {
       execSync(`dropdb ${dbName}`, { stdio: 'ignore' });

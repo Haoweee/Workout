@@ -748,6 +748,74 @@ export class WorkoutService {
   }
 
   /**
+   * Delete workout set by exercise and set number
+   */
+  static async deleteWorkoutSetByExercise(
+    workoutId: string,
+    userId: string,
+    params: {
+      exerciseId: number | null;
+      customExerciseName: string | null;
+      setNumber: number;
+    }
+  ): Promise<void> {
+    try {
+      // First verify workout ownership
+      const workout = await prisma.workout.findUnique({
+        where: { id: workoutId },
+        select: { userId: true },
+      });
+
+      if (!workout || workout.userId !== userId) {
+        throw new Error('Workout not found or access denied');
+      }
+
+      // Find the specific set
+      const whereClause = {
+        workoutId,
+        setNumber: params.setNumber,
+        ...(params.exerciseId
+          ? { exerciseId: params.exerciseId }
+          : { customExerciseName: params.customExerciseName }),
+      };
+
+      const setToDelete = await prisma.workoutSet.findFirst({
+        where: whereClause,
+      });
+
+      if (!setToDelete) {
+        throw new Error('Workout set not found');
+      }
+
+      // Check if this is the last set for this exercise
+      const totalSetsForExercise = await prisma.workoutSet.count({
+        where: {
+          workoutId,
+          ...(params.exerciseId
+            ? { exerciseId: params.exerciseId }
+            : { customExerciseName: params.customExerciseName }),
+        },
+      });
+
+      if (totalSetsForExercise <= 1) {
+        throw new Error('Cannot delete the last set of an exercise');
+      }
+
+      // Delete the set
+      await prisma.workoutSet.delete({
+        where: { id: setToDelete.id },
+      });
+
+      logger.info(
+        `Deleted workout set by exercise for user ${userId}: workout ${workoutId}, setNumber ${params.setNumber}`
+      );
+    } catch (error) {
+      logger.error('Error deleting workout set by exercise:', error);
+      throw error;
+    }
+  }
+
+  /**
    * Finish workout (set finishedAt timestamp)
    */
   static async finishWorkout(workoutId: string, userId: string): Promise<WorkoutWithDetails> {

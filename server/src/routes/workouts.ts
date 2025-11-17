@@ -388,4 +388,54 @@ router.put('/sets/:setId', authenticateToken, WorkoutController.updateWorkoutSet
  */
 router.delete('/sets/:setId', authenticateToken, WorkoutController.deleteWorkoutSet);
 
+/**
+ * @swagger
+ * /api/workouts/{id}/sets/by-exercise:
+ *   delete:
+ *     summary: Delete workout set by exercise and set number
+ *     description: Delete a specific set by exercise ID/name and set number
+ *     tags: [Workouts]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: Workout ID
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - setNumber
+ *             properties:
+ *               exerciseId:
+ *                 type: integer
+ *                 description: Database exercise ID (required if not custom exercise)
+ *               customExerciseName:
+ *                 type: string
+ *                 description: Custom exercise name (required if custom exercise)
+ *               setNumber:
+ *                 type: string
+ *                 description: Set number to delete
+ *     responses:
+ *       200:
+ *         description: Workout set deleted successfully
+ *       400:
+ *         description: Invalid request or cannot delete last set
+ *       401:
+ *         description: Authentication required
+ *       404:
+ *         description: Workout or set not found
+ */
+router.delete(
+  '/:id/sets/by-exercise',
+  authenticateToken,
+  WorkoutController.deleteWorkoutSetByExercise
+);
+
 export { router as workoutRoutes };

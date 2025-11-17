@@ -30,7 +30,7 @@ export const useRoutineForm = (mode: 'create' | 'edit', existingRoutine?: Routin
     title: mode === 'edit' ? existingRoutine?.title || '' : '',
     description: mode === 'edit' ? existingRoutine?.description || '' : '',
     difficulty: mode === 'edit' ? existingRoutine?.difficulty || '' : '',
-    visibility: mode === 'edit' ? existingRoutine?.visibility || '' : '',
+    visibility: mode === 'edit' ? existingRoutine?.visibility || 'PRIVATE' : 'PRIVATE',
   });
 
   // Day management

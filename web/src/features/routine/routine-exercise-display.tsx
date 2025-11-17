@@ -53,8 +53,8 @@ export const RoutineExerciseDisplay: React.FC<{ routine: Routine }> = ({ routine
                                   'Unknown Exercise'}
                               </div>
                             </TableCell>
-                            <TableCell className="w-1/4 text-right">{exercise.reps}</TableCell>
-                            <TableCell className="w-1/12 text-right">{exercise.sets}</TableCell>
+                            <TableCell className="w-1/4 text-right">{exercise.sets}</TableCell>
+                            <TableCell className="w-1/12 text-right">{exercise.reps}</TableCell>
                             <TableCell className="w-1/12 text-right">
                               {exercise.restSeconds}
                             </TableCell>
