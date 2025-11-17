@@ -160,7 +160,7 @@ jobs:
             echo "Starting deployment: ${{ needs.build-and-test.outputs.release-tag }}"
 
             # Navigate to app directory
-            cd /var/www/app || { echo "❌ App directory not found"; exit 1; }
+            cd /var/www/Workout || { echo "❌ App directory not found"; exit 1; }
 
             # Create backup
             BACKUP_DIR="../app-backup-$(date +%Y%m%d-%H%M%S)"
