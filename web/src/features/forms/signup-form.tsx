@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import {
@@ -15,6 +16,7 @@ import { useRegister } from '@/hooks/useRegister';
 import type { RegisterRequest } from '@/types/api';
 
 export function SignupForm({ className, ...props }: React.ComponentProps<'form'>) {
+  const navigate = useNavigate();
   const { handleRegister, isLoading, error } = useRegister();
 
   const [formData, setFormData] = useState<RegisterRequest>({
@@ -40,6 +42,11 @@ export function SignupForm({ className, ...props }: React.ComponentProps<'form'>
 
   return (
     <>
+      <div className="flex w-full justify-center mb-4">
+        <button className="text-xl" onClick={() => navigate('/')}>
+          Workout Tracker Logo
+        </button>
+      </div>
       <form className={cn('flex flex-col gap-4', className)} {...props} onSubmit={handleSubmit}>
         {error && <AlertMessage message={error.message} type="error" />}
         {isLoading && <Loading />}

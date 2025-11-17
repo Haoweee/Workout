@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import {
@@ -14,6 +15,7 @@ import { useLogin } from '@/hooks/useLogin';
 import type { LoginRequest } from '@/types/api';
 
 export function LoginForm({ className, ...props }: React.ComponentProps<'form'>) {
+  const navigate = useNavigate();
   // Custom hook handles all login business logic
   const { handleLogin, isLoading, error } = useLogin();
 
@@ -38,6 +40,11 @@ export function LoginForm({ className, ...props }: React.ComponentProps<'form'>)
 
   return (
     <>
+      <div className="flex w-full justify-center mb-4">
+        <button className="text-xl" onClick={() => navigate('/')}>
+          Workout Tracker Logo
+        </button>
+      </div>
       <form className={cn('flex flex-col gap-6', className)} onSubmit={handleSubmit} {...props}>
         <FieldGroup>
           <div className="flex flex-col items-center gap-1 text-center">
