@@ -55,7 +55,7 @@ module.exports = {
       host: process.env.DO_HOST,
       ref: 'origin/main',
       repo: 'git@github.com:Haoweee/Workout.git',
-      path: '/var/www/app',
+      path: '/var/www/Workout',
       'pre-setup': 'mkdir -p /var/log/pm2',
       'post-setup': 'pnpm install --frozen-lockfile && pnpm build',
       'pre-deploy-local': '',
