@@ -145,6 +145,36 @@ jobs:
     if: needs.build-and-test.outputs.should-deploy == 'true'
 
     steps:
+      - name: Checkout Repository  
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: ${{ env.PNPM_VERSION }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: pnpm
+          cache-dependency-path: pnpm-lock.yaml
+
+      - name: Install Dependencies & Build Web
+        run: |
+          pnpm install --frozen-lockfile
+          pnpm build:web
+
+      - name: Copy Web Build to Server
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.DO_HOST }}
+          username: ${{ secrets.DO_USER || 'root' }}
+          key: ${{ secrets.DO_SSH_KEY }}
+          source: "web/dist"
+          target: "/var/www/Workout/"
+          strip_components: 0
+
       - name: Deploy via SSH
         uses: appleboy/ssh-action@v1.0.3
         with:
@@ -181,8 +211,8 @@ jobs:
             echo "Running migrations..."
             pnpm db:migrate
 
-            echo "Building application..."
-            NODE_ENV=production pnpm build
+            echo "Building server only (frontend built in CI)..."
+            NODE_ENV=production pnpm build:server
 
             # Restart application
             echo "Restarting application..."
