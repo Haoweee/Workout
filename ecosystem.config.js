@@ -51,7 +51,7 @@ module.exports = {
   // Deployment Configuration
   deploy: {
     production: {
-      user: 'deployer',
+      user: 'root',
       host: process.env.DO_HOST,
       ref: 'origin/main',
       repo: 'git@github.com:Haoweee/Workout.git',
