@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { AppLayout } from '@/components/layout/AppLayout';
-import { HomePage } from '@/pages/HomePage';
+import { HomePage } from '@/pages/marketing/HomePage';
 import { LoginPage } from '@/pages/auth/LoginPage';
 import { SignupPage } from '@/pages/auth/SignupPage';
 import { OtpPage } from '@/pages/auth/OtpPage';

@@ -1,3 +1,18 @@
+import { Header } from '@/features/marketing/homepage/header';
+import { ProblemSolution } from '@/features/marketing/homepage/problem-solution';
+import { Features } from '@/features/marketing/homepage/features';
+import { CTA } from '@/features/marketing/homepage/cta';
+
+import { useAuth } from '@/hooks';
+
 export const HomePage = () => {
-  return <div>Welcome to the Home Page</div>;
+  const { user } = useAuth();
+  return (
+    <div className="space-y-28">
+      <Header user={user} />
+      <ProblemSolution />
+      <Features />
+      <CTA user={user} />
+    </div>
+  );
 };
