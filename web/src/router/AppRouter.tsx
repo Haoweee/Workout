@@ -1,6 +1,18 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { AppLayout } from '@/components/layout/AppLayout';
-import { HomePage } from '@/pages/marketing/HomePage';
+import { ScrollToTop } from '@/components/ScrollToTop';
+import {
+  AboutPage,
+  AccountSettingsPage,
+  ContactPage,
+  FallBackPage,
+  GettingStartedPage,
+  HomePage,
+  HelpCenterPage,
+  LegalPage,
+  RoutinesPage,
+  TroubleshootingPage,
+} from '@/pages/marketing';
 import { LoginPage } from '@/pages/auth/LoginPage';
 import { SignupPage } from '@/pages/auth/SignupPage';
 import { OtpPage } from '@/pages/auth/OtpPage';
@@ -21,6 +33,7 @@ import { BlankLayout, PublicLayout } from '@/components/layout';
 export const AppRouter: React.FC = () => {
   return (
     <BrowserRouter>
+      <ScrollToTop />
       <Routes>
         {/* Public pages (no auth required). If you want a public layout, wrap it here. */}
         <Route
@@ -32,8 +45,17 @@ export const AppRouter: React.FC = () => {
           }
         >
           <Route path="/" element={<HomePage />} />
+
+          <Route path="/account-settings" element={<AccountSettingsPage />} />
+          <Route path="/about" element={<AboutPage />} />
+          <Route path="/contact" element={<ContactPage />} />
           <Route path="/exercises" element={<ExercisesPage />} />
           <Route path="/exercises/:id" element={<ExerciseDetailPage />} />
+          <Route path="/getting-started" element={<GettingStartedPage />} />
+          <Route path="/help" element={<HelpCenterPage />} />
+          <Route path="/legal" element={<LegalPage />} />
+          <Route path="/routines" element={<RoutinesPage />} />
+          <Route path="/troubleshooting" element={<TroubleshootingPage />} />
         </Route>
 
         {/* Auth-only but WITHOUT layout (e.g., login/signup pages) */}
@@ -67,20 +89,7 @@ export const AppRouter: React.FC = () => {
         </Route>
 
         {/* 404 fallback */}
-        <Route
-          path="*"
-          element={
-            <div className="min-h-screen flex items-center justify-center">
-              <div className="text-center">
-                <h1 className="text-4xl font-bold text-gray-900 mb-4">404</h1>
-                <p className="text-gray-600 mb-6">Page not found</p>
-                <a href="/" className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
-                  Go Home
-                </a>
-              </div>
-            </div>
-          }
-        />
+        <Route path="*" element={<FallBackPage />} />
       </Routes>
     </BrowserRouter>
   );

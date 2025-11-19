@@ -1,7 +1,7 @@
-import CreateRoutineImg from '../../../../public/marketing/create-routine.png';
-import StartWorkoutImg from '../../../../public/marketing/start-workout.png';
-import LogExercisesImg from '../../../../public/marketing/log-exercises.png';
-import TrackProgressImg from '../../../../public/marketing/workout-planner.png';
+import CreateRoutineImg from '../../../assets/marketing/create-routine.png';
+import StartWorkoutImg from '../../../assets/marketing/start-workout.png';
+import LogExercisesImg from '../../../assets/marketing/log-exercises.png';
+import TrackProgressImg from '../../../assets/marketing/workout-planner.png';
 
 import { PencilRuler, Hammer, CirclePlay, ScrollText, ListPlus } from 'lucide-react';
 

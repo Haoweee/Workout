@@ -40,7 +40,9 @@ export const Header = ({ user }: HeaderProps) => {
       {/* For Small Devices */}
       <div className="lg:hidden w-full">
         <div className="flex flex-col gap-6">
-          <h1 className="lg:hidden text-3xl font-bold">Make Workout Tracking Easy</h1>
+          <h1 className="lg:hidden text-3xl font-bold">
+            Build your perfect routine. <br /> Track every lift. <br /> Stay consistent.
+          </h1>
           <div className="lg:hidden">
             Software that helps you track and analyze your workouts effortlessly.
           </div>

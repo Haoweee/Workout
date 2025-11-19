@@ -13,7 +13,7 @@ interface CTAProps {
 export const CTA = ({ user }: CTAProps) => {
   const navigate = useNavigate();
   return (
-    <div className="text-center space-y-6 mb-12">
+    <div className="text-center space-y-6 mb-18">
       <Merge className="mx-auto" />
       <h2 className="text-2xl font-bold">Ready to Elevate Your Workouts?</h2>
       <p className="text-lg">

@@ -1,7 +1,7 @@
-import GoogleSheetsPlannerImg from '../../../../public/marketing/google-sheets-planner.png';
-import WorkoutPlannerImg from '../../../../public/marketing/workout-planner.png';
+import GoogleSheetsPlannerImg from '../../../assets/marketing/google-sheets-planner.png';
+import WorkoutPlannerImg from '../../../assets/marketing/workout-planner.png';
 
-import { ThumbsUp, ThumbsDown, MoveRight } from 'lucide-react';
+import { ThumbsUp, ThumbsDown, MoveRight, MoveDown } from 'lucide-react';
 
 export const ProblemSolution = () => {
   return (
@@ -23,7 +23,8 @@ export const ProblemSolution = () => {
             className="w-full h-auto rounded-xl"
           />
         </div>
-        <MoveRight size={16} />
+        <MoveRight size={20} className="hidden md:block" />
+        <MoveDown size={16} className="md:hidden" />
         <div className="w-full lg:flex-1 border border-gray-200 rounded-xl shadow-md">
           <img
             src={WorkoutPlannerImg}

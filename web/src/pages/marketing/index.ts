@@ -1,0 +1,10 @@
+export { AboutPage } from './AboutPage';
+export { AccountSettingsPage } from './AccountSettingsPage';
+export { ContactPage } from './ContactPage';
+export { FallBackPage } from './FallBackPage';
+export { HomePage } from './HomePage';
+export { HelpCenterPage } from './HelpCenterPage';
+export { LegalPage } from './LegalPage';
+export { GettingStartedPage } from './GettingStarted';
+export { RoutinesPage } from './RoutinesPage';
+export { TroubleshootingPage } from './TroubleshootingPage';

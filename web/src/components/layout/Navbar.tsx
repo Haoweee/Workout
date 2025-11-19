@@ -74,12 +74,6 @@ export const Navbar: React.FC<NavbarProps> = ({ className = '' }) => {
         <div className="flex items-center justify-between h-16 min-w-0 md:grid md:grid-cols-3">
           {/* Left Side - Logo/Brand */}
           <div className="flex items-center justify-start shrink-0 min-w-0">
-            {/* Mobile Menu Button - Shows on smaller screens */}
-            <div className="flex md:hidden shrink-0">
-              <Button variant="ghost" size="icon" onClick={handleMenuToggle}>
-                <Menu className="h-5 w-5" />
-              </Button>
-            </div>
             <button
               onClick={() => navigate('/')}
               className="text-xl font-bold text-gray-900 whitespace-nowrap"
@@ -430,62 +424,74 @@ export const Navbar: React.FC<NavbarProps> = ({ className = '' }) => {
 
           {/* Right Side - Profile and Logout */}
           <div className="flex items-center justify-end space-x-2 shrink-0 min-w-0">
-            {isLoading ? (
-              <div className="flex items-center space-x-2">
-                <Skeleton className="h-10 w-10 rounded-full animate-pulse bg-gray-200" />
-                <div className="hidden sm:block space-y-2">
-                  <Skeleton className="h-4 w-[120px] animate-pulse bg-gray-200" />
-                  <Skeleton className="h-4 w-[100px] animate-pulse bg-gray-200" />
+            {/* Mobile Menu Button - Shows on smaller screens, replaces login/signup */}
+            <div className="flex md:hidden shrink-0">
+              <Button variant="ghost" size="icon" onClick={handleMenuToggle}>
+                <Menu className="h-5 w-5" />
+              </Button>
+            </div>
+
+            {/* Desktop Authentication Buttons - Hidden on mobile */}
+            <div className="hidden md:flex items-center space-x-2">
+              {isLoading ? (
+                <div className="flex items-center space-x-2">
+                  <Skeleton className="h-10 w-10 rounded-full animate-pulse bg-gray-200" />
+                  <div className="hidden sm:block space-y-2">
+                    <Skeleton className="h-4 w-[120px] animate-pulse bg-gray-200" />
+                    <Skeleton className="h-4 w-[100px] animate-pulse bg-gray-200" />
+                  </div>
                 </div>
-              </div>
-            ) : isAuthenticated && user ? (
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="none" size="sm" className="rounded-full shadow-none">
+              ) : isAuthenticated && user ? (
+                <DropdownMenu>
+                  <DropdownMenuTrigger className="rounded-full p-1 hover:bg-gray-100 transition-colors">
                     <AvatarProfile
                       avatarUrl={user.avatarUrl}
                       fullName={user.fullName}
                       email={user.email}
                     />
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end" className="w-56">
+                    <DropdownMenuLabel>{user.fullName || 'Full Name'}</DropdownMenuLabel>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem onClick={() => navigate('/profile?tab=workouts')}>
+                      <UserRound className="h-4 w-4 mr-2" />
+                      Profile
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => navigate('/profile/settings')}>
+                      <Settings className="h-4 w-4 mr-2" />
+                      Settings
+                    </DropdownMenuItem>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem
+                      onClick={handleLogout}
+                      className="text-red-600 focus:text-red-600"
+                    >
+                      <LogOut className="h-4 w-4 mr-2" />
+                      Logout
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              ) : (
+                <>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="whitespace-nowrap"
+                    onClick={() => navigate('/login')}
+                  >
+                    Login
                   </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end">
-                  <DropdownMenuLabel>{user.fullName || 'Full Name'}</DropdownMenuLabel>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem onClick={() => navigate('/profile?tab=workouts')}>
-                    <UserRound className="h-4 w-4" />
-                    Profile
-                  </DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => navigate('/profile/settings')}>
-                    <Settings className="h-4 w-4" />
-                    Settings
-                  </DropdownMenuItem>
-                  <DropdownMenuItem onClick={handleLogout}>
-                    <LogOut className="h-4 w-4" />
-                    Logout
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            ) : (
-              <>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  className="whitespace-nowrap"
-                  onClick={() => navigate('/login')}
-                >
-                  Login
-                </Button>
-                <Button
-                  variant="default"
-                  size="sm"
-                  className="whitespace-nowrap"
-                  onClick={() => navigate('/signup')}
-                >
-                  Sign Up
-                </Button>
-              </>
-            )}
+                  <Button
+                    variant="default"
+                    size="sm"
+                    className="whitespace-nowrap"
+                    onClick={() => navigate('/signup')}
+                  >
+                    Sign Up
+                  </Button>
+                </>
+              )}
+            </div>
           </div>
         </div>
       </div>
