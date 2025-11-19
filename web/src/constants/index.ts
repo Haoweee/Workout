@@ -3,10 +3,10 @@ export const APP_NAME = 'Chi';
 export const APP_DESCRIPTION = 'Your fitness routine sharing platform';
 
 // API endpoints
-export const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api';
+export const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 // Server base URL (without /api)
-export const SERVER_BASE_URL = import.meta.env.VITE_SERVER_BASE_URL || 'http://localhost:5000';
+export const SERVER_BASE_URL = import.meta.env.VITE_SERVER_BASE_URL;
 
 // Utility function to get full avatar URL
 export const getAvatarUrl = (avatarUrl: string | null | undefined): string | undefined => {
