@@ -149,7 +149,7 @@ jobs:
     if: needs.build-and-test.outputs.should-deploy == 'true'
 
     steps:
-      - name: Checkout Repository  
+      - name: Checkout Repository
         uses: actions/checkout@v4
 
       - name: Setup pnpm
@@ -168,6 +168,14 @@ jobs:
         run: |
           pnpm install --frozen-lockfile
           pnpm build:web
+        env:
+          VITE_API_BASE_URL: ${{ secrets.VITE_API_BASE_URL }}
+          VITE_SERVER_BASE_URL: ${{ secrets.VITE_SERVER_BASE_URL }}
+          VITE_APP_NAME: ${{ secrets.VITE_APP_NAME }}
+          VITE_APP_VERSION: ${{ secrets.VITE_APP_VERSION }}
+          VITE_DEBUG_API: ${{ secrets.VITE_DEBUG_API }}
+          VITE_SHOW_API_LOGS: ${{ secrets.VITE_SHOW_API_LOGS }}
+          VITE_ENABLE_LOGGING: ${{ secrets.VITE_ENABLE_LOGGING }}
 
       - name: Copy Web Build to Server
         uses: appleboy/scp-action@v0.1.7
@@ -175,8 +183,8 @@ jobs:
           host: ${{ secrets.DO_HOST }}
           username: ${{ secrets.DO_USER || 'root' }}
           key: ${{ secrets.DO_SSH_KEY }}
-          source: "web/dist"
-          target: "/var/www/Workout/"
+          source: 'web/dist'
+          target: '/var/www/Workout/'
           strip_components: 0
 
       - name: Deploy via SSH
@@ -208,6 +216,21 @@ jobs:
             # Install dependencies and build
             echo "Installing dependencies..."
             pnpm install --frozen-lockfile
+
+            echo "Creating server environment file..."
+            cat > server/.env << EOF
+            NODE_ENV=production
+            PORT=3000
+            DATABASE_URL=${{ secrets.DATABASE_URL }}
+            JWT_SECRET=${{ secrets.JWT_SECRET }}
+            JWT_REFRESH_SECRET=${{ secrets.JWT_REFRESH_SECRET }}
+            JWT_EXPIRES_IN=${{ secrets.JWT_EXPIRES_IN }}
+            ALLOWED_ORIGINS=${{ secrets.ALLOWED_ORIGINS }}
+            RATE_LIMIT_WINDOW_MS=${{ secrets.RATE_LIMIT_WINDOW_MS }}
+            RATE_LIMIT_MAX=${{ secrets.RATE_LIMIT_MAX }}
+            MAX_FILE_SIZE_MB=${{ secrets.MAX_FILE_SIZE_MB }}
+            UPLOAD_DIR=${{ secrets.UPLOAD_DIR }}
+            EOF
 
             echo "Generating Prisma client..."
             pnpm db:generate
