@@ -87,7 +87,9 @@ export const SearchBar = ({
       <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
       <Input
         ref={(el) => {
-          inputRef.current = el;
+          if (inputRef.current !== el) {
+            (inputRef as React.MutableRefObject<HTMLInputElement | null>).current = el;
+          }
           if (showDropdown && el) {
             el.focus();
           }
