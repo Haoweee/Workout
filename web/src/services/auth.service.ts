@@ -1,6 +1,5 @@
-// Authentication Service
 import type { LoginRequest, RegisterRequest, AuthResponse, ApiResponse } from '@/types/api';
-import { apiClient, apiCall, tokenManager } from '@/lib/api-client';
+import { apiClient, apiCall } from '@/lib/api-client';
 import { logger } from '@/lib/logger';
 
 export const authService = {
@@ -22,15 +21,7 @@ export const authService = {
         throw new Error(response.data.error || 'Login failed');
       }
 
-      if (!response.data.token) {
-        throw new Error('No token received from login API');
-      }
-
-      // Store token after successful login
-      tokenManager.setToken(response.data.token);
-
       // Transform the backend response to match our frontend types
-
       const authResponse: AuthResponse = {
         token: response.data.token,
         refreshToken: response.data.refreshToken || '', // Backend might not have refresh token
@@ -70,13 +61,6 @@ export const authService = {
         throw new Error(response.data.error || 'Registration failed');
       }
 
-      if (!response.data.token) {
-        throw new Error('No token received from registration API');
-      }
-
-      // Store token after successful registration
-      tokenManager.setToken(response.data.token);
-
       // Transform the backend response to match our frontend types
       const authResponse: AuthResponse = {
         token: response.data.token,
@@ -107,9 +91,6 @@ export const authService = {
     } catch (error) {
       // Log the error but continue with logout process
       logger.warn('Logout API call failed:', error);
-    } finally {
-      // Always clear token, even if the request fails
-      tokenManager.removeToken();
     }
   },
 
@@ -119,20 +100,16 @@ export const authService = {
       apiClient.post<ApiResponse<AuthResponse>>('/auth/refresh')
     );
 
-    // Update stored token
-    tokenManager.setToken(data.token);
-
     return data;
   },
 
   // Check if user is authenticated
-  isAuthenticated: (): boolean => {
-    const token = tokenManager.getToken();
-    return token !== null && !tokenManager.isTokenExpired(token);
-  },
-
-  // Get current token
-  getToken: (): string | null => {
-    return tokenManager.getToken();
+  isAuthenticated: async (): Promise<boolean> => {
+    try {
+      await apiClient.get('/auth/me'); // or your protected endpoint
+      return true;
+    } catch {
+      return false;
+    }
   },
 };

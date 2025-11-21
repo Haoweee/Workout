@@ -75,6 +75,19 @@ export interface ServiceAuthResponse {
   user: Omit<User, 'passwordHash'>;
   token: string;
   refreshToken?: string;
+  message?: string;
+}
+
+export interface OAuthUrlResponse {
+  success: boolean;
+  redirectUrl: string;
+}
+
+export interface OAuthCallbackResult {
+  success: boolean;
+  token?: string;
+  user?: string;
+  error?: string;
 }
 
 export interface JwtPayload {

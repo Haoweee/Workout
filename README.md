@@ -79,6 +79,7 @@ workout-app/
 - **Node.js** >= 18.0.0
 - **pnpm** >= 8.0.0
 - **PostgreSQL** database
+- **ngrok** tunnel
 
 ### 1. Clone the Repository
 

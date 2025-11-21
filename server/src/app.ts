@@ -1,5 +1,7 @@
+import 'dotenv/config';
 import express from 'express';
 import cors from 'cors';
+import cookieParser from 'cookie-parser';
 import helmet from 'helmet';
 import morgan from 'morgan';
 import compression from 'compression';
@@ -89,6 +91,7 @@ class Server {
     if (config.environment == 'production') this.app.use(limiter);
 
     // Request parsing
+    this.app.use(cookieParser());
     this.app.use(express.json({ limit: '10mb' }));
     this.app.use(express.urlencoded({ extended: true }));
 

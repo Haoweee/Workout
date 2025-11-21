@@ -1,9 +1,10 @@
 import { config } from 'dotenv';
+import { config as appConfig } from '@config/config';
 import { resolve } from 'path';
 
 // Load environment variables from .env.local in development
 // and .env in production (standard naming)
-const envFile = process.env.NODE_ENV === 'production' ? '.env' : '.env.local';
+const envFile = appConfig.environment === 'production' ? '.env' : '.env.local';
 config({ path: resolve(process.cwd(), envFile) });
 
 import { PrismaClient } from '@prisma/client';

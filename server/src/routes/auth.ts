@@ -2,6 +2,7 @@
 
 import { Router, type Router as ExpressRouter } from 'express';
 import { AuthController } from '@/controllers/authController';
+import { authenticateToken } from '@/middleware/auth';
 
 const router: ExpressRouter = Router();
 
@@ -66,6 +67,8 @@ const router: ExpressRouter = Router();
  */
 router.post('/register', AuthController.register);
 
+router.post('/linkOAuthAccount', AuthController.linkOAuthAccount);
+
 /**
  * @swagger
  * /api/auth/login:
@@ -123,6 +126,11 @@ router.post('/register', AuthController.register);
  *               $ref: '#/components/schemas/Error'
  */
 router.post('/login', AuthController.login);
+
+router.get('/oauth/google', AuthController.googleOAuth);
+router.get('/oauth/google/callback', AuthController.googleOAuthCallback);
+router.get('/oauth/apple', AuthController.appleOAuth);
+router.post('/oauth/apple/callback', AuthController.appleOAuthCallback);
 
 /**
  * @swagger
@@ -205,5 +213,7 @@ router.post('/logout', AuthController.logout);
  *               $ref: '#/components/schemas/Error'
  */
 router.post('/refresh', AuthController.refreshToken);
+
+router.get('/me', authenticateToken, AuthController.getCurrentUser);
 
 export { router as authRoutes };

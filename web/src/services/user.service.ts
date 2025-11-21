@@ -55,4 +55,14 @@ export const userService = {
       })
     );
   },
+
+  // Deactivate user account
+  deactivateAccount: async (id: string): Promise<void> => {
+    return await apiCall<void>(() => apiClient.patch<ApiResponse<void>>(`/users/${id}/deactivate`));
+  },
+
+  // Delete user account
+  deleteAccount: async (id: string): Promise<void> => {
+    return await apiCall<void>(() => apiClient.delete<ApiResponse<void>>(`/users/${id}`));
+  },
 };

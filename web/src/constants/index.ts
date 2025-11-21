@@ -18,7 +18,7 @@ export const getAvatarUrl = (avatarUrl: string | null | undefined): string | und
   }
 
   // If it's a relative path, prepend server base URL
-  return `${API_BASE_URL}${avatarUrl}`;
+  return `${SERVER_BASE_URL}${avatarUrl}`;
 };
 
 // Routes

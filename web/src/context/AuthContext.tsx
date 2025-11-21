@@ -13,28 +13,31 @@ interface AuthProviderProps {
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [justLoggedIn, setJustLoggedIn] = useState(false);
   const [isInitialized, setIsInitialized] = useState(false);
 
-  // Check if user is authenticated
-  const isAuthenticated = authService.isAuthenticated() && user !== null;
+  // Use user presence for authentication state
+  const isAuthenticated = !!user;
 
   // Initialize auth state on app load
   useEffect(() => {
-    // Prevent double initialization in StrictMode
     if (isInitialized) return;
 
     const initializeAuth = async () => {
       try {
-        if (authService.isAuthenticated() && !justLoggedIn) {
-          // If we have a valid token and didn't just log in, fetch the user profile
+        // Only call /auth/me once on load
+        const me = await authService.isAuthenticated();
+        if (me) {
+          // Only fetch profile if authenticated
           const profile = await userService.getProfile();
           setUser(profile);
+        } else {
+          setUser(null);
         }
-      } catch (error) {
-        // If token is invalid or request fails, clear it
-        logger.error('Failed to initialize auth:', error);
-        await authService.logout();
+      } catch {
+        setUser(null);
       } finally {
         setIsLoading(false);
         setIsInitialized(true);
@@ -42,7 +45,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     };
 
     initializeAuth();
-  }, [justLoggedIn, isInitialized]);
+  }, [isInitialized]);
 
   // Login function
   const login = useCallback(async (credentials: LoginRequest): Promise<void> => {

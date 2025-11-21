@@ -27,22 +27,21 @@ export interface AuthenticatedRequest extends Request {
  * Middleware to authenticate JWT tokens and check blacklist
  */
 export const authenticateToken = async (
-  req: Request,
+  req: Request & { cookies?: Record<string, string> },
   res: Response,
   next: NextFunction
 ): Promise<void> => {
   try {
-    const authHeader = req.headers.authorization;
+    // Read JWT from cookie (auth_token)
+    const token = req.cookies?.auth_token;
 
-    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+    if (typeof token !== 'string') {
       res.status(401).json({
         success: false,
-        error: 'Access token is required',
+        error: 'Unauthorized',
       });
       return;
     }
-
-    const token = authHeader.substring(7); // Remove 'Bearer ' prefix
 
     // Verify token and check blacklist
     const decoded = await TokenService.verifyToken(token);
@@ -76,17 +75,15 @@ export const authenticateToken = async (
  * Optional middleware - only authenticate if token is provided
  */
 export const optionalAuth = async (
-  req: Request,
+  req: Request & { cookies?: Record<string, string> },
   res: Response,
   next: NextFunction
 ): Promise<void> => {
   try {
-    const authHeader = req.headers.authorization;
-
-    if (authHeader && authHeader.startsWith('Bearer ')) {
-      const token = authHeader.substring(7);
+    // Read JWT from cookie (auth_token) if present
+    const token = req.cookies?.auth_token;
+    if (typeof token === 'string') {
       const decoded = await TokenService.verifyToken(token);
-
       if (decoded) {
         req.user = {
           userId: decoded.userId,
@@ -95,7 +92,6 @@ export const optionalAuth = async (
         };
       }
     }
-
     next();
   } catch (error) {
     // Don't fail on optional auth errors, just continue without user

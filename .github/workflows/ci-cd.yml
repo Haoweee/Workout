@@ -221,15 +221,23 @@ jobs:
             cat > server/.env << EOF
             NODE_ENV=production
             PORT=3000
+            SALT_ROUNDS=${{ secrets.SALT_ROUNDS }}
             DATABASE_URL=${{ secrets.DATABASE_URL }}
             JWT_SECRET=${{ secrets.JWT_SECRET }}
-            JWT_REFRESH_SECRET=${{ secrets.JWT_REFRESH_SECRET }}
             JWT_EXPIRES_IN=${{ secrets.JWT_EXPIRES_IN }}
             ALLOWED_ORIGINS=${{ secrets.ALLOWED_ORIGINS }}
             RATE_LIMIT_WINDOW_MS=${{ secrets.RATE_LIMIT_WINDOW_MS }}
             RATE_LIMIT_MAX=${{ secrets.RATE_LIMIT_MAX }}
-            MAX_FILE_SIZE_MB=${{ secrets.MAX_FILE_SIZE_MB }}
+            MAX_FILE_SIZE_MB=${{ secrets.MAX_FILE_SIZE }}
             UPLOAD_DIR=${{ secrets.UPLOAD_DIR }}
+            GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }}
+            GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_CLIENT_SECRET }}
+            GOOGLE_REDIRECT_URI=${{ secrets.GOOGLE_REDIRECT_URI }}
+            APPLE_CLIENT_ID=${{ secrets.APPLE_CLIENT_ID }}
+            APPLE_TEAM_ID=${{ secrets.APPLE_TEAM_ID }}
+            APPLE_KEY_ID=${{ secrets.APPLE_KEY_ID }}
+            APPLE_PRIVATE_KEY=${{ secrets.APPLE_PRIVATE_KEY }}
+            APPLE_REDIRECT_URI=${{ secrets.APPLE_REDIRECT_URI }}
             EOF
 
             echo "Generating Prisma client..."

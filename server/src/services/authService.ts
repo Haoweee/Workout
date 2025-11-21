@@ -21,17 +21,26 @@ export class AuthService {
       });
 
       if (existingUser) {
-        return {
-          success: false,
-          error:
-            existingUser.email === userData.email
-              ? 'Email already registered'
-              : 'Username already taken',
-        };
+        if (existingUser.passwordHash === '') {
+          // Allows user to assign password if registered via OAuth
+          return {
+            success: false,
+            error: 'User registered via OAuth.',
+          };
+        } else {
+          // User already exists with a password
+          return {
+            success: false,
+            error:
+              existingUser.email === userData.email
+                ? 'Email already registered'
+                : 'Username already taken',
+          };
+        }
       }
 
       // Hash password
-      const saltRounds = 12;
+      const saltRounds = config.saltRounds || 10;
       const passwordHash = await bcrypt.hash(userData.password, saltRounds);
 
       // Create user
@@ -63,6 +72,62 @@ export class AuthService {
       };
     }
   }
+
+  static linkOAuthAccount = async (
+    email: string,
+    provider: string,
+    providerId: string
+  ): Promise<ServiceAuthResponse | { success: false; error: string }> => {
+    try {
+      // Find user by email
+      const user = await prisma.user.findUnique({
+        where: { email },
+      });
+
+      if (!user) {
+        return {
+          success: false,
+          error: 'User not found',
+        };
+      }
+
+      // Link OAuth provider
+      await prisma.userProviders.upsert({
+        where: {
+          userId_provider: {
+            userId: user.id,
+            provider,
+          },
+        },
+        update: {
+          providerId,
+        },
+        create: {
+          userId: user.id,
+          provider,
+          providerId,
+        },
+      });
+
+      // Generate JWT token using TokenService
+      const token = TokenService.generateToken(user.id, user.email);
+
+      // Remove password hash from response
+      const { passwordHash: _, ...userWithoutPassword } = user;
+
+      return {
+        success: true,
+        user: userWithoutPassword,
+        token,
+      };
+    } catch (error) {
+      logger.error('Link OAuth account service error:', error);
+      return {
+        success: false,
+        error: 'Linking OAuth account failed. Please try again.',
+      };
+    }
+  };
 
   static async login(
     loginData: EmailLoginRequest

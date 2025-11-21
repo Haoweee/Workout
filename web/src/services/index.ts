@@ -4,7 +4,7 @@ export { userService } from './user.service';
 export { routineService } from './routine.service';
 
 // Re-export commonly used utilities
-export { apiClient, tokenManager, healthCheck } from '@/lib/api-client';
+export { apiClient, healthCheck } from '@/lib/api-client';
 
 // Import for internal use
 import { apiClient } from '@/lib/api-client';

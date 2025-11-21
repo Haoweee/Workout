@@ -1,7 +1,7 @@
 import axios, { AxiosError } from 'axios';
-import type { AxiosResponse, InternalAxiosRequestConfig } from 'axios';
+import type { AxiosResponse } from 'axios';
 import type { ApiError, ApiResponse, PaginatedResponse } from '@/types/api';
-import { API_BASE_URL, STORAGE_KEYS } from '@/constants';
+import { API_BASE_URL } from '@/constants';
 
 // Create axios instance with base configuration
 export const apiClient = axios.create({
@@ -10,9 +10,11 @@ export const apiClient = axios.create({
   headers: {
     'Content-Type': 'application/json',
   },
+  withCredentials: true, // Send cookies with requests
 });
 
-// Token management utilities
+// Token management utilities (commented out for cookie-based auth)
+/*
 export const tokenManager = {
   getToken: (): string | null => {
     return localStorage.getItem(STORAGE_KEYS.AUTH_TOKEN);
@@ -35,8 +37,10 @@ export const tokenManager = {
     }
   },
 };
+*/
 
-// Request interceptor: Add auth token to requests
+// Request interceptor: Add auth token to requests (commented out for cookie-based auth)
+/*
 apiClient.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
     const token = tokenManager.getToken();
@@ -51,6 +55,7 @@ apiClient.interceptors.request.use(
     return Promise.reject(error);
   }
 );
+*/
 
 // Response interceptor: Handle common responses and errors
 apiClient.interceptors.response.use(
@@ -66,17 +71,14 @@ apiClient.interceptors.response.use(
 
       switch (status) {
         case 401:
-          // Unauthorized - clear token and redirect to login
-          tokenManager.removeToken();
-          // Don't redirect to login if this is a logout request
-          if (requestUrl?.includes('/auth/logout')) {
-            console.warn('Logout request failed with 401, but this is expected');
-            break;
+          // Only redirect to login for protected routes, not for public pages
+          // Example: Only redirect if the request is for /profile, /dashboard, etc.
+          if (requestUrl && /\/profile|\/workouts|\/routines/.test(requestUrl)) {
+            if (window.location.pathname !== '/login') {
+              window.location.href = '/login';
+            }
           }
-          // Only redirect if we're not already on the login page
-          if (window.location.pathname !== '/login') {
-            window.location.href = '/login';
-          }
+          // Otherwise, just reject the error and do not redirect
           break;
 
         case 403:

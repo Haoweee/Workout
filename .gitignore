@@ -16,6 +16,9 @@ jspm_packages/
 !.env.template
 !.env.sample
 
+# Keys
+*.keys
+
 # Build outputs
 dist/
 dist-ssr/

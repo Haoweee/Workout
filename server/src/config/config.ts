@@ -4,6 +4,7 @@ import { z } from 'zod';
 const envSchema = z.object({
   NODE_ENV: z.enum(['development', 'production', 'test']).default('development'),
   PORT: z.string().default('3000').transform(Number),
+  SALT_ROUNDS: z.string().default('10').transform(Number),
 
   // Database
   DATABASE_URL: z.string().optional(),
@@ -20,11 +21,20 @@ const envSchema = z.object({
   RATE_LIMIT_MAX: z.string().default('100').transform(Number),
 
   // Email (optional)
-  EMAIL_HOST: z.string().optional(),
-  EMAIL_PORT: z.string().optional().transform(Number),
-  EMAIL_USER: z.string().optional(),
-  EMAIL_PASS: z.string().optional(),
-  EMAIL_FROM: z.string().optional(),
+  SENDGRID_API_KEY: z.string().optional(),
+  SENDGRID_FROM_EMAIL: z.string().optional(),
+  SENDGRID_FROM_NAME: z.string().optional(),
+
+  // OAuth
+  GOOGLE_CLIENT_ID: z.string().optional(),
+  GOOGLE_CLIENT_SECRET: z.string().optional(),
+  GOOGLE_REDIRECT_URI: z.string().optional(),
+
+  APPLE_CLIENT_ID: z.string().optional(),
+  APPLE_TEAM_ID: z.string().optional(),
+  APPLE_KEY_ID: z.string().optional(),
+  APPLE_PRIVATE_KEY: z.string().optional(),
+  APPLE_REDIRECT_URI: z.string().optional(),
 
   // File upload
   MAX_FILE_SIZE: z.string().default('10485760').transform(Number), // 10MB
@@ -40,6 +50,7 @@ const env = envSchema.parse(process.env);
 export const config = {
   environment: env.NODE_ENV,
   port: env.PORT,
+  saltRounds: env.SALT_ROUNDS,
 
   database: {
     url: env.DATABASE_URL,
@@ -60,12 +71,22 @@ export const config = {
     max: env.RATE_LIMIT_MAX,
   },
 
-  email: {
-    host: env.EMAIL_HOST,
-    port: env.EMAIL_PORT,
-    user: env.EMAIL_USER,
-    pass: env.EMAIL_PASS,
-    from: env.EMAIL_FROM,
+  sendgrid: {
+    apiKey: env.SENDGRID_API_KEY,
+    fromEmail: env.SENDGRID_FROM_EMAIL,
+    fromName: env.SENDGRID_FROM_NAME,
+  },
+
+  oauth: {
+    googleClientId: env.GOOGLE_CLIENT_ID,
+    googleClientSecret: env.GOOGLE_CLIENT_SECRET,
+    googleRedirectUri: env.GOOGLE_REDIRECT_URI,
+
+    appleClientId: env.APPLE_CLIENT_ID,
+    appleTeamId: env.APPLE_TEAM_ID,
+    appleKeyId: env.APPLE_KEY_ID,
+    applePrivateKey: env.APPLE_PRIVATE_KEY,
+    appleRedirectUri: env.APPLE_REDIRECT_URI,
   },
 
   upload: {
