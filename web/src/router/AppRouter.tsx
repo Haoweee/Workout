@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { RegistrationProvider } from '@/context/RegistrationContext';
 import { AppLayout } from '@/components/layout/AppLayout';
 import { ScrollToTop } from '@/components/ScrollToTop';
 import {
@@ -59,10 +60,16 @@ export const AppRouter: React.FC = () => {
         </Route>
 
         {/* Auth-only but WITHOUT layout (e.g., login/signup pages) */}
-        <Route element={<PublicRoute layout={BlankLayout} />}>
+        <Route
+          element={
+            <RegistrationProvider>
+              <PublicRoute layout={BlankLayout} />
+            </RegistrationProvider>
+          }
+        >
           <Route path="/login" element={<LoginPage />} />
           <Route path="/signup" element={<SignupPage />} />
-          <Route path="/otp" element={<OtpPage />} />
+          <Route path="/verify-otp" element={<OtpPage />} />
         </Route>
 
         {/* Auth-only pages under AppLayout (navbar/footer + private content) */}

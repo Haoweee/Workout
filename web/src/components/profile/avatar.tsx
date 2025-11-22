@@ -9,7 +9,6 @@ export const AvatarProfile = (user: {
   showName?: boolean;
   className?: string;
 }) => {
-  console.log('AvatarProfile user picture:', getAvatarUrl(user.avatarUrl));
   return (
     <div className="flex flex-row items-center gap-2">
       <Avatar className={`h-8 w-8 ${user.className}`}>

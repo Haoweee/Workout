@@ -2,6 +2,7 @@ import axios, { AxiosError } from 'axios';
 import type { AxiosResponse } from 'axios';
 import type { ApiError, ApiResponse, PaginatedResponse } from '@/types/api';
 import { API_BASE_URL } from '@/constants';
+import { PROTECTED_ROUTES } from '@/constants';
 
 // Create axios instance with base configuration
 export const apiClient = axios.create({
@@ -73,7 +74,8 @@ apiClient.interceptors.response.use(
         case 401:
           // Only redirect to login for protected routes, not for public pages
           // Example: Only redirect if the request is for /profile, /dashboard, etc.
-          if (requestUrl && /\/profile|\/workouts|\/routines/.test(requestUrl)) {
+          if (requestUrl && PROTECTED_ROUTES.some((route) => requestUrl.startsWith(route))) {
+            console.log('Unauthorized access to protected route. Redirecting to login.');
             if (window.location.pathname !== '/login') {
               window.location.href = '/login';
             }

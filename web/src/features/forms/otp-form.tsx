@@ -1,6 +1,7 @@
 import { GalleryVerticalEnd } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
+
 import { Button } from '@/components/ui/button';
 import { Field, FieldDescription, FieldGroup, FieldLabel } from '@/components/ui/field';
 import {
@@ -9,11 +10,35 @@ import {
   InputOTPSeparator,
   InputOTPSlot,
 } from '@/components/ui/input-otp';
+import { Loading } from '@/components/loading/spinner';
+import { AlertMessage } from '@/components/errors/alert-message';
+
+import { useRegistration } from '@/context/registration-context';
+import { useVerifyOtp } from '@/hooks/useVerifyOtp';
 
 export function OTPForm({ className, ...props }: React.ComponentProps<'div'>) {
+  const { userData } = useRegistration();
+  const { handleVerifyOtp, isLoading, error } = useVerifyOtp();
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const form = e.target as HTMLFormElement;
+    const otpInput = form.querySelector('#otp') as HTMLInputElement;
+    const otp = otpInput.value;
+
+    if (!userData) {
+      console.error('No user data found in registration context');
+      return;
+    }
+
+    await handleVerifyOtp(userData, otp);
+  };
+
   return (
     <div className={cn('flex flex-col gap-6', className)} {...props}>
-      <form>
+      <form onSubmit={handleSubmit}>
+        {error && <AlertMessage message={error} type="error" />}
+        {isLoading && <Loading />}
         <FieldGroup>
           <div className="flex flex-col items-center gap-2 text-center">
             <a href="#" className="flex flex-col items-center gap-2 font-medium">

@@ -5,7 +5,7 @@ import sgMail from '@sendgrid/mail';
 sgMail.setApiKey(config.sendgrid.apiKey || '');
 
 export class EmailService {
-  static async sendVerificationEmail(to: string, verificationLink: string): Promise<void> {
+  static async sendVerificationEmail(to: string, otp: string): Promise<void> {
     const msg = {
       to,
       from: {
@@ -14,10 +14,11 @@ export class EmailService {
       },
       subject: 'Verify your email for WorkoutApp',
       html: `
-                <p>Thank you for registering with WorkoutApp!</p>
-                <p>Please verify your email by clicking the link below:</p>
-                <a href="${verificationLink}">Verify Email</a>
-                <p>If you did not sign up for this account, please ignore this email.</p>
+        <p>Dear User,</p>
+        <p>Thank you for registering with WorkoutApp! Please use the following One-Time Password (OTP) to verify your email address:</p>
+        <h2>${otp}</h2>
+        <p>This OTP is valid for the next 10 minutes. If you did not request this, please ignore this email.</p>
+        <p>Best regards,<br/>The WorkoutApp Team</p>
             `,
     };
 

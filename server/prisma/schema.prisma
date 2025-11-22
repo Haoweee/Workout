@@ -29,7 +29,7 @@ model User {
 
 model UserProviders {
   id         String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  userId     String
+  userId     String   @db.Uuid
   provider   String   // 'google' | 'apple'
   providerId String   // Google sub / Apple "user" identifier
   createdAt  DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
@@ -37,6 +37,7 @@ model UserProviders {
   user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerId])  // Avoid duplicate OAuth connections
+  @@map("user_providers")
 }
 
 

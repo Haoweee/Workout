@@ -74,6 +74,52 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     }
   }, []);
 
+  // Send OTP function
+  const sendOtp = useCallback(async (userData: RegisterRequest): Promise<void> => {
+    setIsLoading(true);
+    setJustLoggedIn(true);
+    try {
+      const authResponse = await authService.sendOtp(userData);
+
+      if (!authResponse) {
+        throw new Error('Failed to send OTP');
+      }
+    } catch (error) {
+      logger.error('Registration failed:', error);
+      throw error; // Re-throw so components can handle the error
+    } finally {
+      setIsLoading(false);
+      // Reset the flag after a delay to allow initialization to run normally next time
+      setTimeout(() => setJustLoggedIn(false), 1000);
+    }
+  }, []);
+
+  const verifyOtp = useCallback(async (userData: RegisterRequest, otp: string): Promise<void> => {
+    setIsLoading(true);
+    setJustLoggedIn(true);
+    try {
+      const authResponse = await authService.verifyOtp(userData.email, otp);
+      // Set the basic user data from register response first
+      setUser(authResponse.user);
+
+      // Always fetch complete profile after registration to get all fields (bio, avatarUrl, etc.)
+      try {
+        const completeProfile = await userService.getProfile();
+        setUser(completeProfile);
+      } catch (profileError) {
+        logger.warn('Failed to fetch complete profile after registration:', profileError);
+        // Still proceed with the basic user data from registration
+      }
+    } catch (error) {
+      logger.error('OTP verification failed:', error);
+      throw error; // Re-throw so components can handle the error
+    } finally {
+      setIsLoading(false);
+      // Reset the flag after a delay to allow initialization to run normally next time
+      setTimeout(() => setJustLoggedIn(false), 1000);
+    }
+  }, []);
+
   // Register function
   const register = useCallback(async (userData: RegisterRequest): Promise<void> => {
     setIsLoading(true);
@@ -143,12 +189,25 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       isLoading,
       isAuthenticated,
       login,
+      sendOtp,
+      verifyOtp,
       register,
       logout,
       refreshProfile,
       updateUser,
     }),
-    [user, isLoading, isAuthenticated, login, register, logout, refreshProfile, updateUser]
+    [
+      user,
+      isLoading,
+      isAuthenticated,
+      login,
+      sendOtp,
+      verifyOtp,
+      register,
+      logout,
+      refreshProfile,
+      updateUser,
+    ]
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

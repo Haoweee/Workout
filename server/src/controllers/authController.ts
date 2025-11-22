@@ -4,9 +4,132 @@ import { AuthService } from '@/services/authService';
 import { OAuthService } from '@/services/OAuth';
 import { logger } from '@/utils/logger';
 import { UserService } from '@/services/userService';
+import { EmailService } from '@/services/emailService';
 import { config } from '@/config/config';
 
+function generateOtp(): string {
+  return Math.floor(100000 + Math.random() * 900000).toString(); // 6-digit OTP
+}
+
+const MILLIS_PER_MINUTE = 60 * 1000;
+
+let loginCodes: { userData: CreateUserRequest; otp: string; expiration: number }[] = []; // In-memory store for OTPs (for demo purposes only
+
+setInterval(() => {
+  loginCodes = loginCodes.filter((loginCodeObj) => loginCodeObj.expiration > Date.now());
+}, MILLIS_PER_MINUTE * 10);
+console.log('Login codes expiration loop initialized');
+
 export class AuthController {
+  static sendOtp = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      const userData = req.body as CreateUserRequest;
+
+      if (
+        !userData.email ||
+        !userData.username ||
+        !userData.password ||
+        !userData.confirmPassword ||
+        !userData.fullName
+      ) {
+        res.status(400).json({
+          success: false,
+          error: 'Missing required fields: email, username, password, fullName',
+        });
+        return;
+      }
+
+      if (userData.password !== userData.confirmPassword) {
+        res.status(400).json({
+          success: false,
+          error: 'Password and confirm password do not match',
+        });
+        return;
+      }
+
+      const otp = generateOtp();
+      const expiration = Date.now() + MILLIS_PER_MINUTE * 10; // OTP valid for 10 minutes
+
+      // Store OTP in memory (replace with DB in production)
+      loginCodes.push({ userData, otp, expiration });
+      logger.info(`Generated OTP for ${userData.email}: ${otp} (expires in 10 minutes)`);
+
+      // Send OTP via email
+      if (config.environment !== 'production') {
+        await EmailService.sendVerificationEmail(userData.email, otp);
+      }
+
+      logger.info(`OTP sent to ${userData.email}`);
+      res.status(200).json({ success: true, message: 'OTP sent successfully' });
+    } catch (error) {
+      logger.error('Error sending OTP:', error);
+      next(error);
+    }
+  };
+
+  static verifyOtpAndRegister = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> => {
+    try {
+      const { email, otp } = req.body as { email?: string; otp?: string };
+
+      if (!email || !otp) {
+        res.status(400).json({
+          success: false,
+          error: 'Email and OTP are required',
+        });
+        return;
+      }
+
+      const loginCodeObjIndex = loginCodes.findIndex(
+        (obj) => obj.userData.email === email && obj.otp === otp && obj.expiration > Date.now()
+      );
+
+      if (loginCodeObjIndex === -1) {
+        res.status(400).json({
+          success: false,
+          error: 'Invalid or expired OTP',
+        });
+        return;
+      }
+
+      const loginCodeObj = loginCodes[loginCodeObjIndex];
+      if (!loginCodeObj) {
+        res.status(400).json({
+          success: false,
+          error: 'Invalid or expired OTP',
+        });
+        return;
+      }
+      const userData = loginCodeObj.userData;
+
+      // Remove used OTP
+      loginCodes.splice(loginCodeObjIndex, 1);
+
+      // Register the user
+      const result = await AuthService.register(userData);
+
+      if (!result.success) {
+        res.status(400).json(result);
+        return;
+      }
+
+      logger.info(`New user registered via OTP: ${userData.email}`);
+      res.cookie('auth_token', result.token, {
+        httpOnly: true,
+        secure: config.environment === 'production',
+        sameSite: 'lax',
+      });
+
+      res.status(200).json({ success: true, user: result.user });
+    } catch (error) {
+      logger.error('OTP verification and registration error:', error);
+      next(error);
+    }
+  };
+
   static register = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
       const userData = req.body as CreateUserRequest;

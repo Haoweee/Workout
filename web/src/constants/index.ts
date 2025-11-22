@@ -26,10 +26,13 @@ export const ROUTES = {
   HOME: '/',
   LOGIN: '/login',
   REGISTER: '/signup',
+  VERIFY_OTP: '/verify-otp',
   ROUTINES: '/routines',
   EXERCISES: '/exercises',
   PROFILE: '/profile',
 } as const;
+
+export const PROTECTED_ROUTES = [ROUTES.PROFILE, ROUTES.ROUTINES, ROUTES.EXERCISES];
 
 // Storage keys
 export const STORAGE_KEYS = {

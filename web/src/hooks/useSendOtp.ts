@@ -3,28 +3,28 @@ import { useAuth } from '@/hooks/useAuth';
 import { useApi } from './useApi';
 import type { RegisterRequest } from '@/types/api';
 
-export const useRegister = () => {
-  const { register } = useAuth();
+export const useSendOtp = () => {
+  const { sendOtp } = useAuth();
   const navigate = useNavigate();
 
   const { isLoading, error, execute } = useApi({
     onSuccess: () => {
       // Small delay to ensure auth context is updated before navigation
       setTimeout(() => {
-        navigate('/', { replace: true });
+        navigate('/verify-otp');
       }, 100);
     },
     onError: (err) => {
-      console.error('Registration failed:', err.message);
+      console.error('Send OTP failed:', err.message);
     },
   });
 
-  const handleRegister = async (userData: RegisterRequest) => {
-    await execute(() => register(userData));
+  const handleSendOtp = async (userData: RegisterRequest) => {
+    await execute(() => sendOtp(userData));
   };
 
   return {
-    handleRegister,
+    handleSendOtp,
     isLoading,
     error,
   };

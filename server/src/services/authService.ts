@@ -94,13 +94,13 @@ export class AuthService {
       // Link OAuth provider
       await prisma.userProviders.upsert({
         where: {
-          userId_provider: {
-            userId: user.id,
+          provider_providerId: {
             provider,
+            providerId,
           },
         },
         update: {
-          providerId,
+          userId: user.id,
         },
         create: {
           userId: user.id,

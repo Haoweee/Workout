@@ -8,6 +8,69 @@ const router: ExpressRouter = Router();
 
 /**
  * @swagger
+ * /api/auth/send-otp:
+ *   post:
+ *     summary: Send One-Time Password (OTP) to email
+ *     description: Generates and sends a One-Time Password (OTP) to the specified email address for authentication.
+ *     tags: [Authentication]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - email
+ *               - username
+ *               - fullName
+ *               - password
+ *             properties:
+ *               email:
+ *                 type: string
+ *                 format: email
+ *                 example: "user@example.com"
+ *               username:
+ *                 type: string
+ *                 example: "johndoe"
+ *               fullName:
+ *                 type: string
+ *                 example: "John Doe"
+ *               password:
+ *                 type: string
+ *                 minLength: 8
+ *                 example: "password123"
+ */
+router.post('/send-otp', AuthController.sendOtp);
+
+/**
+ * @swagger
+ * /api/auth/verify-otp:
+ *   post:
+ *     summary: Verify OTP and register user
+ *     description: Verifies the provided One-Time Password (OTP) and registers the user if valid.
+ *     tags: [Authentication]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - email
+ *               - otp
+ *             properties:
+ *               email:
+ *                 type: string
+ *                 format: email
+ *                 example: "user@example.com"
+ *               otp:
+ *                 type: string
+ *                 example: "123456"
+ */
+router.post('/verify-otp', AuthController.verifyOtpAndRegister);
+
+/**
+ * @swagger
  * /api/auth/register:
  *   post:
  *     summary: Register a new user
@@ -65,9 +128,9 @@ const router: ExpressRouter = Router();
  *             schema:
  *               $ref: '#/components/schemas/Error'
  */
-router.post('/register', AuthController.register);
+// router.post('/register', AuthController.register);
 
-router.post('/linkOAuthAccount', AuthController.linkOAuthAccount);
+// router.post('/linkOAuthAccount', AuthController.linkOAuthAccount);
 
 /**
  * @swagger

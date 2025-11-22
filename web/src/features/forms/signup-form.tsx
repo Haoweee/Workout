@@ -17,13 +17,15 @@ import { AlertMessage } from '@/components/errors/alert-message';
 
 import { OAuth } from '@/features/forms/oauth';
 
-import { useRegister } from '@/hooks/useRegister';
+import { useRegistration } from '@/context/registration-context';
+import { useSendOtp } from '@/hooks/useSendOtp';
 
 import type { RegisterRequest } from '@/types/api';
 
 export function SignupForm({ className, ...props }: React.ComponentProps<'form'>) {
   const navigate = useNavigate();
-  const { handleRegister, isLoading, error } = useRegister();
+  const { setUserData } = useRegistration();
+  const { handleSendOtp, isLoading, error } = useSendOtp();
 
   const [formData, setFormData] = useState<RegisterRequest>({
     fullName: '',
@@ -35,7 +37,8 @@ export function SignupForm({ className, ...props }: React.ComponentProps<'form'>
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    await handleRegister(formData);
+    setUserData(formData);
+    await handleSendOtp(formData);
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {

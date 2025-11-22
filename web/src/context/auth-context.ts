@@ -9,6 +9,8 @@ export interface AuthContextType {
 
   // Actions
   login: (credentials: LoginRequest) => Promise<void>;
+  sendOtp: (userData: RegisterRequest) => Promise<void>;
+  verifyOtp: (userData: RegisterRequest, otp: string) => Promise<void>;
   register: (userData: RegisterRequest) => Promise<void>;
   logout: () => Promise<void>;
   refreshProfile: () => Promise<void>;
