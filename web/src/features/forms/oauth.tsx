@@ -23,7 +23,7 @@ export const OAuth = () => {
         variant="outline"
         type="button"
         onClick={() => {
-          window.location.href = `${import.meta.env.VITE_NGROK_URL}/auth/oauth/google`;
+          window.location.href = `${import.meta.env.VITE_API_BASE_URL}/auth/oauth/google`;
         }}
       >
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">

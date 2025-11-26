@@ -9,7 +9,7 @@ export class UserService {
    * Get user by ID (without password)
    */
   static async getUserById(id: string) {
-    return await prisma.user.findUnique({
+    const user = await prisma.user.findUnique({
       where: { id },
       select: {
         id: true,
@@ -20,8 +20,24 @@ export class UserService {
         email: true,
         createdAt: true,
         updatedAt: true,
+        passwordHash: true,
+        providers: {
+          select: {
+            provider: true,
+            providerId: true,
+          },
+        },
       },
     });
+
+    if (!user) return null;
+
+    // Return hasPassword boolean instead of passwordHash
+    const { passwordHash, ...rest } = user;
+    return {
+      ...rest,
+      hasPassword: !!passwordHash && passwordHash.length > 0,
+    };
   }
 
   /**

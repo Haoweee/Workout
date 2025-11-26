@@ -237,4 +237,66 @@ export class AuthService {
       };
     }
   }
+
+  static async setPassword(
+    userId: string,
+    newPassword: string
+  ): Promise<{ success: boolean; error?: string }> {
+    try {
+      // Hash new password
+      const saltRounds = config.saltRounds || 10;
+      const passwordHash = await bcrypt.hash(newPassword, saltRounds);
+
+      // Update user's password
+      await prisma.user.update({
+        where: { id: userId },
+        data: { passwordHash },
+      });
+
+      return { success: true };
+    } catch (error) {
+      logger.error('Set password service error:', error);
+      return {
+        success: false,
+        error: 'Failed to set password. Please try again.',
+      };
+    }
+  }
+
+  static async changePassword(
+    email: string,
+    newPassword: string
+  ): Promise<{ success: boolean; error?: string }> {
+    try {
+      // Fetch user
+      const user = await prisma.user.findUnique({
+        where: { email },
+      });
+
+      if (!user) {
+        return {
+          success: false,
+          error: 'User not found',
+        };
+      }
+
+      // Hash new password
+      const saltRounds = config.saltRounds || 10;
+      const newPasswordHash = await bcrypt.hash(newPassword, saltRounds);
+
+      // Update user's password
+      await prisma.user.update({
+        where: { email },
+        data: { passwordHash: newPasswordHash },
+      });
+
+      return { success: true };
+    } catch (error) {
+      logger.error('Change password service error:', error);
+      return {
+        success: false,
+        error: 'Failed to change password. Please try again.',
+      };
+    }
+  }
 }

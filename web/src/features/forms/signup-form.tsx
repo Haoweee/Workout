@@ -25,7 +25,7 @@ import type { RegisterRequest } from '@/types/api';
 export function SignupForm({ className, ...props }: React.ComponentProps<'form'>) {
   const navigate = useNavigate();
   const { setUserData } = useRegistration();
-  const { handleSendOtp, isLoading, error } = useSendOtp();
+  const { handleSendOtp, isLoading, error } = useSendOtp({ redirect: '/verify-otp' });
 
   const [formData, setFormData] = useState<RegisterRequest>({
     fullName: '',
@@ -33,6 +33,7 @@ export function SignupForm({ className, ...props }: React.ComponentProps<'form'>
     email: '',
     password: '',
     confirmPassword: '',
+    type: 'register',
   });
 
   const handleSubmit = async (e: React.FormEvent) => {

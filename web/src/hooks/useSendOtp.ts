@@ -3,7 +3,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { useApi } from './useApi';
 import type { RegisterRequest } from '@/types/api';
 
-export const useSendOtp = () => {
+export const useSendOtp = ({ redirect }: { redirect: string }) => {
   const { sendOtp } = useAuth();
   const navigate = useNavigate();
 
@@ -11,7 +11,7 @@ export const useSendOtp = () => {
     onSuccess: () => {
       // Small delay to ensure auth context is updated before navigation
       setTimeout(() => {
-        navigate('/verify-otp');
+        navigate(redirect);
       }, 100);
     },
     onError: (err) => {

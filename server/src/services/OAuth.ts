@@ -119,6 +119,8 @@ export class OAuthService {
     });
 
     if (!user) {
+      // If user does not exist, create new user
+
       // Save the profile picture locally
       const tempUserId = (profile as { email: string }).email;
       let avatarUrl: string | null = null;
@@ -137,7 +139,30 @@ export class OAuthService {
           fullName: (profile as { name?: string }).name || '',
           avatarUrl: avatarUrl || '',
           passwordHash: '', // No password for OAuth users
-          // emailVerified: true,  // consider email verified from OAuth provider
+          providers: {
+            create: {
+              provider: 'google',
+              providerId: (profile as { sub: string }).sub,
+            },
+          },
+        },
+      });
+    } else {
+      // Link Google OAuth to existing user if not already linked
+      await prisma.userProviders.upsert({
+        where: {
+          provider_providerId: {
+            provider: 'google',
+            providerId: (profile as { sub: string }).sub,
+          },
+        },
+        update: {
+          userId: user.id,
+        },
+        create: {
+          userId: user.id,
+          provider: 'google',
+          providerId: (profile as { sub: string }).sub,
         },
       });
     }
@@ -260,7 +285,7 @@ export class OAuthService {
     });
 
     if (!user) {
-      // Create new user
+      // If user does not exist, create new user
       user = await prisma.user.create({
         data: {
           email: appleUser.email,
@@ -280,6 +305,30 @@ export class OAuthService {
             }
           })(),
           passwordHash: '', // No password for OAuth users
+          providers: {
+            create: {
+              provider: 'apple',
+              providerId: appleUser.sub,
+            },
+          },
+        },
+      });
+    } else {
+      // Link Apple OAuth to existing user if not already linked
+      await prisma.userProviders.upsert({
+        where: {
+          provider_providerId: {
+            provider: 'apple',
+            providerId: appleUser.sub,
+          },
+        },
+        update: {
+          userId: user.id,
+        },
+        create: {
+          userId: user.id,
+          provider: 'apple',
+          providerId: appleUser.sub,
         },
       });
     }

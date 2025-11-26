@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { RegistrationProvider } from '@/context/RegistrationContext';
 import { AppLayout } from '@/components/layout/AppLayout';
+import { BlankLayout, PublicLayout } from '@/components/layout';
 import { ScrollToTop } from '@/components/ScrollToTop';
 import {
   AboutPage,
@@ -17,8 +18,7 @@ import {
 import { LoginPage } from '@/pages/auth/LoginPage';
 import { SignupPage } from '@/pages/auth/SignupPage';
 import { OtpPage } from '@/pages/auth/OtpPage';
-import { ProfilePage } from '@/pages/profile/ProfilePage';
-import { SettingsPage } from '@/pages/profile/SettingsPage';
+import { ChangePasswordPage, ProfilePage, SetPasswordPage, SettingsPage } from '@/pages/profile';
 import { ExercisesPage } from '@/pages/exercises/ExercisesPage';
 import { ExerciseDetailPage } from '@/pages/exercises/ExerciseDetailPage';
 import { RoutineDetailPage } from '@/pages/routines/RoutineDetailPage';
@@ -29,37 +29,16 @@ import { StartWorkoutPage } from '@/pages/workouts/StartWorkoutPage';
 import { WorkoutDetailPage } from '@/pages/workouts/WorkoutDetailPage';
 import { ActiveWorkoutPage } from '@/pages/workouts/ActiveWorkoutPage';
 import { ProtectedRoute, PublicRoute, MixedRoute } from '@/components/auth';
-import { BlankLayout, PublicLayout } from '@/components/layout';
 
 export const AppRouter: React.FC = () => {
   return (
     <BrowserRouter>
       <ScrollToTop />
+
       <Routes>
-        {/* Public pages (no auth required). If you want a public layout, wrap it here. */}
-        <Route
-          element={
-            <MixedRoute
-              authedLayout={AppLayout}
-              guestLayout={PublicLayout} // shows navbar/footer even for guests
-            />
-          }
-        >
-          <Route path="/" element={<HomePage />} />
-
-          <Route path="/account-settings" element={<AccountSettingsPage />} />
-          <Route path="/about" element={<AboutPage />} />
-          <Route path="/contact" element={<ContactPage />} />
-          <Route path="/exercises" element={<ExercisesPage />} />
-          <Route path="/exercises/:id" element={<ExerciseDetailPage />} />
-          <Route path="/getting-started" element={<GettingStartedPage />} />
-          <Route path="/help" element={<HelpCenterPage />} />
-          <Route path="/legal" element={<LegalPage />} />
-          <Route path="/routines" element={<RoutinesPage />} />
-          <Route path="/troubleshooting" element={<TroubleshootingPage />} />
-        </Route>
-
-        {/* Auth-only but WITHOUT layout (e.g., login/signup pages) */}
+        {/** -----------------------------
+         *  AUTH FLOW (needs RegistrationProvider)
+         *  ----------------------------- */}
         <Route
           element={
             <RegistrationProvider>
@@ -72,7 +51,40 @@ export const AppRouter: React.FC = () => {
           <Route path="/verify-otp" element={<OtpPage />} />
         </Route>
 
-        {/* Auth-only pages under AppLayout (navbar/footer + private content) */}
+        <Route
+          element={
+            <RegistrationProvider>
+              <ProtectedRoute>
+                <AppLayout />
+              </ProtectedRoute>
+            </RegistrationProvider>
+          }
+        >
+          <Route path="/profile/verify-otp" element={<OtpPage />} />
+          <Route path="/change-password" element={<ChangePasswordPage />} />
+          <Route path="/set-password" element={<SetPasswordPage />} />
+        </Route>
+
+        {/** -----------------------------
+         *  MIXED PUBLIC / AUTH PAGES
+         *  ----------------------------- */}
+        <Route element={<MixedRoute authedLayout={AppLayout} guestLayout={PublicLayout} />}>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/account-settings" element={<AccountSettingsPage />} />
+          <Route path="/about" element={<AboutPage />} />
+          <Route path="/contact" element={<ContactPage />} />
+          <Route path="/exercises" element={<ExercisesPage />} />
+          <Route path="/exercises/:id" element={<ExerciseDetailPage />} />
+          <Route path="/getting-started" element={<GettingStartedPage />} />
+          <Route path="/help" element={<HelpCenterPage />} />
+          <Route path="/legal" element={<LegalPage />} />
+          <Route path="/routines" element={<RoutinesPage />} />
+          <Route path="/troubleshooting" element={<TroubleshootingPage />} />
+        </Route>
+
+        {/** -----------------------------
+         *  PRIVATE WORKOUT/Routine PAGES
+         *  ----------------------------- */}
         <Route
           element={
             <ProtectedRoute>
@@ -80,22 +92,23 @@ export const AppRouter: React.FC = () => {
             </ProtectedRoute>
           }
         >
+          {/* Profile */}
           <Route path="/profile" element={<ProfilePage />} />
           <Route path="/profile/settings" element={<SettingsPage />} />
 
-          {/* Routines (private) */}
+          {/* Routines */}
           <Route path="/routines/create" element={<CreateRoutinePage />} />
           <Route path="/routines/:id/edit" element={<EditRoutinePage />} />
           <Route path="/routines/:id" element={<RoutineDetailPage />} />
 
-          {/* Workouts (private) */}
+          {/* Workouts */}
           <Route path="/workouts" element={<WorkoutsPage />} />
           <Route path="/workouts/new" element={<StartWorkoutPage />} />
           <Route path="/workouts/:id" element={<WorkoutDetailPage />} />
           <Route path="/workouts/:id/active" element={<ActiveWorkoutPage />} />
         </Route>
 
-        {/* 404 fallback */}
+        {/** 404 */}
         <Route path="*" element={<FallBackPage />} />
       </Routes>
     </BrowserRouter>

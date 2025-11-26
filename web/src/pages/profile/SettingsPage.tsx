@@ -1,4 +1,10 @@
-import { ProfileHeader, ProfileEditor, SettingsContent } from '@/features/profile';
+import {
+  ProfileAuth,
+  ProfileEditor,
+  ProfileHeader,
+  ProfileDangerSettings,
+  ProfilePreferences,
+} from '@/features/profile';
 
 import { useAuth } from '@/hooks/useAuth';
 
@@ -22,7 +28,9 @@ export const SettingsPage: React.FC = () => {
         </div>
       </div>
 
-      <SettingsContent />
+      <ProfileAuth user={user} />
+      <ProfilePreferences />
+      <ProfileDangerSettings />
     </div>
   );
 };

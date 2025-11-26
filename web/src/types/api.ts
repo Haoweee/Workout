@@ -40,6 +40,7 @@ export interface RegisterRequest {
   email: string;
   password: string;
   confirmPassword: string;
+  type?: 'register' | 'changePassword';
 }
 
 export interface AuthResponse {
@@ -67,6 +68,11 @@ export interface User {
   isActive: boolean;
   createdAt: string;
   updatedAt: string;
+  hasPassword: boolean;
+  providers?: {
+    provider: string;
+    providerId: string;
+  }[];
 }
 
 export interface UpdateProfileRequest {

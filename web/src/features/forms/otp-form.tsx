@@ -1,3 +1,6 @@
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+
 import { GalleryVerticalEnd } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
@@ -19,6 +22,15 @@ import { useVerifyOtp } from '@/hooks/useVerifyOtp';
 export function OTPForm({ className, ...props }: React.ComponentProps<'div'>) {
   const { userData } = useRegistration();
   const { handleVerifyOtp, isLoading, error } = useVerifyOtp();
+  const navigate = useNavigate();
+
+  console.log('OTPForm userData:', userData);
+
+  useEffect(() => {
+    if (!userData) {
+      navigate('/');
+    }
+  }, [userData, navigate]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

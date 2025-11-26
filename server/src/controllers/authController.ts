@@ -18,7 +18,6 @@ let loginCodes: { userData: CreateUserRequest; otp: string; expiration: number }
 setInterval(() => {
   loginCodes = loginCodes.filter((loginCodeObj) => loginCodeObj.expiration > Date.now());
 }, MILLIS_PER_MINUTE * 10);
-console.log('Login codes expiration loop initialized');
 
 export class AuthController {
   static sendOtp = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
@@ -55,7 +54,7 @@ export class AuthController {
       logger.info(`Generated OTP for ${userData.email}: ${otp} (expires in 10 minutes)`);
 
       // Send OTP via email
-      if (config.environment !== 'production') {
+      if (config.environment === 'production') {
         await EmailService.sendVerificationEmail(userData.email, otp);
       }
 
@@ -67,13 +66,19 @@ export class AuthController {
     }
   };
 
-  static verifyOtpAndRegister = async (
+  static verifyOtpRegisterOrChangePassword = async (
     req: Request,
     res: Response,
     next: NextFunction
   ): Promise<void> => {
     try {
-      const { email, otp } = req.body as { email?: string; otp?: string };
+      const { email, otp, password, confirmPassword, type } = req.body as {
+        email?: string;
+        otp?: string;
+        password?: string;
+        confirmPassword?: string;
+        type?: 'register' | 'changePassword';
+      };
 
       if (!email || !otp) {
         res.status(400).json({
@@ -108,22 +113,56 @@ export class AuthController {
       // Remove used OTP
       loginCodes.splice(loginCodeObjIndex, 1);
 
-      // Register the user
-      const result = await AuthService.register(userData);
+      if (type === 'register') {
+        // Register the user
+        const result = await AuthService.register(userData);
 
-      if (!result.success) {
-        res.status(400).json(result);
-        return;
+        if (!result.success) {
+          res.status(400).json(result);
+          return;
+        }
+
+        logger.info(`New user registered via OTP: ${userData.email}`);
+        res.cookie('auth_token', result.token, {
+          httpOnly: true,
+          secure: config.environment === 'production',
+          sameSite: 'lax',
+        });
+
+        res.status(200).json({ success: true, user: result.user });
+      } else if (type === 'changePassword') {
+        // Change password flow
+        if (!password || !confirmPassword) {
+          res.status(400).json({
+            success: false,
+            error: 'Password and confirm password are required',
+          });
+          return;
+        }
+
+        if (password !== confirmPassword) {
+          res.status(400).json({
+            success: false,
+            error: 'Password and confirm password do not match',
+          });
+          return;
+        }
+
+        const result = await AuthService.changePassword(userData.email, userData.password);
+
+        if (!result.success) {
+          res.status(400).json(result);
+          return;
+        }
+
+        logger.info(`Password changed via OTP for: ${userData.email}`);
+        res.status(200).json({ success: true, message: 'Password changed successfully' });
+      } else {
+        res.status(400).json({
+          success: false,
+          error: 'Invalid type specified',
+        });
       }
-
-      logger.info(`New user registered via OTP: ${userData.email}`);
-      res.cookie('auth_token', result.token, {
-        httpOnly: true,
-        secure: config.environment === 'production',
-        sameSite: 'lax',
-      });
-
-      res.status(200).json({ success: true, user: result.user });
     } catch (error) {
       logger.error('OTP verification and registration error:', error);
       next(error);
@@ -437,6 +476,45 @@ export class AuthController {
       res.redirect(`${frontendUrl}/profile?tab=workouts`);
     } catch (error) {
       logger.error('Apple OAuth callback error:', error);
+      next(error);
+    }
+  };
+
+  static setPassword = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      const userId: string = req.user!.userId;
+      const { password, confirmPassword } = req.body as {
+        password?: string;
+        confirmPassword?: string;
+      };
+
+      if (!password || !confirmPassword) {
+        res.status(400).json({
+          success: false,
+          error: 'Password and confirm password are required',
+        });
+        return;
+      }
+
+      if (password !== confirmPassword) {
+        res.status(400).json({
+          success: false,
+          error: 'Password and confirm password do not match',
+        });
+        return;
+      }
+
+      const result = await AuthService.setPassword(userId, password);
+
+      if (!result.success) {
+        res.status(400).json(result);
+        return;
+      }
+
+      logger.info(`Password set for user ID: ${userId}`);
+      res.status(200).json({ success: true, message: 'Password set successfully' });
+    } catch (error) {
+      logger.error('Set password error:', error);
       next(error);
     }
   };

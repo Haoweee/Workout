@@ -58,6 +58,7 @@ router.post('/send-otp', AuthController.sendOtp);
  *             required:
  *               - email
  *               - otp
+ *               - type
  *             properties:
  *               email:
  *                 type: string
@@ -67,7 +68,7 @@ router.post('/send-otp', AuthController.sendOtp);
  *                 type: string
  *                 example: "123456"
  */
-router.post('/verify-otp', AuthController.verifyOtpAndRegister);
+router.post('/verify-otp', AuthController.verifyOtpRegisterOrChangePassword);
 
 /**
  * @swagger
@@ -121,8 +122,8 @@ router.post('/verify-otp', AuthController.verifyOtpAndRegister);
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/Error'
- *       501:
- *         description: Endpoint not implemented
+ *       500:
+ *         description: Internal server error
  *         content:
  *           application/json:
  *             schema:
@@ -181,8 +182,8 @@ router.post('/verify-otp', AuthController.verifyOtpAndRegister);
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/Error'
- *       501:
- *         description: Endpoint not implemented
+ *       500:
+ *         description: Internal server error
  *         content:
  *           application/json:
  *             schema:
@@ -190,9 +191,100 @@ router.post('/verify-otp', AuthController.verifyOtpAndRegister);
  */
 router.post('/login', AuthController.login);
 
+/**
+ * @swagger
+ * /api/auth/oauth/google:
+ *   get:
+ *     summary: Google OAuth login
+ *     description: Redirects the user to Google's OAuth 2.0 server for authentication.
+ *     tags: [Authentication]
+ *     responses:
+ *       302:
+ *         description: Redirect to Google OAuth 2.0 server
+ *       500:
+ *         description: Internal server error
+ *         content:
+ *          application/json:
+ *          schema:
+ *          $ref: '#/components/schemas/Error'
+ */
 router.get('/oauth/google', AuthController.googleOAuth);
+
+/**
+ * @swagger
+ * /api/auth/oauth/google/callback:
+ *   get:
+ *     summary: Google OAuth callback
+ *     description: Handles the OAuth 2.0 callback from Google and processes the authentication response.
+ *     tags: [Authentication]
+ *     responses:
+ *       200:
+ *         description: OAuth login successful
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/AuthResponse'
+ *       400:
+ *         description: Missing or invalid authorization code
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ *       500:
+ *         description: Internal server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ */
 router.get('/oauth/google/callback', AuthController.googleOAuthCallback);
+
+/**
+ * @swagger
+ * /api/auth/oauth/apple:
+ *   get:
+ *     summary: Apple OAuth login
+ *     description: Redirects the user to Apple's OAuth 2.0 server for authentication.
+ *     tags: [Authentication]
+ *     responses:
+ *       302:
+ *         description: Redirect to Apple OAuth 2.0 server
+ *       500:
+ *         description: Internal server error
+ *         content:
+ *          application/json:
+ *          schema:
+ *          $ref: '#/components/schemas/Error'
+ */
 router.get('/oauth/apple', AuthController.appleOAuth);
+
+/**
+ * @swagger
+ * /api/auth/oauth/apple/callback:
+ *   post:
+ *     summary: Apple OAuth callback
+ *     description: Handles the OAuth 2.0 callback from Apple and processes the authentication response.
+ *     tags: [Authentication]
+ *     responses:
+ *       200:
+ *         description: OAuth login successful
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/AuthResponse'
+ *       400:
+ *         description: Missing or invalid authorization code
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ *       500:
+ *         description: Internal server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ */
 router.post('/oauth/apple/callback', AuthController.appleOAuthCallback);
 
 /**
@@ -277,6 +369,85 @@ router.post('/logout', AuthController.logout);
  */
 router.post('/refresh', AuthController.refreshToken);
 
+/**
+ * @swagger
+ * /api/auth/me:
+ *   get:
+ *     summary: Get current user profile
+ *     description: Retrieves the profile of the currently authenticated user.
+ *     tags: [Authentication]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: User profile retrieved successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ApiResponse'
+ *       401:
+ *         description: Unauthorized
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ *       500:
+ *         description: Internal server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ */
 router.get('/me', authenticateToken, AuthController.getCurrentUser);
+
+/**
+ * @swagger
+ * /api/auth/set-password:
+ *  post:
+ *     summary: Set password for OAAuth authenticated user
+ *     description: Set password for users who registered via OAuth but want to enable email/password login.
+ *     tags: [Authentication]
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - newPassword
+ *             properties:
+ *               newPassword:
+ *                 type: string
+ *                 minLength: 8
+ *                 example: "newpassword123"
+ *     responses:
+ *       200:
+ *         description: Password set successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ApiResponse'
+ *       400:
+ *         description: Invalid input data
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ *       401:
+ *         description: Unauthorized
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ *       500:
+ *         description: Internal server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ */
+router.post('/set-password', authenticateToken, AuthController.setPassword);
 
 export { router as authRoutes };
