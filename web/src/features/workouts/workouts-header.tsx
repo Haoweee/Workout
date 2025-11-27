@@ -5,21 +5,13 @@ import { ArrowLeft, Trash2, Plus, Clock, Target } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
-import { useDeleteWorkout } from '@/hooks/useDeleteWorkout';
-import type { OptimizedWorkout } from '@/services/workout.service';
+import { useDeleteWorkout } from '@/hooks/workouts';
+
+import type { WorkoutHeaderProps } from '@/types/workout';
 
 import { formatTime } from '@/utils/formatters';
 
-export const WorkoutHeader: React.FC<{
-  navigation: string | number;
-  type?: 'default' | 'start' | 'active';
-  workout?: OptimizedWorkout;
-  handleQuickStart?: () => void;
-  creating?: boolean;
-  progress?: { completed: number; total: number; percentage: number };
-  startTime?: Date;
-  currentTime?: Date;
-}> = ({
+export const WorkoutHeader: React.FC<WorkoutHeaderProps> = ({
   navigation,
   type,
   workout,

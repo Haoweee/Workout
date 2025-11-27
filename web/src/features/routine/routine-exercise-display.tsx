@@ -1,3 +1,4 @@
+import { Card, CardContent } from '@/components/ui/card';
 import {
   Table,
   TableBody,
@@ -6,8 +7,8 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { Card, CardContent } from '@/components/ui/card';
-import type { Routine } from '@/types/api';
+
+import type { Routine } from '@/types/routine';
 
 export const RoutineExerciseDisplay: React.FC<{ routine: Routine }> = ({ routine }) => {
   const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];

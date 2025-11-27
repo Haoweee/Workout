@@ -1,5 +1,5 @@
-import type { OptimizedExercise, OptimizedSet, OptimizedWorkout } from '@/services/workout.service';
-import type { Routine } from '@/types/api';
+import type { OptimizedExercise, OptimizedSet, OptimizedWorkout } from '@/types/workout';
+import type { Routine } from '@/types/routine';
 import { type WeightUnit } from '@/types/preferences';
 import { convertWeight } from '@/utils/calculate';
 

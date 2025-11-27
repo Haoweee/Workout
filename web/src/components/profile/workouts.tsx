@@ -1,17 +1,22 @@
 import React, { useState, useEffect } from 'react';
+
 import { TrendingUp } from 'lucide-react';
-import { TabsContent } from '@/components/ui/tabs';
-import { Skeleton } from '@/components/ui/skeleton';
+
+import { ChartLineDefault } from '@/components/charts/line';
 import type { ChartConfig } from '@/components/ui/chart';
+import { Skeleton } from '@/components/ui/skeleton';
+import { TabsContent } from '@/components/ui/tabs';
 import { WorkoutTable } from '@/components/charts/workouts-table';
 import WorkoutCalendar from '@/components/charts/workout-calendar';
-import { workoutService, type ChartDataPoint } from '@/services/workout.service';
-import { ChartLineDefault } from '@/components/charts/line';
 
-import { useGetUserWorkouts } from '@/hooks/useGetUserWorkouts';
+import { workoutService } from '@/services/workout.service';
+
+import { useGetUserWorkouts } from '@/hooks/workouts/useGetUserWorkouts';
 // import { ChartRadarDefault } from '@/components/charts/radar';
 // import { ChartAreaGradient } from '@/components/charts/area';
 // import { ChartBarDefault } from '@/components/charts/bar';
+
+import type { ChartDataPoint } from '@/types/workout';
 
 export const WorkoutsTab: React.FC = () => {
   const [overallProgress, setOverallProgress] = useState<ChartDataPoint[]>([]);

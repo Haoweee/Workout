@@ -1,6 +1,8 @@
+import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
+
 import { ArrowLeft, Check, Plus } from 'lucide-react';
-import { useState } from 'react';
+
 import { Button } from '@/components/ui/button';
 
 import {
@@ -11,14 +13,12 @@ import {
   WorkoutOverview,
   WorkoutCompletionMessage,
   WorkoutDetailSkeleton,
-  // WorkoutNotFound,
 } from '@/features/workouts';
-
 import { WorkoutAddExercise } from '@/features/workouts/workout-add-exercise';
 
-import { useActiveWorkout } from '@/hooks/useActiveWorkout';
+import { useActiveWorkout } from '@/hooks/workouts';
 
-export const ActiveWorkoutPage = () => {
+export const ActiveWorkoutPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const [showAddExercise, setShowAddExercise] = useState(false);
 

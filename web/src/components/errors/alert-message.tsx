@@ -1,4 +1,5 @@
 import { AlertCircleIcon } from 'lucide-react';
+
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 
 export const AlertMessage = ({ message }: { message: string; type: 'error' | 'success' }) => {

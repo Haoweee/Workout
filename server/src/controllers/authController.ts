@@ -88,6 +88,8 @@ export class AuthController {
         return;
       }
 
+      console.log('LOGIN CODES:', loginCodes);
+
       const loginCodeObjIndex = loginCodes.findIndex(
         (obj) => obj.userData.email === email && obj.otp === otp && obj.expiration > Date.now()
       );

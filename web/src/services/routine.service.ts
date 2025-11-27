@@ -1,5 +1,6 @@
-// Routine Service
-import type { Routine, CreateRoutineRequest, ApiResponse, PaginatedResponse } from '@/types/api';
+import type { ApiResponse, PaginatedResponse } from '@/types/api';
+import type { Routine, CreateRoutineRequest } from '@/types/routine';
+
 import { apiClient, apiCall } from '@/lib/api-client';
 
 export const routineService = {

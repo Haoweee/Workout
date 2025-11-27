@@ -1,20 +1,13 @@
 import { getDayExercises, getExerciseName, formatExerciseInfo, DAYS_OF_WEEK } from '@/utils';
-import type { Routine } from '@/types/api';
-import type { DayInfo, ExerciseInfo } from '@/utils/helper';
+import type { ExerciseInfo } from '@/utils/helper';
+import type { DaySelectorProps } from '@/types/workout';
 
-interface DaySelectorProps {
-  routine: Routine;
-  availableDays: DayInfo[];
-  selectedDayIndex: number | null;
-  onDaySelect: (dayIndex: number) => void;
-}
-
-export const WorkoutDaySelector = ({
+export const WorkoutDaySelector: React.FC<DaySelectorProps> = ({
   routine,
   availableDays,
   selectedDayIndex,
   onDaySelect,
-}: DaySelectorProps) => {
+}) => {
   return (
     <div>
       <p className="text-blue-700 text-sm mb-3">Choose which day to train:</p>

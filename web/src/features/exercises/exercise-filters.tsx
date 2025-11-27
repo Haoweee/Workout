@@ -1,5 +1,10 @@
 import { useState, useEffect } from 'react';
+
+import { X } from 'lucide-react';
+
+import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
 import {
   Select,
@@ -8,42 +13,17 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { Checkbox } from '@/components/ui/checkbox';
-import { Badge } from '@/components/ui/badge';
-import { X } from 'lucide-react';
+
 import { exerciseService } from '@/services/exercises.service';
 
-export interface FilterOptions {
-  categories: string[];
-  levels: string[];
-  muscleGroups: string[];
-  equipmentTypes: string[];
-  forceTypes: string[];
-  mechanicTypes: string[];
-}
+import type { ExerciseFilters, FilterOptions, ExerciseFiltersProps } from '@/types/exercise';
 
-export interface ExerciseFilters {
-  category?: string;
-  level?: string;
-  primaryMuscles?: string[];
-  equipment?: string;
-  force?: string;
-  mechanic?: string;
-}
-
-interface ExerciseFiltersProps {
-  filters: ExerciseFilters;
-  onFiltersChange: (filters: ExerciseFilters) => void;
-  onApplyFilters: () => void;
-  onClearFilters: () => void;
-}
-
-export const ExerciseFiltersComponent = ({
+export const ExerciseFiltersComponent: React.FC<ExerciseFiltersProps> = ({
   filters,
   onFiltersChange,
   onApplyFilters,
   onClearFilters,
-}: ExerciseFiltersProps) => {
+}) => {
   const [filterOptions, setFilterOptions] = useState<FilterOptions>({
     categories: [],
     levels: [],

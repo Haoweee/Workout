@@ -1,5 +1,5 @@
-import { RecommendedTopics } from '@/features/marketing/support/recommendedTopics';
 import { FAQs } from '@/features/marketing/support/faq';
+import { RecommendedTopics } from '@/features/marketing/support/recommendedTopics';
 
 export const HelpCenterPage = () => {
   return (

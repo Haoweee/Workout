@@ -1,13 +1,11 @@
 import React from 'react';
+
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+
 import { popularExercises } from '@/constants/routine-templates';
 
-interface ExerciseSearchProps {
-  searchTerm: string;
-  onSearchTermChange: (term: string) => void;
-  onAddExercise: (name: string, isCustom?: boolean) => void;
-}
+import type { ExerciseSearchProps } from '@/types/routine';
 
 export const ExerciseSearch: React.FC<ExerciseSearchProps> = ({
   searchTerm,

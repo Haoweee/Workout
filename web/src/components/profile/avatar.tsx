@@ -1,4 +1,5 @@
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+
 import { getAvatarUrl } from '@/constants';
 
 export const AvatarProfile = (user: {

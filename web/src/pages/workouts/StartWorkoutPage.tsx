@@ -1,14 +1,14 @@
 import React from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 
-import { WorkoutHeader } from '@/features/workouts/workouts-header';
 import {
+  WorkoutHeader,
   WorkoutSelectedRoutine,
   WorkoutRoutineList,
   WorkoutStartWorkoutSkeleton,
 } from '@/features/workouts';
 
-import { useStartWorkout } from '@/hooks/useStartWorkout';
+import { useStartWorkout } from '@/hooks/workouts';
 
 export const StartWorkoutPage: React.FC = () => {
   const navigate = useNavigate();

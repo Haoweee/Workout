@@ -1,28 +1,8 @@
 import React from 'react';
+
 import { Button } from '@/components/ui/button';
 
-interface Exercise {
-  id: string | number;
-  name: string;
-  sets: string;
-  reps: string;
-  rest: string;
-  isCustom?: boolean;
-}
-
-interface Day {
-  id: string;
-  name: string;
-  exercises: Exercise[];
-}
-
-interface DayTabsProps {
-  days: Day[];
-  currentDayId: string;
-  onDaySelect: (dayId: string) => void;
-  onAddDay: () => void;
-  onRemoveDay: (dayId: string) => void;
-}
+import type { DayTabsProps } from '@/types/routine';
 
 export const DayTabs: React.FC<DayTabsProps> = ({
   days,

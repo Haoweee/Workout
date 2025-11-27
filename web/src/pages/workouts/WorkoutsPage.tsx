@@ -1,7 +1,7 @@
 import { WorkoutTableSkeleton } from '@/features/workouts/workouts-table-loader';
 import { WorkoutTable } from '@/components/charts/workouts-table';
 
-import { useGetUserWorkouts } from '@/hooks/useGetUserWorkouts';
+import { useGetUserWorkouts } from '@/hooks/workouts';
 
 export const WorkoutsPage: React.FC = () => {
   const { workouts, isLoading, error } = useGetUserWorkouts(15);

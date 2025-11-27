@@ -1,8 +1,12 @@
 import { useState } from 'react';
+
 import { Play, CheckCircle, Clock, Users, Target, Trophy } from 'lucide-react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
+
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+
+import { getDifficultyColor } from '@/utils';
 
 const tutorials = [
   {
@@ -56,12 +60,6 @@ const tutorials = [
 ];
 
 const categories = ['All', 'Basics', 'Routines', 'Tracking'];
-
-const levelColors = {
-  Beginner: 'bg-green-100 text-green-800',
-  Intermediate: 'bg-yellow-100 text-yellow-800',
-  Advanced: 'bg-red-100 text-red-800',
-};
 
 export const GettingStartedPage = () => {
   const [selectedCategory] = useState('All');
@@ -206,10 +204,7 @@ export const GettingStartedPage = () => {
 
               <div className="space-y-2">
                 <div className="flex items-center gap-2 flex-wrap">
-                  <Badge
-                    variant="secondary"
-                    className={levelColors[tutorial.level as keyof typeof levelColors]}
-                  >
+                  <Badge variant="secondary" className={getDifficultyColor(tutorial.level)}>
                     {tutorial.level}
                   </Badge>
                   <Badge variant="outline">{tutorial.category}</Badge>

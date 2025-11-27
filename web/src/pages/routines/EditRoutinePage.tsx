@@ -8,8 +8,9 @@ import {
   RoutineNotFound,
 } from '@/features/routine';
 
-import { useGetRoutineById } from '@/hooks/useGetRoutineById';
-import type { Routine } from '@/types/api';
+import { useGetRoutineById } from '@/hooks/routines';
+
+import type { Routine } from '@/types/routine';
 
 /**
  * Edit Routine Page Component

@@ -1,5 +1,6 @@
 import { AvatarProfile } from '@/components/profile/avatar';
-import type { User } from '@/types/api';
+
+import type { User } from '@/types/user';
 
 export const ProfileHeader: React.FC<{ user: User }> = ({ user }) => {
   return (

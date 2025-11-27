@@ -5,7 +5,7 @@ import {
   ExerciseSkeleton,
 } from '@/features/exercises';
 
-import { useGetAllExercises } from '@/hooks/useGetAllExercises';
+import { useGetAllExercises } from '@/hooks/exercises';
 
 export const ExercisesPage = () => {
   const {
@@ -25,6 +25,8 @@ export const ExercisesPage = () => {
     performSearch,
     handleRefresh,
   } = useGetAllExercises();
+
+  console.log('exercises:', exercises);
 
   return (
     <div className="space-y-6">

@@ -6,10 +6,9 @@ import { Input } from '@/components/ui/input';
 
 import { useRegistration } from '@/context/registration-context';
 
-import { useSendOtp } from '@/hooks/useSendOtp';
-import { useAuth } from '@/hooks/useAuth';
+import { useAuth, useSendOtp } from '@/hooks/auth';
 
-import type { RegisterRequest } from '@/types/api';
+import type { SendOtpRequest } from '@/types/api';
 
 export const ChangePasswordPage: React.FC = () => {
   const { user } = useAuth();
@@ -19,7 +18,7 @@ export const ChangePasswordPage: React.FC = () => {
   const [newPassword, setNewPassword] = useState('');
   const [confirmNewPassword, setConfirmNewPassword] = useState('');
 
-  const formData: RegisterRequest = {
+  const formData: SendOtpRequest = {
     email: user?.email || '',
     username: user?.username || '',
     fullName: user?.fullName || '',

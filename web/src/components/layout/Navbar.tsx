@@ -11,8 +11,8 @@ import {
   ChevronDown,
 } from 'lucide-react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { useAuth } from '@/hooks/useAuth';
-import { useLogout } from '@/hooks/useLogout';
+import { useAuth } from '@/hooks/auth/useAuth';
+import { useLogout } from '@/hooks/auth/useLogout';
 import {
   NavigationMenu,
   NavigationMenuList,

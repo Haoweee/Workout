@@ -1,28 +1,27 @@
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Trash2 } from 'lucide-react';
-import { formatWeightDisplay } from '@/utils';
-import { useUserPreferences } from '@/hooks/useUserPreferences';
-import { workoutService } from '@/services/workout.service';
-import { toast } from 'sonner';
-import type { OptimizedWorkout } from '@/services/workout.service';
 import { useState } from 'react';
 
-interface WorkoutOverviewProps {
-  workout: OptimizedWorkout;
-  activeExerciseIndex: number;
-  activeSetIndex: number;
-  onExerciseClick: (exerciseIndex: number) => void;
-  onWorkoutUpdate?: () => void; // Callback to refresh workout data after set removal
-}
+import { Trash2 } from 'lucide-react';
 
-export const WorkoutOverview = ({
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+
+import { useUserPreferences } from '@/hooks/user/useUserPreferences';
+
+import { workoutService } from '@/services/workout.service';
+
+import type { WorkoutOverviewProps } from '@/types/workout';
+
+import { formatWeightDisplay } from '@/utils';
+
+import { toast } from 'sonner';
+
+export const WorkoutOverview: React.FC<WorkoutOverviewProps> = ({
   workout,
   activeExerciseIndex,
   activeSetIndex,
   onExerciseClick,
   onWorkoutUpdate,
-}: WorkoutOverviewProps) => {
+}) => {
   const { preferences } = useUserPreferences();
   const [removingSetId, setRemovingSetId] = useState<string | null>(null);
 

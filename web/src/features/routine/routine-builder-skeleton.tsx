@@ -1,6 +1,7 @@
 import React from 'react';
-import { Skeleton } from '@/components/ui/skeleton';
+
 import { Card } from '@/components/ui/card';
+import { Skeleton } from '@/components/ui/skeleton';
 
 export const RoutineBuilderSkeleton: React.FC = () => {
   return (

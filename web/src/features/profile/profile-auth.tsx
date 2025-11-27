@@ -1,9 +1,9 @@
 import { useNavigate } from 'react-router-dom';
 
-import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
 
-import type { User } from '@/types/api';
+import type { User } from '@/types/user';
 
 const Apple = () => (
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
@@ -23,7 +23,7 @@ const Google = () => (
   </svg>
 );
 
-export const ProfileAuth = ({ user }: { user: User }) => {
+export const ProfileAuth: React.FC<{ user: User }> = ({ user }) => {
   const navigate = useNavigate();
 
   return (

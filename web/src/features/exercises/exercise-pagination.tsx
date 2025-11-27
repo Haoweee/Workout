@@ -8,19 +8,14 @@ import {
   PaginationPrevious,
 } from '@/components/ui/pagination';
 
-export const ExercisePagination: React.FC<{
-  goToPage: (page: number) => void;
-  nextPage: () => void;
-  prevPage: () => void;
-  pagination: {
-    page: number;
-    pages: number;
-    hasPrev: boolean;
-    hasNext: boolean;
-    limit: number;
-    total: number;
-  };
-}> = ({ goToPage, nextPage, prevPage, pagination }) => {
+import type { ExercisePaginationProps } from '@/types/exercise';
+
+export const ExercisePagination: React.FC<ExercisePaginationProps> = ({
+  goToPage,
+  nextPage,
+  prevPage,
+  pagination,
+}) => {
   return (
     <>
       <Pagination>

@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+
 import { Sparkle, CircleUser, Bug, Scale } from 'lucide-react';
 
 import { Card } from '@/components/ui/card';

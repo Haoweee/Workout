@@ -7,7 +7,7 @@ import {
   ExerciseNotFound,
 } from '@/features/exercises';
 
-import { useGetExerciseDetail } from '@/hooks/useGetExerciseDetail';
+import { useGetExerciseDetail } from '@/hooks/exercises';
 
 export const ExerciseDetailPage = () => {
   const { id } = useParams<{ id: string }>();

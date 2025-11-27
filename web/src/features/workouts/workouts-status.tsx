@@ -1,12 +1,13 @@
 import { useNavigate } from 'react-router-dom';
+
 import { Clock } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 
-import type { OptimizedWorkout } from '@/services/workout.service';
+import type { OptimizedWorkout } from '@/types/workout';
 
-export const WorkoutStatus = ({ workout }: { workout: OptimizedWorkout }) => {
+export const WorkoutStatus: React.FC<{ workout: OptimizedWorkout }> = ({ workout }) => {
   const navigate = useNavigate();
 
   return (

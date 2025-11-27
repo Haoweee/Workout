@@ -1,4 +1,4 @@
-import { type OptimizedWorkout, type Workout } from '@/services/workout.service';
+import type { OptimizedWorkout, Workout } from '@/types/workout';
 import { type WeightUnit } from '@/types/preferences';
 
 // Weight conversion utilities

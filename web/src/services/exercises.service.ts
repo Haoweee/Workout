@@ -1,5 +1,6 @@
-// Exercise Service
-import type { ExerciseResponse, ApiResponse, PaginatedResponse } from '@/types/api';
+import type { ApiResponse, PaginatedResponse } from '@/types/api';
+import type { ExerciseResponse } from '@/types/exercise';
+
 import { apiClient, apiCall, paginatedApiCall } from '@/lib/api-client';
 
 export const exerciseService = {

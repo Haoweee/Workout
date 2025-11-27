@@ -1,12 +1,10 @@
 import { useNavigate } from 'react-router-dom';
+
 import { Button } from '@/components/ui/button';
-import type { AuthContextType } from '@/context/auth-context';
 
-interface HeaderProps {
-  user: AuthContextType['user'];
-}
+import type { UserProps } from '@/types/user';
 
-export const Header = ({ user }: HeaderProps) => {
+export const Header = ({ user }: UserProps) => {
   const navigate = useNavigate();
   return (
     <header className="lg:min-h-[calc(100vh-8rem)] w-full flex flex-col lg:flex-row items-center">

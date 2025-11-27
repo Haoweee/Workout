@@ -1,12 +1,10 @@
-import { Badge } from '@/components/ui/badge';
 import { Dumbbell, Users, Target, Clock } from 'lucide-react';
-import type { ExerciseResponse } from '@/types/api';
 
-interface ExerciseDetailCardProps {
-  exercise: ExerciseResponse;
-}
+import { Badge } from '@/components/ui/badge';
 
-export const ExerciseDetailCard = ({ exercise }: ExerciseDetailCardProps) => {
+import type { ExerciseDetailCardProps } from '@/types/exercise';
+
+export const ExerciseDetailCard: React.FC<ExerciseDetailCardProps> = ({ exercise }) => {
   return (
     <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
       {/* Exercise Images */}

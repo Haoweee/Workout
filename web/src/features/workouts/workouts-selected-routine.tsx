@@ -1,25 +1,21 @@
 import { Calendar } from 'lucide-react';
+
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+
 import { WorkoutDaySelector } from './workouts-day-selector';
+
+import type { SelectedRoutineProps } from '@/types/workout';
+
 import { getAvailableDays, getTotalExerciseCount } from '@/utils';
-import type { Routine } from '@/types/api';
 
-interface SelectedRoutineProps {
-  routine: Routine;
-  selectedDayIndex: number | null;
-  onDaySelect: (dayIndex: number) => void;
-  onStartWorkout: () => void;
-  creating: boolean;
-}
-
-export const WorkoutSelectedRoutine = ({
+export const WorkoutSelectedRoutine: React.FC<SelectedRoutineProps> = ({
   routine,
   selectedDayIndex,
   onDaySelect,
   onStartWorkout,
   creating,
-}: SelectedRoutineProps) => {
+}) => {
   const availableDays = getAvailableDays(routine);
   const totalExercises = getTotalExerciseCount(routine);
 

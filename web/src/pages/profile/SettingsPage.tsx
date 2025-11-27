@@ -6,7 +6,7 @@ import {
   ProfilePreferences,
 } from '@/features/profile';
 
-import { useAuth } from '@/hooks/useAuth';
+import { useAuth } from '@/hooks/auth';
 
 export const SettingsPage: React.FC = () => {
   const { user } = useAuth();

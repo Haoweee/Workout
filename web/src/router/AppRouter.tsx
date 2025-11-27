@@ -1,8 +1,8 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { RegistrationProvider } from '@/context/RegistrationContext';
-import { AppLayout } from '@/components/layout/AppLayout';
-import { BlankLayout, PublicLayout } from '@/components/layout';
-import { ScrollToTop } from '@/components/ScrollToTop';
+
+import { ProtectedRoute, PublicRoute, MixedRoute } from '@/components/auth';
+import { AppLayout, BlankLayout, PublicLayout, ScrollToTop } from '@/components/layout';
+
 import {
   AboutPage,
   AccountSettingsPage,
@@ -15,20 +15,18 @@ import {
   RoutinesPage,
   TroubleshootingPage,
 } from '@/pages/marketing';
-import { LoginPage } from '@/pages/auth/LoginPage';
-import { SignupPage } from '@/pages/auth/SignupPage';
-import { OtpPage } from '@/pages/auth/OtpPage';
+import { LoginPage, OtpPage, SignupPage } from '@/pages/auth';
 import { ChangePasswordPage, ProfilePage, SetPasswordPage, SettingsPage } from '@/pages/profile';
-import { ExercisesPage } from '@/pages/exercises/ExercisesPage';
-import { ExerciseDetailPage } from '@/pages/exercises/ExerciseDetailPage';
-import { RoutineDetailPage } from '@/pages/routines/RoutineDetailPage';
-import { CreateRoutinePage } from '@/pages/routines/CreateRoutinePage';
-import { EditRoutinePage } from '@/pages/routines/EditRoutinePage';
-import { WorkoutsPage } from '@/pages/workouts/WorkoutsPage';
-import { StartWorkoutPage } from '@/pages/workouts/StartWorkoutPage';
-import { WorkoutDetailPage } from '@/pages/workouts/WorkoutDetailPage';
-import { ActiveWorkoutPage } from '@/pages/workouts/ActiveWorkoutPage';
-import { ProtectedRoute, PublicRoute, MixedRoute } from '@/components/auth';
+import { ExerciseDetailPage, ExercisesPage } from '@/pages/exercises';
+import { CreateRoutinePage, EditRoutinePage, RoutineDetailPage } from '@/pages/routines';
+import {
+  ActiveWorkoutPage,
+  StartWorkoutPage,
+  WorkoutDetailPage,
+  WorkoutsPage,
+} from '@/pages/workouts';
+
+import { RegistrationProvider } from '@/context/RegistrationContext';
 
 export const AppRouter: React.FC = () => {
   return (

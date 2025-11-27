@@ -14,50 +14,6 @@ export const apiClient = axios.create({
   withCredentials: true, // Send cookies with requests
 });
 
-// Token management utilities (commented out for cookie-based auth)
-/*
-export const tokenManager = {
-  getToken: (): string | null => {
-    return localStorage.getItem(STORAGE_KEYS.AUTH_TOKEN);
-  },
-
-  setToken: (token: string): void => {
-    localStorage.setItem(STORAGE_KEYS.AUTH_TOKEN, token);
-  },
-
-  removeToken: (): void => {
-    localStorage.removeItem(STORAGE_KEYS.AUTH_TOKEN);
-  },
-
-  isTokenExpired: (token: string): boolean => {
-    try {
-      const payload = JSON.parse(atob(token.split('.')[1]));
-      return Date.now() >= payload.exp * 1000;
-    } catch {
-      return true;
-    }
-  },
-};
-*/
-
-// Request interceptor: Add auth token to requests (commented out for cookie-based auth)
-/*
-apiClient.interceptors.request.use(
-  (config: InternalAxiosRequestConfig) => {
-    const token = tokenManager.getToken();
-
-    if (token && !tokenManager.isTokenExpired(token)) {
-      config.headers.Authorization = `Bearer ${token}`;
-    }
-
-    return config;
-  },
-  (error) => {
-    return Promise.reject(error);
-  }
-);
-*/
-
 // Response interceptor: Handle common responses and errors
 apiClient.interceptors.response.use(
   (response: AxiosResponse<ApiResponse>) => {

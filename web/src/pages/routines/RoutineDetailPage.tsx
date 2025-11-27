@@ -1,9 +1,10 @@
 import { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+
 import { Target, Users, Copy } from 'lucide-react';
 
-import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import { ErrorToast } from '@/components/errors/toast';
 
 import {
@@ -15,9 +16,8 @@ import {
   RoutineNotFound,
 } from '@/features/routine';
 
-import { useAuth } from '@/hooks/useAuth';
-import { useGetRoutineById } from '@/hooks/useGetRoutineById';
-import { useCloneRoutine } from '@/hooks/useCloneRoutine';
+import { useAuth } from '@/hooks/auth';
+import { useCloneRoutine, useGetRoutineById } from '@/hooks/routines';
 
 import { getDifficultyColor } from '@/utils';
 

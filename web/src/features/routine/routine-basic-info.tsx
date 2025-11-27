@@ -1,4 +1,5 @@
 import React from 'react';
+
 import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import {
@@ -9,16 +10,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 
-interface RoutineBasicInfoProps {
-  title: string;
-  description: string;
-  difficulty: 'BEGINNER' | 'INTERMEDIATE' | 'ADVANCED' | '';
-  visibility: 'PUBLIC' | 'PRIVATE' | '';
-  onTitleChange: (value: string) => void;
-  onDescriptionChange: (value: string) => void;
-  onDifficultyChange: (value: 'BEGINNER' | 'INTERMEDIATE' | 'ADVANCED') => void;
-  onVisibilityChange: (value: 'PUBLIC' | 'PRIVATE') => void;
-}
+import type { RoutineBasicInfoProps } from '@/types/routine';
 
 export const RoutineBasicInfo: React.FC<RoutineBasicInfoProps> = ({
   title,

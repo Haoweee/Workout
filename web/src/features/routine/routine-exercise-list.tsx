@@ -1,29 +1,12 @@
 import React from 'react';
+
 import { Trash, Activity } from 'lucide-react';
+
+import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
 
-interface Exercise {
-  id: string | number;
-  name: string;
-  sets: string;
-  reps: string;
-  rest: string;
-  isCustom?: boolean;
-}
-
-interface Day {
-  id: string;
-  name: string;
-  exercises: Exercise[];
-}
-
-interface ExerciseListProps {
-  currentDay: Day | null;
-  onUpdateExercise: (exerciseId: string | number, field: string, value: string) => void;
-  onRemoveExercise: (exerciseId: string | number) => void;
-}
+import type { ExerciseListProps } from '@/types/routine';
 
 export const ExerciseList: React.FC<ExerciseListProps> = ({
   currentDay,

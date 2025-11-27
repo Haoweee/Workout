@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 
+import { Button } from '@/components/ui/button';
 import {
   Dialog,
   DialogContent,
@@ -8,18 +9,17 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
 import { ErrorToast } from '@/components/errors/toast';
 
-import { useDeleteRoutine } from '@/hooks/useDeleteRoutine';
+import { useDeleteRoutine } from '@/hooks/routines';
 
-import type { Routine } from '@/types/api';
+import type { RoutineDeleteProps } from '@/types/routine';
 
-export const RoutineDelete: React.FC<{
-  routine: Routine;
-  showDeleteDialog: boolean;
-  setShowDeleteDialog: React.Dispatch<React.SetStateAction<boolean>>;
-}> = ({ routine, showDeleteDialog, setShowDeleteDialog }) => {
+export const RoutineDelete: React.FC<RoutineDeleteProps> = ({
+  routine,
+  showDeleteDialog,
+  setShowDeleteDialog,
+}) => {
   const navigate = useNavigate();
   const { deleteRoutine } = useDeleteRoutine();
 

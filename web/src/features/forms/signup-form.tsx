@@ -1,9 +1,11 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 import { cn } from '@/lib/utils';
 
+import { AlertMessage } from '@/components/errors/alert-message';
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import {
   Field,
   FieldDescription,
@@ -11,23 +13,23 @@ import {
   FieldLabel,
   FieldSeparator,
 } from '@/components/ui/field';
-import { Input } from '@/components/ui/input';
+
 import { Loading } from '@/components/loading/spinner';
-import { AlertMessage } from '@/components/errors/alert-message';
 
 import { OAuth } from '@/features/forms/oauth';
 
 import { useRegistration } from '@/context/registration-context';
-import { useSendOtp } from '@/hooks/useSendOtp';
 
-import type { RegisterRequest } from '@/types/api';
+import { useSendOtp } from '@/hooks/auth';
+
+import type { SendOtpRequest } from '@/types/api';
 
 export function SignupForm({ className, ...props }: React.ComponentProps<'form'>) {
   const navigate = useNavigate();
   const { setUserData } = useRegistration();
   const { handleSendOtp, isLoading, error } = useSendOtp({ redirect: '/verify-otp' });
 
-  const [formData, setFormData] = useState<RegisterRequest>({
+  const [formData, setFormData] = useState<SendOtpRequest>({
     fullName: '',
     username: '',
     email: '',
@@ -141,8 +143,9 @@ export function SignupForm({ className, ...props }: React.ComponentProps<'form'>
         </FieldGroup>
       </form>
       <FieldDescription className="p-6 text-center">
-        By clicking continue, you agree to our <a href="#">Terms of Service</a> and{' '}
-        <a href="#">Privacy Policy</a>.
+        By clicking continue, you agree to our{' '}
+        <Link to="/legal?tab=terms-of-service">Terms of Service</Link> and{' '}
+        <Link to="/legal?tab=privacy-policy">Privacy Policy</Link>.
       </FieldDescription>
     </>
   );

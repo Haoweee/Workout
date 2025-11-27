@@ -1,7 +1,13 @@
-import type { LoginRequest, RegisterRequest, AuthResponse, ApiResponse } from '@/types/api';
+import type {
+  LoginRequest,
+  SendOtpRequest,
+  VerifyOtpRequest,
+  AuthResponse,
+  ApiResponse,
+} from '@/types/api';
+
 import { apiClient, apiCall } from '@/lib/api-client';
 import { logger } from '@/lib/logger';
-// import { verify } from 'crypto';
 
 export const authService = {
   // User login
@@ -44,7 +50,7 @@ export const authService = {
     }
   },
 
-  sendOtp: async (userData: RegisterRequest): Promise<string> => {
+  sendOtp: async (userData: SendOtpRequest): Promise<string> => {
     try {
       // Call the API directly without apiCall wrapper since the response structure is different
       const response = await apiClient.post('/auth/send-otp', userData);
@@ -64,10 +70,10 @@ export const authService = {
     }
   },
 
-  verifyOtp: async (email: string, otp: string): Promise<AuthResponse> => {
+  verifyOtp: async ({ email, otp, type }: VerifyOtpRequest): Promise<AuthResponse> => {
     try {
       // Call the API directly without apiCall wrapper since the response structure is different
-      const response = await apiClient.post('/auth/verify-otp', { email, otp });
+      const response = await apiClient.post('/auth/verify-otp', { email, otp, type });
 
       // Debug: Log the response to see what we're getting
       logger.debug('Verify OTP response:', response.data);
@@ -99,46 +105,6 @@ export const authService = {
       return authResponse;
     } catch (error) {
       logger.error('Verify OTP service error:', error);
-      throw error;
-    }
-  },
-
-  // User registration
-  register: async (userData: RegisterRequest): Promise<AuthResponse> => {
-    try {
-      // Call the API directly without apiCall wrapper since the response structure is different
-      const response = await apiClient.post('/auth/register', userData);
-
-      // Debug: Log the response to see what we're getting
-      logger.debug('Registration response:', response.data);
-
-      // Check if we got a valid response
-      if (!response.data) {
-        throw new Error('No data received from registration API');
-      }
-
-      if (!response.data.success) {
-        throw new Error(response.data.error || 'Registration failed');
-      }
-
-      // Transform the backend response to match our frontend types
-      const authResponse: AuthResponse = {
-        token: response.data.token,
-        refreshToken: response.data.refreshToken || '', // Backend might not have refresh token
-        user: {
-          id: response.data.user.id,
-          email: response.data.user.email,
-          fullName: response.data.user.fullName || '',
-          username: response.data.user.username || '',
-          isActive: response.data.user.isActive !== false, // Default to true if not specified
-          createdAt: response.data.user.createdAt,
-          updatedAt: response.data.user.updatedAt,
-        },
-      };
-
-      return authResponse;
-    } catch (error) {
-      logger.error('Registration service error:', error);
       throw error;
     }
   },

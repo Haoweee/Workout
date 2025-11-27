@@ -1,19 +1,15 @@
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+
 import { Button } from '@/components/ui/button';
 
-interface ExerciseNavigationProps {
-  currentExerciseIndex: number;
-  totalExercises: number;
-  onPrevious: () => void;
-  onNext: () => void;
-}
+import type { ExerciseNavigationProps } from '@/types/workout';
 
-export const WorkoutExerciseNavigation = ({
+export const WorkoutExerciseNavigation: React.FC<ExerciseNavigationProps> = ({
   currentExerciseIndex,
   totalExercises,
   onPrevious,
   onNext,
-}: ExerciseNavigationProps) => {
+}) => {
   return (
     <div className="flex justify-between mb-6">
       <Button variant="outline" onClick={onPrevious} disabled={currentExerciseIndex === 0}>

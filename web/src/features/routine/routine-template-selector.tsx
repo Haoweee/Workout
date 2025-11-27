@@ -1,24 +1,16 @@
 import React from 'react';
-import { Plus } from 'lucide-react';
 
-import { Button } from '@/components/ui/button';
+import { Plus, Clock, Target, Users, Star } from 'lucide-react';
+
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
 
 import { routineTemplates } from '@/constants/routine-templates';
 
-import { Clock, Target, Users, Star } from 'lucide-react';
+import type { TemplateSelectorProps } from '@/types/routine';
 
-interface TemplateSelectorProps {
-  onTemplateSelect: (templateId: string) => void;
-  onStartFromScratch: () => void;
-}
-
-const difficultyColors = {
-  Beginner: 'bg-green-100 text-green-800',
-  Intermediate: 'bg-yellow-100 text-yellow-800',
-  Advanced: 'bg-red-100 text-red-800',
-};
+import { getDifficultyColor } from '@/utils';
 
 export const TemplateSelector: React.FC<TemplateSelectorProps> = ({
   onTemplateSelect,
@@ -47,9 +39,7 @@ export const TemplateSelector: React.FC<TemplateSelectorProps> = ({
                       </div>
                       <Badge
                         variant="secondary"
-                        className={
-                          difficultyColors[template.difficulty as keyof typeof difficultyColors]
-                        }
+                        className={getDifficultyColor(template.difficulty)}
                       >
                         {template.difficulty}
                       </Badge>

@@ -1,8 +1,9 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 import { cn } from '@/lib/utils';
 
+import { AlertMessage } from '@/components/errors/alert-message';
 import { Button } from '@/components/ui/button';
 import {
   Field,
@@ -12,11 +13,11 @@ import {
   FieldSeparator,
 } from '@/components/ui/field';
 import { Input } from '@/components/ui/input';
-import { AlertMessage } from '@/components/errors/alert-message';
 
 import { OAuth } from '@/features/forms/oauth';
 
-import { useLogin } from '@/hooks/useLogin';
+import { useLogin } from '@/hooks/auth';
+
 import type { LoginRequest } from '@/types/api';
 
 export function LoginForm({ className, ...props }: React.ComponentProps<'form'>) {
@@ -100,8 +101,9 @@ export function LoginForm({ className, ...props }: React.ComponentProps<'form'>)
         </FieldGroup>
       </form>
       <FieldDescription className="p-6 text-center">
-        By clicking continue, you agree to our <a href="#">Terms of Service</a> and{' '}
-        <a href="#">Privacy Policy</a>.
+        By clicking continue, you agree to our{' '}
+        <Link to="/legal?tab=terms-of-service">Terms of Service</Link> and{' '}
+        <Link to="/legal?tab=privacy-policy">Privacy Policy</Link>.
       </FieldDescription>
     </>
   );

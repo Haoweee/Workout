@@ -1,6 +1,6 @@
 import { ProfileHeader, ProfileEditor, ProfileContent } from '@/features/profile';
 
-import { useAuth } from '@/hooks/useAuth';
+import { useAuth } from '@/hooks/auth';
 
 export const ProfilePage: React.FC = () => {
   const { user } = useAuth();

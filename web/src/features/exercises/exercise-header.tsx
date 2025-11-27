@@ -2,11 +2,9 @@ import { ArrowLeft } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 
-type ExerciseHeaderProps = {
-  handleBackClick: () => void;
-};
+import type { ClickBackProps } from '@/types/shared';
 
-export const ExerciseHeader = ({ handleBackClick }: ExerciseHeaderProps) => {
+export const ExerciseHeader: React.FC<ClickBackProps> = ({ handleBackClick }) => {
   return (
     <Button onClick={handleBackClick} variant="ghost" className="mb-6">
       <ArrowLeft className="mr-2 h-4 w-4" />

@@ -2,17 +2,13 @@ import { Button } from '@/components/ui/button';
 
 import { ExerciseHeader } from './exercise-header';
 
-type ExerciseNotFoundProps = {
-  error: string | null;
-  handleBackClick: () => void;
-  handleRefresh: () => void;
-};
+import type { NotFoundProps } from '@/types/shared';
 
-export const ExerciseNotFound = ({
+export const ExerciseNotFound: React.FC<NotFoundProps> = ({
   error,
   handleBackClick,
   handleRefresh,
-}: ExerciseNotFoundProps) => {
+}) => {
   return (
     <div className="max-w-4xl mx-auto p-6">
       <div className="bg-red-50 border border-red-200 text-red-700 px-6 py-4 rounded-lg">

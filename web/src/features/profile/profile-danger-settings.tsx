@@ -1,7 +1,6 @@
 import { useState } from 'react';
 
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import {
   Dialog,
   DialogClose,
@@ -11,11 +10,11 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
 
-import { useDeactivateAccount } from '@/hooks/useDeactivateAccount';
-import { useDeleteAccount } from '@/hooks/useDeleteAccount';
+import { useDeactivateAccount, useDeleteAccount } from '@/hooks/user';
 
-export const ProfileDangerSettings = () => {
+export const ProfileDangerSettings: React.FC = () => {
   const { deactivateAccount } = useDeactivateAccount();
   const { deleteAccount } = useDeleteAccount();
 

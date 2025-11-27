@@ -4,21 +4,13 @@ import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { ErrorToast } from '@/components/errors/toast';
 
-import { TemplateSelector } from './routine-template-selector';
-import { RoutineBasicInfo } from './routine-basic-info';
 import { ExerciseBuilder } from './routine-exercise-builder';
+import { RoutineBasicInfo } from './routine-basic-info';
+import { TemplateSelector } from './routine-template-selector';
 
-import { useCreateRoutine } from '@/hooks/useCreateRoutine';
-import { useUpdateRoutine } from '@/hooks/useUpdateRoutine';
-import { useRoutineForm } from '@/hooks/useRoutineForm';
+import { useCreateRoutine, useRoutineForm, useUpdateRoutine } from '@/hooks/routines';
 
-import type { Routine } from '@/types/api';
-
-interface RoutineFormProps {
-  mode: 'create' | 'edit';
-  existingRoutine?: Routine;
-  onSuccess?: (routine: Routine) => void;
-}
+import type { Routine, RoutineFormProps } from '@/types/routine';
 
 export const RoutineForm: React.FC<RoutineFormProps> = ({ mode, existingRoutine, onSuccess }) => {
   const navigate = useNavigate();
@@ -70,7 +62,9 @@ export const RoutineForm: React.FC<RoutineFormProps> = ({ mode, existingRoutine,
 
     try {
       if (mode === 'create') {
-        result = await createRoutine(routineData);
+        if (routineData.difficulty) {
+          result = await createRoutine(routineData);
+        }
       } else if (mode === 'edit' && existingRoutine) {
         result = await updateRoutine(existingRoutine.id, routineData);
       }

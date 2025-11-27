@@ -1,6 +1,6 @@
 import { Skeleton } from '@/components/ui/skeleton';
 
-export const WorkoutStartWorkoutSkeleton = () => {
+export const WorkoutStartWorkoutSkeleton: React.FC = () => {
   return (
     <div className="min-h-screen bg-gray-50 p-4">
       <div className="max-w-4xl mx-auto">

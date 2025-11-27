@@ -2,8 +2,7 @@ import { Calendar, Clock, Dumbbell, Edit2 } from 'lucide-react';
 
 import { Card, CardContent } from '@/components/ui/card';
 
-import type { OptimizedWorkout } from '@/services/workout.service';
-import type { WeightUnit } from '@/types/preferences';
+import type { WorkoutStatsProps } from '@/types/workout';
 
 import {
   formatDate,
@@ -13,12 +12,7 @@ import {
   calculateTotalVolume,
 } from '@/utils';
 
-type WorkoutStatsProps = {
-  workout: OptimizedWorkout;
-  preferences: { weightUnit: WeightUnit };
-};
-
-export const WorkoutStats = ({ workout, preferences }: WorkoutStatsProps) => {
+export const WorkoutStats: React.FC<WorkoutStatsProps> = ({ workout, preferences }) => {
   const duration = calculateWorkoutDuration(workout);
   const totalVolume = calculateTotalVolume(preferences, workout);
   return (

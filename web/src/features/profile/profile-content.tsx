@@ -1,11 +1,13 @@
 import { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { TableProperties, Dumbbell } from 'lucide-react';
-import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { useRoutines } from '@/hooks/useRoutines';
 
-import { WorkoutsTab } from '@/components/profile/workouts';
+import { TableProperties, Dumbbell } from 'lucide-react';
+
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { RoutinesTab } from '@/components/profile/routines';
+import { WorkoutsTab } from '@/components/profile/workouts';
+
+import { useGetAllUserRoutines } from '@/hooks/routines';
 
 export const ProfileContent: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -18,7 +20,7 @@ export const ProfileContent: React.FC = () => {
     hasInitialized,
     fetchUserRoutines,
     refreshRoutines,
-  } = useRoutines(false); // Don't auto-fetch
+  } = useGetAllUserRoutines(false); // Don't auto-fetch
 
   const tabFromUrl = searchParams.get('tab') || 'profile?tab=workouts';
   const [activeTab, setActiveTab] = useState(tabFromUrl);

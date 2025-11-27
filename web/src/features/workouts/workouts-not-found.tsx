@@ -1,11 +1,6 @@
 import { Button } from '@/components/ui/button';
 
-type WorkoutNotFoundProps = {
-  id: string;
-  debugInfo: string;
-  retry: () => void;
-  navigate: (path: string) => void;
-};
+import type { WorkoutNotFoundProps } from '@/types/workout';
 
 export const WorkoutNotFound: React.FC<WorkoutNotFoundProps> = ({
   id,

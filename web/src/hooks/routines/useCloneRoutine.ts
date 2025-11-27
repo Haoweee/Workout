@@ -1,0 +1,37 @@
+import { useState } from 'react';
+
+import { routineService } from '@/services';
+
+import type { Routine } from '@/types/routine';
+
+/** (NOT USED YET)
+ *
+ * Custom hook to clone a routine by its ID
+ *
+ * @returns Object containing the cloneRoutine function, loading state, and error state
+ *
+ * @example
+ * const { cloneRoutine, isLoading, error } = useCloneRoutine();
+ */
+export const useCloneRoutine = () => {
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const cloneRoutine = async (id: string, title?: string): Promise<Routine | null> => {
+    try {
+      setIsLoading(true);
+      setError(null);
+
+      const clonedRoutine = await routineService.cloneRoutine(id, title);
+      return clonedRoutine;
+    } catch (err) {
+      console.error('Error cloning routine:', err);
+      setError(err instanceof Error ? err.message : 'Failed to clone routine');
+      return null;
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  return { cloneRoutine, isLoading, error };
+};

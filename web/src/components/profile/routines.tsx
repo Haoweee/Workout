@@ -1,19 +1,13 @@
 import { useNavigate } from 'react-router-dom';
-import { Dumbbell, Plus } from 'lucide-react';
-import { TabsContent } from '@/components/ui/tabs';
-import { Card } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Skeleton } from '@/components/ui/skeleton';
-// import { useDeleteRoutine } from '@/hooks/useDeleteRoutine';
 
-interface Routine {
-  id: string;
-  title: string;
-  description?: string;
-  difficulty: string;
-  exercises?: unknown[];
-  visibility: 'PUBLIC' | 'PRIVATE';
-}
+import { Dumbbell, Plus } from 'lucide-react';
+
+import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
+import { Skeleton } from '@/components/ui/skeleton';
+import { TabsContent } from '@/components/ui/tabs';
+
+import type { Routine } from '@/types/routine';
 
 export const RoutinesTab = ({
   routines,
@@ -26,8 +20,6 @@ export const RoutinesTab = ({
   isLoading: boolean;
   error: string | null;
 }) => {
-  // const { deleteRoutine } = useDeleteRoutine();
-
   const navigate = useNavigate();
 
   const handleRoutineClick = (routineId: string) => {
@@ -104,7 +96,7 @@ export const RoutinesTab = ({
                   <p className="text-sm text-gray-600 mb-3 line-clamp-2">{routine.description}</p>
                 )}
                 <div className="flex justify-between items-center text-xs text-gray-500">
-                  <span>{routine.exercises?.length || 0} exercises</span>
+                  <span>{routine.routineExercises?.length || 0} exercises</span>
                   <span>{routine.visibility === 'PUBLIC' ? 'Public' : 'Private'}</span>
                 </div>
               </Card>

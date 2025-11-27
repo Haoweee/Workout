@@ -1,27 +1,21 @@
 import { Search } from 'lucide-react';
+
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
+
+import type { RoutineListProps } from '@/types/workout';
+
 import { getAvailableDays, getTotalExerciseCount, filterRoutines } from '@/utils';
-import type { Routine } from '@/types/api';
 
-interface RoutineListProps {
-  routines: Routine[];
-  searchTerm: string;
-  onSearchChange: (term: string) => void;
-  onRoutineSelect: (routine: Routine) => void;
-  onCreateRoutine: () => void;
-  creating: boolean;
-}
-
-export const WorkoutRoutineList = ({
+export const WorkoutRoutineList: React.FC<RoutineListProps> = ({
   routines,
   searchTerm,
   onSearchChange,
   onRoutineSelect,
   onCreateRoutine,
   creating,
-}: RoutineListProps) => {
+}) => {
   const filteredRoutines = filterRoutines(routines, searchTerm);
 
   return (

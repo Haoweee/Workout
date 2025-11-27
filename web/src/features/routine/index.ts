@@ -18,4 +18,4 @@ export { RoutineSkeleton } from './routine-skeleton';
 export { TemplateSelector } from './routine-template-selector';
 
 // Hook for external use
-export { useRoutineForm } from '../../hooks/useRoutineForm';
+export { useRoutineForm } from '@/hooks/routines';

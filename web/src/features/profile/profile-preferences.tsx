@@ -1,7 +1,7 @@
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 
-import { useUserPreferences } from '@/hooks/useUserPreferences';
+import { useUserPreferences } from '@/hooks/user/useUserPreferences';
 
 import { getWeightUnitLabel } from '@/utils';
 

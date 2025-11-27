@@ -1,31 +1,17 @@
 import { Dumbbell, Check, Timer } from 'lucide-react';
+
+import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
-import { Badge } from '@/components/ui/badge';
-import { useUserPreferences } from '@/hooks/useUserPreferences';
+
+import { useUserPreferences } from '@/hooks/user/useUserPreferences';
+
+import type { CurrentSetFormProps } from '@/types/workout';
+
 import { displayWeight } from '@/utils';
-import type { OptimizedExercise, OptimizedSet } from '@/services/workout.service';
 
-interface CurrentSetFormProps {
-  exercise: OptimizedExercise;
-  currentSet: OptimizedSet;
-  activeSetIndex: number;
-  currentWeight: string;
-  setCurrentWeight: (weight: string) => void;
-  currentReps: string;
-  setCurrentReps: (reps: string) => void;
-  currentRPE: string;
-  setCurrentRPE: (rpe: string) => void;
-  currentNotes: string;
-  setCurrentNotes: (notes: string) => void;
-  saving: boolean;
-  onLogSet: () => void;
-  onStartRestTimer: () => void;
-  showRestTimer: boolean;
-}
-
-export const WorkoutCurrentSetForm = ({
+export const WorkoutCurrentSetForm: React.FC<CurrentSetFormProps> = ({
   exercise,
   currentSet,
   activeSetIndex,
@@ -41,7 +27,7 @@ export const WorkoutCurrentSetForm = ({
   onLogSet,
   onStartRestTimer,
   showRestTimer,
-}: CurrentSetFormProps) => {
+}) => {
   const { preferences } = useUserPreferences();
 
   return (

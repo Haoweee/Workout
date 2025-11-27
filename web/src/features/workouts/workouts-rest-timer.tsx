@@ -1,23 +1,19 @@
 import { Play, Pause } from 'lucide-react';
+
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
+
+import type { RestTimerProps } from '@/types/workout';
+
 import { formatRestTime } from '@/utils';
 
-interface RestTimerProps {
-  isVisible: boolean;
-  timeRemaining: number;
-  isRunning: boolean;
-  onToggle: () => void;
-  onSkip: () => void;
-}
-
-export const WorkoutRestTimer = ({
+export const WorkoutRestTimer: React.FC<RestTimerProps> = ({
   isVisible,
   timeRemaining,
   isRunning,
   onToggle,
   onSkip,
-}: RestTimerProps) => {
+}) => {
   if (!isVisible) return null;
 
   return (

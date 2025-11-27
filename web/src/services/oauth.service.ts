@@ -1,5 +1,5 @@
-// Authentication Service
 import type { AuthResponse, ApiResponse } from '@/types/api';
+
 import { apiClient, apiCall } from '@/lib/api-client';
 
 export const OAuthService = {

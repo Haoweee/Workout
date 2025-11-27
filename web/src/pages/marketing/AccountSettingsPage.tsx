@@ -1,6 +1,7 @@
 import { User, Shield, Bell, Trash2, Key, Globe } from 'lucide-react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+
 import { Badge } from '@/components/ui/badge';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 
 export const AccountSettingsPage = () => {
   const settingsSections = [

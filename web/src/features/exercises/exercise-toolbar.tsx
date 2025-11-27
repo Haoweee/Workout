@@ -1,10 +1,8 @@
 import { Search, SlidersHorizontal } from 'lucide-react';
+
 import { Button } from '@/components/ui/button';
+import { ExerciseFiltersComponent } from '@/features/exercises/exercise-filters';
 import { SearchBar } from '@/components/search/search-bar';
-import {
-  ExerciseFiltersComponent,
-  type ExerciseFilters,
-} from '@/features/exercises/exercise-filters';
 import {
   Sheet,
   SheetContent,
@@ -14,23 +12,9 @@ import {
   SheetTrigger,
 } from '@/components/ui/sheet';
 
-interface ExerciseToolbarProps {
-  searchTerm: string;
-  onSearchChange: (term: string) => void;
-  onSearch: () => void;
-  filters: ExerciseFilters;
-  onFiltersChange: (filters: ExerciseFilters) => void;
-  onApplyFilters: () => void;
-  onClearFilters: () => void;
-  isLoading: boolean;
-  handleRefresh: () => void;
-  error: string | null;
-  suggestions?: Array<{ id: string | number; name: string }>;
-  showDropdown?: boolean;
-  onSuggestionClick?: (suggestion: { id: string | number; name: string }) => void;
-}
+import type { ExerciseToolbarProps } from '@/types/exercise';
 
-export const ExerciseToolbar = ({
+export const ExerciseToolbar: React.FC<ExerciseToolbarProps> = ({
   searchTerm,
   onSearchChange,
   onSearch,
@@ -44,7 +28,7 @@ export const ExerciseToolbar = ({
   suggestions = [],
   showDropdown = false,
   onSuggestionClick,
-}: ExerciseToolbarProps) => {
+}) => {
   return (
     <div className="w-full flex space-x-2 flex-col md:flex-row md:items-center gap-2">
       <SearchBar

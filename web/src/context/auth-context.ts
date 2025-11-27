@@ -1,5 +1,5 @@
 import { createContext } from 'react';
-import type { User, LoginRequest, RegisterRequest } from '@/types/api';
+import type { User, LoginRequest, SendOtpRequest, VerifyOtpRequest } from '@/types/api';
 
 export interface AuthContextType {
   // State
@@ -9,9 +9,8 @@ export interface AuthContextType {
 
   // Actions
   login: (credentials: LoginRequest) => Promise<void>;
-  sendOtp: (userData: RegisterRequest) => Promise<void>;
-  verifyOtp: (userData: RegisterRequest, otp: string) => Promise<void>;
-  register: (userData: RegisterRequest) => Promise<void>;
+  sendOtp: (userData: SendOtpRequest) => Promise<void>;
+  verifyOtp: (userData: VerifyOtpRequest, otp: string) => Promise<void>;
   logout: () => Promise<void>;
   refreshProfile: () => Promise<void>;
   updateUser: (updatedUser: User) => void;

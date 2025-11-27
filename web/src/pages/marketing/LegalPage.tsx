@@ -1,12 +1,13 @@
 import { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
+
 import { Scale, Shield, Trash2 } from 'lucide-react';
 
-import { PrivacyPolicy } from '../../features/marketing/legal/privacy-policy';
-import { TermsOfService } from '../../features/marketing/legal/tos';
-import { DataDeletion } from '../../features/marketing/legal/data-deletion';
-
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
+
+import { PrivacyPolicy } from '@/features/marketing/legal/privacy-policy';
+import { TermsOfService } from '@/features/marketing/legal/tos';
+import { DataDeletion } from '@/features/marketing/legal/data-deletion';
 
 export const LegalPage = () => {
   const [searchParams, setSearchParams] = useSearchParams();

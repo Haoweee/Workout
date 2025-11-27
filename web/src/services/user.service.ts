@@ -1,5 +1,7 @@
 // User Service
-import type { User, UpdateProfileRequest, ApiResponse, PaginatedResponse } from '@/types/api';
+import type { ApiResponse, PaginatedResponse } from '@/types/api';
+import type { User, UpdateProfileRequest } from '@/types/user';
+
 import { apiClient, apiCall } from '@/lib/api-client';
 
 export const userService = {

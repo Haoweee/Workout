@@ -1,5 +1,6 @@
-import { RoutineHeader } from './routine-header';
 import { Card, CardContent } from '@/components/ui/card';
+
+import { RoutineHeader } from './routine-header';
 
 export const RoutineNotFound: React.FC = () => {
   return (

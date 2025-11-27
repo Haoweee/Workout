@@ -9,8 +9,8 @@ import {
   WorkoutExerciseList,
 } from '@/features/workouts';
 
-import { useUserPreferences } from '@/hooks/useUserPreferences';
-import { useGetWorkoutById } from '@/hooks/useGetWorkoutById';
+import { useUserPreferences } from '@/hooks/user';
+import { useGetWorkoutById } from '@/hooks/workouts';
 
 export const WorkoutDetailPage: React.FC = () => {
   const navigate = useNavigate();

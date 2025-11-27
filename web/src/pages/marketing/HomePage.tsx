@@ -1,9 +1,9 @@
+import { CTA } from '@/features/marketing/homepage/cta';
+import { Features } from '@/features/marketing/homepage/features';
 import { Header } from '@/features/marketing/homepage/header';
 import { ProblemSolution } from '@/features/marketing/homepage/problem-solution';
-import { Features } from '@/features/marketing/homepage/features';
-import { CTA } from '@/features/marketing/homepage/cta';
 
-import { useAuth } from '@/hooks';
+import { useAuth } from '@/hooks/auth';
 
 export const HomePage = () => {
   const { user } = useAuth();

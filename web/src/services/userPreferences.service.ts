@@ -1,4 +1,5 @@
 import { STORAGE_KEYS } from '@/constants';
+
 import { DEFAULT_USER_PREFERENCES } from '@/types/preferences';
 import type { UserPreferences, WeightUnit } from '@/types/preferences';
 

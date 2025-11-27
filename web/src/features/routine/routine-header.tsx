@@ -1,17 +1,16 @@
 import { useNavigate } from 'react-router-dom';
-import { ArrowLeft } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { AvatarProfile } from '@/components/profile/avatar';
-import type { Routine } from '@/types/api';
 
-export const RoutineHeader = ({
+import { ArrowLeft } from 'lucide-react';
+
+import { AvatarProfile } from '@/components/profile/avatar';
+import { Button } from '@/components/ui/button';
+
+import type { RoutineHeaderProps } from '@/types/routine';
+
+export const RoutineHeader: React.FC<RoutineHeaderProps> = ({
   routine,
   showAvatar = false,
   navigation,
-}: {
-  routine?: Routine;
-  showAvatar?: boolean;
-  navigation?: string;
 }) => {
   const navigate = useNavigate();
   return (

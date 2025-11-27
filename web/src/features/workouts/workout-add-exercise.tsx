@@ -1,15 +1,14 @@
 import React, { useState } from 'react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+
 import { Plus, X } from 'lucide-react';
+
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+
 import { popularExercises } from '@/constants/routine-templates';
 
-interface WorkoutAddExerciseProps {
-  onAddExercise: (exerciseName: string, isCustom?: boolean) => void;
-  isVisible: boolean;
-  onClose: () => void;
-}
+import type { WorkoutAddExerciseProps } from '@/types/workout';
 
 export const WorkoutAddExercise: React.FC<WorkoutAddExerciseProps> = ({
   onAddExercise,

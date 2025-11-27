@@ -1,160 +1,21 @@
-import { apiClient, apiCall } from '@/lib/api-client';
 import type { ApiResponse } from '@/types/api';
+import type {
+  Workout,
+  CreateWorkoutRequest,
+  UpdateWorkoutRequest,
+  WorkoutSet,
+  CreateWorkoutSetRequest,
+  UpdateWorkoutSetRequest,
+  WorkoutStats,
+  AnalyticsType,
+  ChartDataPoint,
+  OptimizedWorkout,
+  GetUserWorkoutsOptions,
+  GetUserWorkoutsResponse,
+  WorkoutsApiResponse,
+} from '@/types/workout';
 
-export interface CreateWorkoutRequest {
-  routineId?: string;
-  title?: string;
-  visibility?: 'PRIVATE' | 'PUBLIC' | 'UNLISTED';
-  dayIndex?: number; // Add dayIndex to specify which day's exercises to include
-}
-
-export interface UpdateWorkoutRequest {
-  title?: string;
-  visibility?: 'PRIVATE' | 'PUBLIC' | 'UNLISTED';
-  finishedAt?: string | null;
-}
-
-export interface CreateWorkoutSetRequest {
-  exerciseId?: number;
-  customExerciseName?: string;
-  customExerciseCategory?: string;
-  customExercisePrimaryMuscles?: string[];
-  setNumber?: number;
-  reps?: number;
-  weightKg?: number;
-  rpe?: number;
-  durationSec?: number;
-  notes?: string;
-}
-
-export interface UpdateWorkoutSetRequest {
-  reps?: number;
-  weightKg?: number;
-  rpe?: number;
-  durationSec?: number;
-  notes?: string;
-}
-
-export interface Workout {
-  id: string;
-  userId: string;
-  routineId: string | null;
-  title: string | null;
-  visibility: 'PRIVATE' | 'PUBLIC' | 'UNLISTED';
-  startedAt: string;
-  finishedAt: string | null;
-  workoutSets: WorkoutSet[];
-  routine?: {
-    id: string;
-    title: string;
-  } | null;
-}
-
-export interface OptimizedSet {
-  setNumber: number;
-  reps: string | null;
-  weightKg: number | null;
-  rpe: number | null;
-  notes: string | null;
-  completed: boolean;
-}
-
-export interface OptimizedExercise {
-  exerciseId: number | null;
-  exerciseName: string;
-  isCustom: boolean;
-  orderIndex: number;
-  sets: OptimizedSet[];
-}
-
-export interface OptimizedWorkout {
-  id: string;
-  userId: string;
-  routineId: string | null;
-  title: string | null;
-  visibility: 'PRIVATE' | 'PUBLIC' | 'UNLISTED';
-  startedAt: string;
-  finishedAt: string | null;
-  routine?: {
-    id: string;
-    title: string;
-  } | null;
-  exercises: OptimizedExercise[];
-}
-
-export interface WorkoutSet {
-  id: string;
-  workoutId: string;
-  exerciseId: number | null;
-  customExerciseName: string | null;
-  customExerciseCategory: string | null;
-  customExercisePrimaryMuscles: string[];
-  setNumber: number;
-  reps: number | null;
-  weightKg: number | null;
-  rpe: number | null;
-  durationSec: number | null;
-  notes: string | null;
-  performedAt: string;
-  exercise?: {
-    id: number;
-    name: string;
-    category: string | null;
-    primaryMuscles: string[];
-    secondaryMuscles: string[];
-  };
-}
-
-export interface WorkoutStats {
-  totalWorkouts: number;
-  totalSets: number;
-  totalVolume: number;
-  averageWorkoutDuration: number;
-  workoutsThisWeek: number;
-  workoutsThisMonth: number;
-}
-
-export interface ChartDataPoint {
-  month?: string;
-  desktop?: number;
-  muscleGroup?: string;
-  exercises?: number;
-}
-
-export interface AnalyticsResponse {
-  data: ChartDataPoint[];
-}
-
-export type AnalyticsType = 'overall-progress' | 'muscle-groups' | 'volume-over-time';
-
-export interface GetUserWorkoutsOptions {
-  limit?: number;
-  offset?: number;
-  includeFinished?: boolean;
-  routineId?: string;
-}
-
-export interface GetUserWorkoutsResponse {
-  workouts: Workout[];
-  pagination: {
-    total: number;
-    limit: number;
-    offset: number;
-    hasMore: boolean;
-  };
-}
-
-// Internal API response type for getUserWorkouts
-interface WorkoutsApiResponse {
-  message: string;
-  data: Workout[];
-  pagination: {
-    total: number;
-    limit: number;
-    offset: number;
-    hasMore: boolean;
-  };
-}
+import { apiClient, apiCall } from '@/lib/api-client';
 
 export const workoutService = {
   // Create a new workout

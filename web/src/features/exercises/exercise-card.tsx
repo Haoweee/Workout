@@ -1,6 +1,8 @@
 import { useNavigate } from 'react-router-dom';
+
 import { Card } from '@/components/ui/card';
-import type { ExerciseResponse } from '@/types/api';
+
+import type { ExerciseResponse } from '@/types/exercise';
 
 export const ExerciseCard: React.FC<{ exercise: ExerciseResponse }> = ({ exercise }) => {
   const navigate = useNavigate();

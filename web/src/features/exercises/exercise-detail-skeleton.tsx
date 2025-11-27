@@ -2,11 +2,9 @@ import { Skeleton } from '@/components/ui/skeleton';
 
 import { ExerciseHeader } from './exercise-header';
 
-type ExerciseDetailSkeletonProps = {
-  handleBackClick: () => void;
-};
+import type { ClickBackProps } from '@/types/shared';
 
-export const ExerciseDetailSkeleton = ({ handleBackClick }: ExerciseDetailSkeletonProps) => {
+export const ExerciseDetailSkeleton: React.FC<ClickBackProps> = ({ handleBackClick }) => {
   return (
     <div className="max-w-4xl mx-auto p-6">
       <ExerciseHeader handleBackClick={handleBackClick} />

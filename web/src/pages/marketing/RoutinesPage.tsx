@@ -1,10 +1,14 @@
 import { useState } from 'react';
-import { Plus, Clock, Target, Users, Star } from 'lucide-react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '@/hooks/useAuth';
+
+import { Plus, Clock, Target, Users, Star } from 'lucide-react';
+
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+
+import { useAuth } from '@/hooks/auth';
+
 import { routineTemplates } from '@/constants/routine-templates';
 
 const difficultyLevels = ['All', 'Beginner', 'Intermediate', 'Advanced'];

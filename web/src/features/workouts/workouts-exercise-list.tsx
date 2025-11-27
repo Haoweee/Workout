@@ -1,18 +1,13 @@
-import { Dumbbell } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+
+import { Dumbbell } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
-import { useUserPreferences } from '@/hooks/useUserPreferences';
-import type { OptimizedWorkout } from '@/services/workout.service';
+import type { WorkoutsExerciseListProps } from '@/types/workout';
 
 import { displayWeight, getUniqueSets } from '@/utils';
-
-interface WorkoutsExerciseListProps {
-  workout: OptimizedWorkout;
-  preferences: ReturnType<typeof useUserPreferences>['preferences'];
-}
 
 export const WorkoutExerciseList: React.FC<WorkoutsExerciseListProps> = ({
   workout,

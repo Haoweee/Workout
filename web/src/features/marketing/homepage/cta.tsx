@@ -4,13 +4,9 @@ import { Merge } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 
-import type { AuthContextType } from '@/context/auth-context';
+import type { UserProps } from '@/types/user';
 
-interface CTAProps {
-  user: AuthContextType['user'];
-}
-
-export const CTA = ({ user }: CTAProps) => {
+export const CTA = ({ user }: UserProps) => {
   const navigate = useNavigate();
   return (
     <div className="text-center space-y-6 mb-18">

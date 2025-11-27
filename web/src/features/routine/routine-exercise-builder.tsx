@@ -1,37 +1,13 @@
 import React, { useState } from 'react';
-import { Card } from '@/components/ui/card';
+
 import { Button } from '@/components/ui/button';
-import { ExerciseSearch } from './routine-exercise-search';
+import { Card } from '@/components/ui/card';
+
 import { DayTabs } from './routine-day-tabs';
 import { ExerciseList } from './routine-exercise-list';
+import { ExerciseSearch } from './routine-exercise-search';
 
-interface Exercise {
-  id: string | number;
-  name: string;
-  sets: string;
-  reps: string;
-  rest: string;
-  isCustom?: boolean;
-}
-
-interface Day {
-  id: string;
-  name: string;
-  exercises: Exercise[];
-}
-
-interface ExerciseBuilderProps {
-  days: Day[];
-  currentDayId: string;
-  onDaysChange: (days: Day[]) => void;
-  onCurrentDayChange: (dayId: string) => void;
-  onAddExercise: (exerciseName: string, isCustom?: boolean) => void;
-  onUpdateExercise: (exerciseId: string | number, field: string, value: string) => void;
-  onRemoveExercise: (exerciseId: string | number) => void;
-  onAddDay: () => void;
-  onRemoveDay: (dayId: string) => void;
-  onShowTemplates: () => void;
-}
+import type { ExerciseBuilderProps } from '@/types/routine';
 
 export const ExerciseBuilder: React.FC<ExerciseBuilderProps> = ({
   days,

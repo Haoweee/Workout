@@ -1,10 +1,8 @@
 import { Card, CardContent } from '@/components/ui/card';
 
-interface CompletionMessageProps {
-  isVisible: boolean;
-}
+import type { CompletionMessageProps } from '@/types/workout';
 
-export const WorkoutCompletionMessage = ({ isVisible }: CompletionMessageProps) => {
+export const WorkoutCompletionMessage: React.FC<CompletionMessageProps> = ({ isVisible }) => {
   if (!isVisible) return null;
 
   return (

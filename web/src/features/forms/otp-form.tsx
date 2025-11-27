@@ -5,6 +5,7 @@ import { GalleryVerticalEnd } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
 
+import { AlertMessage } from '@/components/errors/alert-message';
 import { Button } from '@/components/ui/button';
 import { Field, FieldDescription, FieldGroup, FieldLabel } from '@/components/ui/field';
 import {
@@ -14,17 +15,17 @@ import {
   InputOTPSlot,
 } from '@/components/ui/input-otp';
 import { Loading } from '@/components/loading/spinner';
-import { AlertMessage } from '@/components/errors/alert-message';
 
 import { useRegistration } from '@/context/registration-context';
-import { useVerifyOtp } from '@/hooks/useVerifyOtp';
+
+import { useVerifyOtp } from '@/hooks/auth';
+
+import { logger } from '@/lib/logger';
 
 export function OTPForm({ className, ...props }: React.ComponentProps<'div'>) {
   const { userData } = useRegistration();
   const { handleVerifyOtp, isLoading, error } = useVerifyOtp();
   const navigate = useNavigate();
-
-  console.log('OTPForm userData:', userData);
 
   useEffect(() => {
     if (!userData) {
@@ -38,18 +39,18 @@ export function OTPForm({ className, ...props }: React.ComponentProps<'div'>) {
     const otpInput = form.querySelector('#otp') as HTMLInputElement;
     const otp = otpInput.value;
 
-    if (!userData) {
-      console.error('No user data found in registration context');
+    if (!userData || !userData.email || !userData.type) {
+      logger.error('Missing user data (email or type) in registration context');
       return;
     }
 
-    await handleVerifyOtp(userData, otp);
+    await handleVerifyOtp({ email: userData.email, otp, type: userData.type });
   };
 
   return (
     <div className={cn('flex flex-col gap-6', className)} {...props}>
       <form onSubmit={handleSubmit}>
-        {error && <AlertMessage message={error} type="error" />}
+        {error && <AlertMessage message={error?.message} type="error" />}
         {isLoading && <Loading />}
         <FieldGroup>
           <div className="flex flex-col items-center gap-2 text-center">

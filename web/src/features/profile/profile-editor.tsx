@@ -1,9 +1,10 @@
 import { useState, useRef } from 'react';
+
 import { Camera, X } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
+
 import { AlertMessage } from '@/components/errors/alert-message';
+import { AvatarProfile } from '@/components/profile/avatar';
+import { Button } from '@/components/ui/button';
 import {
   Dialog,
   DialogClose,
@@ -14,14 +15,12 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
-import { AvatarProfile } from '@/components/profile/avatar';
-import { useAvatarUpload } from '@/hooks/useAvatarUpload';
-import { useProfileUpdate } from '@/hooks/useProfileUpdate';
-import type { User } from '@/types/api';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 
-interface ProfileEditorProps {
-  user: User;
-}
+import { useAvatarUpload, useProfileUpdate } from '@/hooks/user';
+
+import type { ProfileEditorProps } from '@/types/user';
 
 export const ProfileEditor: React.FC<ProfileEditorProps> = ({ user }) => {
   const fileInputRef = useRef<HTMLInputElement>(null);

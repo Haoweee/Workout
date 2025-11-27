@@ -56,6 +56,7 @@ export class ExerciseController {
       if (equipment) filters.equipment = equipment;
 
       const result = await ExerciseService.getAllExercises(filters);
+      console.log('Fetched exercises result:', result);
 
       res.status(200).json({
         success: true,
