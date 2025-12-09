@@ -8,16 +8,33 @@ import { EmailService } from '@/services/emailService';
 import { config } from '@/config/config';
 
 function generateOtp(): string {
+  // Use predictable OTP in test environment
+  if (config.environment === 'test') {
+    return '123456';
+  }
   return Math.floor(100000 + Math.random() * 900000).toString(); // 6-digit OTP
 }
 
 const MILLIS_PER_MINUTE = 60 * 1000;
 
 let loginCodes: { userData: CreateUserRequest; otp: string; expiration: number }[] = []; // In-memory store for OTPs (for demo purposes only
+let cleanupInterval: NodeJS.Timeout | null = null;
 
-setInterval(() => {
-  loginCodes = loginCodes.filter((loginCodeObj) => loginCodeObj.expiration > Date.now());
-}, MILLIS_PER_MINUTE * 10);
+// Start cleanup interval only in non-test environments
+if (config.environment !== 'test') {
+  cleanupInterval = setInterval(() => {
+    loginCodes = loginCodes.filter((loginCodeObj) => loginCodeObj.expiration > Date.now());
+  }, MILLIS_PER_MINUTE * 10);
+}
+
+// Export cleanup function for tests
+export const cleanupAuthController = () => {
+  if (cleanupInterval) {
+    clearInterval(cleanupInterval);
+    cleanupInterval = null;
+  }
+  loginCodes = []; // Clear all OTP codes
+};
 
 export class AuthController {
   static sendOtp = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
@@ -34,6 +51,24 @@ export class AuthController {
         res.status(400).json({
           success: false,
           error: 'Missing required fields: email, username, password, fullName',
+        });
+        return;
+      }
+
+      const existingEmail = await AuthService.checkIfEmailExists(userData.email);
+      if (existingEmail) {
+        res.status(400).json({
+          success: false,
+          error: 'Email already in use',
+        });
+        return;
+      }
+
+      const existingUser = await AuthService.checkIfUserNameExists(userData.username);
+      if (existingUser) {
+        res.status(400).json({
+          success: false,
+          error: 'Username already in use',
         });
         return;
       }
@@ -87,8 +122,6 @@ export class AuthController {
         });
         return;
       }
-
-      console.log('LOGIN CODES:', loginCodes);
 
       const loginCodeObjIndex = loginCodes.findIndex(
         (obj) => obj.userData.email === email && obj.otp === otp && obj.expiration > Date.now()
@@ -167,39 +200,6 @@ export class AuthController {
       }
     } catch (error) {
       logger.error('OTP verification and registration error:', error);
-      next(error);
-    }
-  };
-
-  static register = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-    try {
-      const userData = req.body as CreateUserRequest;
-
-      if (!userData.email || !userData.username || !userData.password || !userData.fullName) {
-        res.status(400).json({
-          success: false,
-          error: 'Missing required fields: email, username, password, fullName',
-        });
-        return;
-      }
-
-      const result = await AuthService.register(userData);
-
-      if (!result.success) {
-        res.status(400).json(result);
-        return;
-      }
-
-      logger.info(`New user registered: ${userData.email}`);
-      res.cookie('auth_token', result.token, {
-        httpOnly: true,
-        secure: config.environment === 'production',
-        sameSite: 'lax',
-      });
-
-      res.status(200).json({ success: true, user: result.user });
-    } catch (error) {
-      logger.error('Registration error:', error);
       next(error);
     }
   };

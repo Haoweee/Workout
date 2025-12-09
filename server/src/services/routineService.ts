@@ -624,7 +624,7 @@ export class RoutineService {
           };
 
           // TypeScript needs explicit assertion after the check above
-          acc[dayIndex]!.push(cleanExercise);
+          acc[dayIndex].push(cleanExercise);
           return acc;
         },
         {} as Record<number, any[]>

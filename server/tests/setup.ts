@@ -1,9 +1,13 @@
 // Import the test database from the mock
 import { testPrisma } from './__mocks__/database';
 import type { PrismaClient } from '@prisma/client';
+import { cleanupAuthController } from '../src/controllers/authController';
 
 // Setup function that runs before each test
 beforeEach(async () => {
+  // Clear OTP codes between tests
+  cleanupAuthController();
+
   // Clean up database before each test
   const tablenames = await testPrisma.$queryRaw<
     Array<{ tablename: string }>
@@ -26,6 +30,7 @@ beforeEach(async () => {
 
 // Cleanup after all tests
 afterAll(async () => {
+  cleanupAuthController(); // Clear any intervals and OTP codes
   await testPrisma.$disconnect();
 });
 

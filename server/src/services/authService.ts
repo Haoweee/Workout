@@ -9,6 +9,24 @@ import { TokenService } from '@services/tokenService';
 export class AuthService {
   private static readonly JWT_SECRET = config.jwt.secret || 'fallback-secret-key';
 
+  static async checkIfEmailExists(email: string): Promise<boolean> {
+    const user = await prisma.user.findFirst({
+      where: {
+        OR: [{ email }],
+      },
+    });
+    return !!user;
+  }
+
+  static async checkIfUserNameExists(username: string): Promise<boolean> {
+    const user = await prisma.user.findFirst({
+      where: {
+        OR: [{ username }],
+      },
+    });
+    return !!user;
+  }
+
   static async register(
     userData: CreateUserRequest
   ): Promise<ServiceAuthResponse | { success: false; error: string }> {

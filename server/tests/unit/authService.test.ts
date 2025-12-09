@@ -2,96 +2,13 @@ import { AuthService } from '../../src/services/authService';
 import { testPrisma } from '../setup';
 import bcrypt from 'bcrypt';
 
-// Mock bcrypt
-jest.mock('bcrypt');
-const mockedBcrypt = bcrypt as jest.Mocked<typeof bcrypt>;
-
 describe('AuthService', () => {
   beforeEach(() => {
     jest.clearAllMocks();
   });
 
-  describe('register', () => {
-    it('should register a new user successfully', async () => {
-      const userData = {
-        username: 'testuser',
-        fullName: 'Test User',
-        email: 'test@example.com',
-        password: 'password123',
-      };
-
-      // Mock bcrypt.hash
-      mockedBcrypt.hash.mockResolvedValue('hashed_password' as never);
-
-      const result = await AuthService.register(userData);
-
-      expect(result.success).toBe(true);
-
-      if (result.success) {
-        expect(result.user).toMatchObject({
-          username: 'testuser',
-          fullName: 'Test User',
-          email: 'test@example.com',
-        });
-        expect(result.token).toBeDefined();
-        expect((result.user as any).passwordHash).toBeUndefined();
-      }
-
-      // Verify bcrypt.hash was called
-      expect(mockedBcrypt.hash).toHaveBeenCalledWith('password123', 12);
-    });
-
-    it('should return error for duplicate email', async () => {
-      const userData = {
-        username: 'testuser',
-        fullName: 'Test User',
-        email: 'test@example.com',
-        password: 'password123',
-      };
-
-      // Create user first
-      await testPrisma.user.create({
-        data: {
-          username: userData.username,
-          fullName: userData.fullName,
-          email: userData.email,
-          passwordHash: 'hashed_password',
-        },
-      });
-
-      const result = await AuthService.register(userData);
-
-      expect(result.success).toBe(false);
-      expect((result as any).error).toBe('Email already registered');
-    });
-
-    it('should return error for duplicate username', async () => {
-      const userData = {
-        username: 'testuser',
-        fullName: 'Test User',
-        email: 'test@example.com',
-        password: 'password123',
-      };
-
-      // Create user with same username
-      await testPrisma.user.create({
-        data: {
-          username: 'testuser',
-          fullName: 'Another User',
-          email: 'another@example.com',
-          passwordHash: 'hashed_password',
-        },
-      });
-
-      const result = await AuthService.register(userData);
-
-      expect(result.success).toBe(false);
-      expect((result as any).error).toBe('Username already taken');
-    });
-  });
-
-  describe('login', () => {
-    beforeEach(async () => {
+  describe('checkIfEmailExists', () => {
+    it('should return true if email exists', async () => {
       // Create a test user
       await testPrisma.user.create({
         data: {
@@ -101,6 +18,51 @@ describe('AuthService', () => {
           passwordHash: 'hashed_password',
         },
       });
+
+      const result = await AuthService.checkIfEmailExists('test@example.com');
+      expect(result).toBe(true);
+    });
+
+    it('should return false if email does not exist', async () => {
+      const result = await AuthService.checkIfEmailExists('nonexistent@example.com');
+      expect(result).toBe(false);
+    });
+  });
+
+  describe('checkIfUserNameExists', () => {
+    it('should return true if username exists', async () => {
+      // Create a test user
+      await testPrisma.user.create({
+        data: {
+          username: 'testuser',
+          fullName: 'Test User',
+          email: 'test@example.com',
+          passwordHash: 'hashed_password',
+        },
+      });
+
+      const result = await AuthService.checkIfUserNameExists('testuser');
+      expect(result).toBe(true);
+    });
+
+    it('should return false if username does not exist', async () => {
+      const result = await AuthService.checkIfUserNameExists('nonexistentuser');
+      expect(result).toBe(false);
+    });
+  });
+
+  describe('login', () => {
+    beforeEach(async () => {
+      // Create a test user with properly hashed password
+      const hashedPassword = await bcrypt.hash('password123', 10);
+      await testPrisma.user.create({
+        data: {
+          username: 'testuser',
+          fullName: 'Test User',
+          email: 'test@example.com',
+          passwordHash: hashedPassword,
+        },
+      });
     });
 
     it('should login with valid credentials', async () => {
@@ -108,9 +70,6 @@ describe('AuthService', () => {
         email: 'test@example.com',
         password: 'password123',
       };
-
-      // Mock bcrypt.compare to return true
-      mockedBcrypt.compare.mockResolvedValue(true as never);
 
       const result = await AuthService.login(loginData);
 
@@ -122,11 +81,8 @@ describe('AuthService', () => {
           email: 'test@example.com',
         });
         expect(result.token).toBeDefined();
-        expect((result.user as any).passwordHash).toBeUndefined();
+        expect('passwordHash' in result.user).toBe(false);
       }
-
-      // Verify bcrypt.compare was called
-      expect(mockedBcrypt.compare).toHaveBeenCalledWith('password123', 'hashed_password');
     });
 
     it('should return error for non-existent email', async () => {
@@ -138,7 +94,11 @@ describe('AuthService', () => {
       const result = await AuthService.login(loginData);
 
       expect(result.success).toBe(false);
-      expect((result as any).error).toBe('Invalid email or password');
+      if (!result.success) {
+        expect((result as { success: false; error: string }).error).toBe(
+          'Invalid email or password'
+        );
+      }
     });
 
     it('should return error for invalid password', async () => {
@@ -147,36 +107,37 @@ describe('AuthService', () => {
         password: 'wrongpassword',
       };
 
-      // Mock bcrypt.compare to return false
-      mockedBcrypt.compare.mockResolvedValue(false as never);
-
       const result = await AuthService.login(loginData);
 
       expect(result.success).toBe(false);
-      expect((result as any).error).toBe('Invalid email or password');
+      if (!result.success) {
+        expect((result as { success: false; error: string }).error).toBe(
+          'Invalid email or password'
+        );
+      }
     });
   });
 
   describe('logout', () => {
-    it('should logout successfully', async () => {
-      // Create a test user first
+    beforeEach(async () => {
+      // Create a test user with real hashed password
+      const hashedPassword = await bcrypt.hash('password123', 10);
       await testPrisma.user.create({
         data: {
-          username: 'testuser',
-          fullName: 'Test User',
-          email: 'test@example.com',
-          passwordHash: 'hashed_password',
+          username: 'logoutuser',
+          fullName: 'Logout User',
+          email: 'logout@example.com',
+          passwordHash: hashedPassword,
         },
       });
+    });
 
+    it('should logout successfully', async () => {
       // Login to get a token
       const loginData = {
-        email: 'test@example.com',
+        email: 'logout@example.com',
         password: 'password123',
       };
-
-      // Mock bcrypt.compare to return true
-      mockedBcrypt.compare.mockResolvedValue(true as never);
 
       const loginResult = await AuthService.login(loginData);
 
@@ -195,22 +156,23 @@ describe('AuthService', () => {
   });
 
   describe('refreshToken', () => {
-    it('should refresh token successfully', async () => {
-      // Create a test user first
+    beforeEach(async () => {
+      // Create a test user with real hashed password
+      const hashedPassword = await bcrypt.hash('password123', 10);
       await testPrisma.user.create({
         data: {
-          username: 'testuser',
-          fullName: 'Test User',
-          email: 'test@example.com',
-          passwordHash: 'hashed_password',
+          username: 'refreshuser',
+          fullName: 'Refresh User',
+          email: 'refresh@example.com',
+          passwordHash: hashedPassword,
         },
       });
-      // Mock bcrypt for login
-      mockedBcrypt.compare.mockResolvedValue(true as never);
+    });
 
+    it('should refresh token successfully', async () => {
       // Login to get a real token
       const loginResult = await AuthService.login({
-        email: 'test@example.com',
+        email: 'refresh@example.com',
         password: 'password123',
       });
 
@@ -234,28 +196,28 @@ describe('AuthService', () => {
       const result = await AuthService.refreshToken('invalid-token');
 
       expect(result.success).toBe(false);
-      expect((result as any).error).toBe('Invalid refresh token');
+      if (!result.success) {
+        expect(result.error).toBe('Invalid refresh token');
+      }
     });
   });
 
   describe('verifyToken', () => {
     it('should verify valid token', async () => {
-      // Create a test user first
+      // Create a test user first with real hashed password
+      const hashedPassword = await bcrypt.hash('password123', 10);
       const user = await testPrisma.user.create({
         data: {
-          username: 'testuser',
-          fullName: 'Test User',
-          email: 'test@example.com',
-          passwordHash: 'hashed_password',
+          username: 'verifyuser',
+          fullName: 'Verify User',
+          email: 'verify@example.com',
+          passwordHash: hashedPassword,
         },
       });
 
-      // Mock bcrypt for login
-      mockedBcrypt.compare.mockResolvedValue(true as never);
-
       // Login to get a real token
       const loginResult = await AuthService.login({
-        email: 'test@example.com',
+        email: 'verify@example.com',
         password: 'password123',
       });
 
@@ -269,7 +231,7 @@ describe('AuthService', () => {
 
         expect(verifyResult).toMatchObject({
           userId: user.id,
-          email: 'test@example.com',
+          email: 'verify@example.com',
         });
       }
     });

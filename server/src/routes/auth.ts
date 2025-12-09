@@ -72,69 +72,6 @@ router.post('/verify-otp', AuthController.verifyOtpRegisterOrChangePassword);
 
 /**
  * @swagger
- * /api/auth/register:
- *   post:
- *     summary: Register a new user
- *     description: Creates a new user account
- *     tags: [Authentication]
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             required:
- *               - email
- *               - username
- *               - password
- *               - fullName
- *             properties:
- *               email:
- *                 type: string
- *                 format: email
- *                 example: "user@example.com"
- *               username:
- *                 type: string
- *                 example: "johndoe"
- *               password:
- *                 type: string
- *                 minLength: 8
- *                 example: "password123"
- *               fullName:
- *                 type: string
- *                 example: "John Doe"
- *     responses:
- *       201:
- *         description: User registered successfully
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/AuthResponse'
- *       400:
- *         description: Invalid input data
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/Error'
- *       409:
- *         description: User already exists
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/Error'
- *       500:
- *         description: Internal server error
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/Error'
- */
-// router.post('/register', AuthController.register);
-
-// router.post('/linkOAuthAccount', AuthController.linkOAuthAccount);
-
-/**
- * @swagger
  * /api/auth/login:
  *   post:
  *     summary: User login

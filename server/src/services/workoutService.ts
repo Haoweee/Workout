@@ -390,7 +390,7 @@ export class WorkoutService {
           }
 
           // TypeScript needs explicit assertion after the check above
-          acc[exerciseKey]!.sets.push({
+          acc[exerciseKey].sets.push({
             setNumber: set.setNumber,
             reps: set.reps,
             weightKg: set.weightKg ? Number(set.weightKg) : null,

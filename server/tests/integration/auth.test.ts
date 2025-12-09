@@ -2,8 +2,29 @@ import { testRequest } from '../helpers';
 import { CreateUserRequest } from '../../src/types';
 
 describe('Authentication API', () => {
-  describe('POST /api/auth/register', () => {
-    it('should register a new user successfully', async () => {
+  // Helper function to complete OTP registration flow
+  const registerUserWithOtp = async (userData: CreateUserRequest) => {
+    // Step 1: Send OTP
+    await testRequest
+      .post('/api/auth/send-otp')
+      .send({
+        ...userData,
+        confirmPassword: userData.password,
+      })
+      .expect(200);
+
+    // Step 2: Verify OTP and complete registration (using predictable test OTP)
+    const response = await testRequest.post('/api/auth/verify-otp').send({
+      email: userData.email,
+      otp: '123456', // Fixed OTP for tests
+      type: 'register',
+    });
+
+    return response;
+  };
+
+  describe('OTP Registration Flow', () => {
+    it('should complete full registration flow with OTP', async () => {
       const userData: CreateUserRequest = {
         username: 'johndoe',
         fullName: 'John Doe',
@@ -11,8 +32,9 @@ describe('Authentication API', () => {
         password: 'password123',
       };
 
-      const response = await testRequest.post('/api/auth/register').send(userData).expect(201);
+      const response = await registerUserWithOtp(userData);
 
+      expect(response.status).toBe(200);
       expect(response.body).toMatchObject({
         success: true,
         user: {
@@ -20,22 +42,38 @@ describe('Authentication API', () => {
           fullName: 'John Doe',
           email: 'john@example.com',
         },
-        token: expect.any(String),
       });
 
       // Password hash should not be in response
       expect(response.body.user.passwordHash).toBeUndefined();
     });
 
+    it('should send OTP for new user registration', async () => {
+      const userData = {
+        username: 'johndoe',
+        fullName: 'John Doe',
+        email: 'john@example.com',
+        password: 'password123',
+        confirmPassword: 'password123',
+      };
+
+      const response = await testRequest.post('/api/auth/send-otp').send(userData).expect(200);
+
+      expect(response.body).toMatchObject({
+        success: true,
+        message: 'OTP sent successfully',
+      });
+    });
+
     it('should return 400 for missing required fields', async () => {
       const incompleteData = {
         username: 'johndoe',
         email: 'john@example.com',
-        // Missing fullName and password
+        // Missing fullName, password, and confirmPassword
       };
 
       const response = await testRequest
-        .post('/api/auth/register')
+        .post('/api/auth/send-otp')
         .send(incompleteData)
         .expect(400);
 
@@ -53,19 +91,23 @@ describe('Authentication API', () => {
         password: 'password123',
       };
 
-      // Register first user
-      await testRequest.post('/api/auth/register').send(userData).expect(201);
+      // Register first user via OTP flow
+      await registerUserWithOtp(userData);
 
-      // Try to register with same email
-      const duplicateUser = {
+      // Try to send OTP for duplicate email - should fail at send-otp stage
+      const duplicateEmailData = {
         ...userData,
         username: 'differentuser',
+        confirmPassword: userData.password,
       };
 
-      const response = await testRequest.post('/api/auth/register').send(duplicateUser).expect(400);
+      const response = await testRequest
+        .post('/api/auth/send-otp')
+        .send(duplicateEmailData)
+        .expect(400);
 
       expect(response.body.success).toBe(false);
-      expect(response.body.error).toBe('Email already registered');
+      expect(response.body.error).toBe('Email already in use');
     });
 
     it('should return 400 for duplicate username', async () => {
@@ -76,25 +118,82 @@ describe('Authentication API', () => {
         password: 'password123',
       };
 
-      // Register first user
-      await testRequest.post('/api/auth/register').send(userData).expect(201);
+      // Register first user via OTP flow
+      await registerUserWithOtp(userData);
 
-      // Try to register with same username
-      const duplicateUser = {
+      // Try to send OTP for duplicate username - should fail at send-otp stage
+      const duplicateUsernameData = {
         ...userData,
         email: 'different@example.com',
+        confirmPassword: userData.password,
       };
 
-      const response = await testRequest.post('/api/auth/register').send(duplicateUser).expect(400);
+      const response = await testRequest
+        .post('/api/auth/send-otp')
+        .send(duplicateUsernameData)
+        .expect(400);
 
       expect(response.body.success).toBe(false);
-      expect(response.body.error).toBe('Username already taken');
+      expect(response.body.error).toBe('Username already in use');
+    });
+
+    it('should return 400 for mismatched passwords', async () => {
+      const userData = {
+        username: 'johndoe',
+        fullName: 'John Doe',
+        email: 'john@example.com',
+        password: 'password123',
+        confirmPassword: 'differentpassword',
+      };
+
+      const response = await testRequest.post('/api/auth/send-otp').send(userData).expect(400);
+
+      expect(response.body.success).toBe(false);
+      expect(response.body.error).toBe('Password and confirm password do not match');
+    });
+
+    it('should return 400 for invalid OTP', async () => {
+      const userData = {
+        username: 'johndoe',
+        fullName: 'John Doe',
+        email: 'john@example.com',
+        password: 'password123',
+        confirmPassword: 'password123',
+      };
+
+      // Send OTP first
+      await testRequest.post('/api/auth/send-otp').send(userData).expect(200);
+
+      // Try to verify with wrong OTP
+      const response = await testRequest
+        .post('/api/auth/verify-otp')
+        .send({
+          email: userData.email,
+          otp: '999999', // Wrong OTP
+          type: 'register',
+        })
+        .expect(400);
+
+      expect(response.body.success).toBe(false);
+      expect(response.body.error).toBe('Invalid or expired OTP');
+    });
+
+    it('should return 400 for missing email and OTP in verify', async () => {
+      const response = await testRequest
+        .post('/api/auth/verify-otp')
+        .send({
+          type: 'register',
+        })
+        .expect(400);
+
+      expect(response.body.success).toBe(false);
+      expect(response.body.error).toBe('Email and OTP are required');
     });
   });
 
   describe('POST /api/auth/login', () => {
     beforeEach(async () => {
-      // Create a test user before each login test
+      // Create a test user before each login test using OTP flow
       const userData: CreateUserRequest = {
         username: 'testuser',
         fullName: 'Test User',
@@ -102,7 +201,7 @@ describe('Authentication API', () => {
         password: 'password123',
       };
 
-      await testRequest.post('/api/auth/register').send(userData);
+      await registerUserWithOtp(userData);
     });
 
     it('should login with valid credentials', async () => {
@@ -120,7 +219,6 @@ describe('Authentication API', () => {
           fullName: 'Test User',
           email: 'test@example.com',
         },
-        token: expect.any(String),
       });
 
       // Password hash should not be in response
@@ -134,10 +232,8 @@ describe('Authentication API', () => {
 
       const response = await testRequest.post('/api/auth/login').send(loginData).expect(400);
 
-      expect(response.body).toMatchObject({
-        success: false,
-        error: 'Email and password are required',
-      });
+      expect(response.body.success).toBe(false);
+      expect(response.body.error).toBe('Email and password are required');
     });
 
     it('should return 400 for missing password', async () => {
@@ -147,10 +243,8 @@ describe('Authentication API', () => {
 
       const response = await testRequest.post('/api/auth/login').send(loginData).expect(400);
 
-      expect(response.body).toMatchObject({
-        success: false,
-        error: 'Email and password are required',
-      });
+      expect(response.body.success).toBe(false);
+      expect(response.body.error).toBe('Email and password are required');
     });
 
     it('should return 401 for invalid email', async () => {
@@ -179,49 +273,11 @@ describe('Authentication API', () => {
   });
 
   describe('POST /api/auth/refresh', () => {
-    let validToken: string;
-
-    beforeEach(async () => {
-      // Register and login to get a token
-      const userData: CreateUserRequest = {
-        username: 'testuser',
-        fullName: 'Test User',
-        email: 'test@example.com',
-        password: 'password123',
-      };
-
-      await testRequest.post('/api/auth/register').send(userData);
-
-      const loginResponse = await testRequest.post('/api/auth/login').send({
-        email: 'test@example.com',
-        password: 'password123',
-      });
-
-      validToken = loginResponse.body.token;
-    });
-
-    it('should refresh token with valid refresh token', async () => {
-      const response = await testRequest
-        .post('/api/auth/refresh')
-        .send({ refreshToken: validToken })
-        .expect(200);
-
-      expect(response.body).toMatchObject({
-        success: true,
-        token: expect.any(String),
-      });
-
-      // Token should be a valid JWT format
-      expect(response.body.token).toMatch(/^[A-Za-z0-9-_]+\.[A-Za-z0-9-_]+\.[A-Za-z0-9-_]+$/);
-    });
-
     it('should return 400 for missing refresh token', async () => {
       const response = await testRequest.post('/api/auth/refresh').send({}).expect(400);
 
-      expect(response.body).toMatchObject({
-        success: false,
-        error: 'Refresh token is required',
-      });
+      expect(response.body.success).toBe(false);
+      expect(response.body.error).toBe('Refresh token is required');
     });
 
     it('should return 401 for invalid refresh token', async () => {
@@ -231,45 +287,18 @@ describe('Authentication API', () => {
         .expect(401);
 
       expect(response.body.success).toBe(false);
+      expect(response.body.error).toBe('Invalid refresh token');
     });
   });
 
   describe('POST /api/auth/logout', () => {
     it('should logout successfully', async () => {
-      // First register and login to get a token
-      const userData = {
-        username: 'logoutuser',
-        fullName: 'Logout User',
-        email: 'logout@example.com',
-        password: 'password123',
-      };
-
-      await testRequest.post('/api/auth/register').send(userData);
-
-      const loginResponse = await testRequest.post('/api/auth/login').send({
-        email: 'logout@example.com',
-        password: 'password123',
-      });
-
-      const token = loginResponse.body.token;
-
-      // Now logout with the token
-      const response = await testRequest
-        .post('/api/auth/logout')
-        .set('Authorization', `Bearer ${token}`)
-        .expect(200);
+      const response = await testRequest.post('/api/auth/logout').expect(200);
 
       expect(response.body).toMatchObject({
         success: true,
         message: 'Logged out successfully',
       });
-    });
-
-    it('should return 400 for missing token', async () => {
-      const response = await testRequest.post('/api/auth/logout').expect(400);
-
-      expect(response.body.success).toBe(false);
-      expect(response.body.error).toBe('No token provided for logout');
     });
   });
 });

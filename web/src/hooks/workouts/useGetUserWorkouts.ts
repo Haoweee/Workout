@@ -20,34 +20,34 @@ export const useGetUserWorkouts = (limit: number) => {
   const [error, setError] = useState<Error | null>(null);
 
   useEffect(() => {
-    fetchWorkouts();
-  }, []);
+    const fetchWorkouts = async () => {
+      try {
+        setLoading(true);
 
-  const fetchWorkouts = async () => {
-    try {
-      setLoading(true);
+        const response = await workoutService.getUserWorkouts({
+          limit: limit,
+          offset: 0,
+          includeFinished: true,
+        });
 
-      const response = await workoutService.getUserWorkouts({
-        limit: limit,
-        offset: 0,
-        includeFinished: true,
-      });
-
-      // Ensure response has the expected structure
-      if (response && response.workouts && Array.isArray(response.workouts)) {
-        setWorkouts(response.workouts);
-      } else {
-        logger.warn('Unexpected API response structure:', response);
+        // Ensure response has the expected structure
+        if (response && response.workouts && Array.isArray(response.workouts)) {
+          setWorkouts(response.workouts);
+        } else {
+          logger.warn('Unexpected API response structure:', response);
+          setWorkouts([]);
+        }
+      } catch (error) {
+        logger.error('Error fetching workouts:', error);
+        setError(error instanceof Error ? error : new Error('Unknown error'));
         setWorkouts([]);
+      } finally {
+        setLoading(false);
       }
-    } catch (error) {
-      logger.error('Error fetching workouts:', error);
-      setError(error instanceof Error ? error : new Error('Unknown error'));
-      setWorkouts([]);
-    } finally {
-      setLoading(false);
-    }
-  };
+    };
+
+    fetchWorkouts();
+  }, [limit]);
 
   return { workouts, isLoading, error };
 };

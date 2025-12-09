@@ -3,17 +3,22 @@ import { Outlet } from 'react-router-dom';
 
 import { useAuth } from '@/hooks/auth/useAuth';
 
+import { User } from '@/types/user';
+
 // Create context to share auth state with child components
 const MixedRouteContext = createContext<{
   isAuthenticated: boolean;
-  user: any;
+  user: User | null;
 } | null>(null);
 
+// Export the hook separately to satisfy react-refresh
 export const useMixedRouteAuth = () => {
   const context = useContext(MixedRouteContext);
+  const fallbackAuth = useAuth();
+
   if (!context) {
     // Fallback to useAuth if not in MixedRoute context
-    return useAuth();
+    return fallbackAuth;
   }
   return context;
 };

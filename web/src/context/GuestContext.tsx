@@ -6,6 +6,7 @@ const GuestContext = createContext<{
   user: null;
 } | null>(null);
 
+// Export the hook separately to satisfy react-refresh
 export const useGuestAuth = () => {
   const context = useContext(GuestContext);
   if (!context) {

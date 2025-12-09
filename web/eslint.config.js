@@ -19,5 +19,36 @@ export default defineConfig([
       ecmaVersion: 2020,
       globals: globals.browser,
     },
+    rules: {
+      // Allow @ts-nocheck in specific files like icons.tsx
+      '@typescript-eslint/ban-ts-comment': [
+        'error',
+        {
+          'ts-nocheck': false,
+        },
+      ],
+      // Allow non-component exports for context and hook files
+      'react-refresh/only-export-components': [
+        'warn',
+        {
+          allowConstantExport: true,
+          allowExportNames: ['useGuestAuth', 'useMixedRouteAuth'],
+        },
+      ],
+    },
+  },
+  {
+    // Specific config for icons file
+    files: ['src/components/ui/icons.tsx'],
+    rules: {
+      '@typescript-eslint/ban-ts-comment': 'off',
+    },
+  },
+  {
+    // Disable react-refresh rules for context and hooks files
+    files: ['src/context/**/*.tsx', 'src/hooks/**/*.ts'],
+    rules: {
+      'react-refresh/only-export-components': 'off',
+    },
   },
 ]);
