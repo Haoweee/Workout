@@ -1,24 +1,24 @@
 import { Link } from 'react-router-dom';
 
 import {
-  HelpCircle,
-  AlertCircle,
-  RefreshCw,
-  Wifi,
-  Smartphone,
-  MessageSquare,
-  Search,
-  CheckCircle,
-} from 'lucide-react';
+  HelpCircleIcon,
+  AlertCircleIcon,
+  RefreshCwIcon,
+  WifiIcon,
+  SmartphoneIcon,
+  MessageSquareIcon,
+  SearchIcon,
+  CheckCircleIcon,
+} from '@/components/ui/icons';
 
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 
-export const TroubleshootingPage = () => {
+const TroubleshootingPage = () => {
   const troubleshootingCategories = [
     {
-      icon: AlertCircle,
+      icon: AlertCircleIcon,
       title: 'Login & Authentication',
       description: 'Issues accessing your workout tracker account',
       items: [
@@ -31,7 +31,7 @@ export const TroubleshootingPage = () => {
       bgColor: 'bg-red-50',
     },
     {
-      icon: Wifi,
+      icon: WifiIcon,
       title: 'Sync & Connectivity',
       description: 'Problems with data synchronization',
       items: [
@@ -44,7 +44,7 @@ export const TroubleshootingPage = () => {
       bgColor: 'bg-blue-50',
     },
     {
-      icon: Smartphone,
+      icon: SmartphoneIcon,
       title: 'App Performance',
       description: 'Crashes, freezing, or slow performance',
       items: [
@@ -57,7 +57,7 @@ export const TroubleshootingPage = () => {
       bgColor: 'bg-purple-50',
     },
     {
-      icon: RefreshCw,
+      icon: RefreshCwIcon,
       title: 'Missing Data',
       description: 'Workouts, routines, or progress not showing',
       items: [
@@ -70,7 +70,7 @@ export const TroubleshootingPage = () => {
       bgColor: 'bg-orange-50',
     },
     {
-      icon: Search,
+      icon: SearchIcon,
       title: 'Exercise Database',
       description: 'Problems finding or using exercises',
       items: [
@@ -83,7 +83,7 @@ export const TroubleshootingPage = () => {
       bgColor: 'bg-green-50',
     },
     {
-      icon: MessageSquare,
+      icon: MessageSquareIcon,
       title: 'Other Issues',
       description: 'Need help with something else?',
       items: [
@@ -115,7 +115,7 @@ export const TroubleshootingPage = () => {
 
       {/* Quick Tips Alert */}
       <Alert className="border-blue-200 bg-blue-50">
-        <CheckCircle className="h-4 w-4 text-blue-600" />
+        <CheckCircleIcon className="h-4 w-4 text-blue-600" />
         <AlertDescription className="text-blue-800">
           <strong>Quick Tip:</strong> Most issues can be resolved by updating the app, checking your
           internet connection, or logging out and back in.
@@ -158,7 +158,7 @@ export const TroubleshootingPage = () => {
       <Card className="bg-linear-to-r from-green-50 to-emerald-50 border-green-200">
         <CardHeader>
           <CardTitle className="flex items-center gap-2 text-green-900">
-            <MessageSquare className="h-5 w-5" />
+            <MessageSquareIcon className="h-5 w-5" />
             Still Need Help?
           </CardTitle>
           <CardDescription className="text-green-700">
@@ -176,14 +176,14 @@ export const TroubleshootingPage = () => {
             </div> */}
             <Link to="/help-center" className="text-center space-y-2">
               <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mx-auto">
-                <HelpCircle className="h-6 w-6 text-blue-600" />
+                <HelpCircleIcon className="h-6 w-6 text-blue-600" />
               </div>
               <p className="text-sm font-medium">Help Center</p>
               <p className="text-xs text-green-700">Browse all articles</p>
             </Link>
             <Link to="/contact" className="text-center space-y-2">
               <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mx-auto">
-                <Search className="h-6 w-6 text-purple-600" />
+                <SearchIcon className="h-6 w-6 text-purple-600" />
               </div>
               <p className="text-sm font-medium">Contact</p>
               <p className="text-xs text-green-700">Get in touch with us</p>
@@ -194,3 +194,5 @@ export const TroubleshootingPage = () => {
     </div>
   );
 };
+
+export default TroubleshootingPage;

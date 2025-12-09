@@ -1,4 +1,4 @@
-import { Dumbbell, Users, Target, Clock } from 'lucide-react';
+import { DumbbellIcon, UsersIcon, TargetIcon, ClockIcon } from '@/components/ui/icons';
 
 import { Badge } from '@/components/ui/badge';
 
@@ -55,7 +55,7 @@ export const ExerciseDetailCard: React.FC<ExerciseDetailCardProps> = ({ exercise
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
             {exercise.equipment && (
               <div className="flex items-center space-x-2 text-gray-600">
-                <Dumbbell className="h-5 w-5" />
+                <DumbbellIcon className="h-5 w-5" />
                 <div>
                   <p className="text-xs uppercase tracking-wide font-medium">Equipment</p>
                   <p className="font-semibold">{exercise.equipment}</p>
@@ -65,7 +65,7 @@ export const ExerciseDetailCard: React.FC<ExerciseDetailCardProps> = ({ exercise
 
             {exercise.force && (
               <div className="flex items-center space-x-2 text-gray-600">
-                <Target className="h-5 w-5" />
+                <TargetIcon className="h-5 w-5" />
                 <div>
                   <p className="text-xs uppercase tracking-wide font-medium">Force</p>
                   <p className="font-semibold capitalize">{exercise.force.toLowerCase()}</p>
@@ -75,7 +75,7 @@ export const ExerciseDetailCard: React.FC<ExerciseDetailCardProps> = ({ exercise
 
             {exercise.mechanic && (
               <div className="flex items-center space-x-2 text-gray-600">
-                <Clock className="h-5 w-5" />
+                <ClockIcon className="h-5 w-5" />
                 <div>
                   <p className="text-xs uppercase tracking-wide font-medium">Mechanic</p>
                   <p className="font-semibold capitalize">{exercise.mechanic.toLowerCase()}</p>
@@ -85,7 +85,7 @@ export const ExerciseDetailCard: React.FC<ExerciseDetailCardProps> = ({ exercise
 
             {exercise.level && (
               <div className="flex items-center space-x-2 text-gray-600">
-                <Users className="h-5 w-5" />
+                <UsersIcon className="h-5 w-5" />
                 <div>
                   <p className="text-xs uppercase tracking-wide font-medium">Level</p>
                   <p className="font-semibold capitalize">{exercise.level.toLowerCase()}</p>

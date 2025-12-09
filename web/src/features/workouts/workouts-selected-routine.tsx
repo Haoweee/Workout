@@ -1,4 +1,4 @@
-import { Calendar } from 'lucide-react';
+import { CalendarIcon } from '@/components/ui/icons';
 
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -23,7 +23,7 @@ export const WorkoutSelectedRoutine: React.FC<SelectedRoutineProps> = ({
     <Card className="mb-6 border-blue-200 bg-blue-50">
       <CardHeader>
         <CardTitle className="flex items-center gap-2 text-blue-900">
-          <Calendar className="h-5 w-5" />
+          <CalendarIcon className="h-5 w-5" />
           Selected Routine
         </CardTitle>
       </CardHeader>

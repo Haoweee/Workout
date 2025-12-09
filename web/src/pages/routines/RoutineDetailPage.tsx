@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 
-import { Target, Users, Copy } from 'lucide-react';
+import { TargetIcon, UsersIcon, CopyIcon } from '@/components/ui/icons';
 
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -29,7 +29,7 @@ import { getDifficultyColor } from '@/utils';
  * - Exercise list with sets and reps
  * - Actions (start workout, edit, etc.)
  */
-export const RoutineDetailPage: React.FC = () => {
+const RoutineDetailPage: React.FC = () => {
   const navigate = useNavigate();
   const { user, isAuthenticated } = useAuth();
   const { id } = useParams<{ id: string }>();
@@ -54,22 +54,22 @@ export const RoutineDetailPage: React.FC = () => {
     if (routine) navigate(`/routines/${routine.id}/edit`);
   };
 
-  const handleCopyRoutine = async () => {
+  const handleCopyIconRoutine = async () => {
     if (!routine) return;
 
     try {
-      // Use the server's clone endpoint to create a copy
-      const newRoutine = await cloneRoutine(routine.id, `${routine.title} (Copy)`);
+      // Use the server's clone endpoint to create a copyIcon
+      const newRoutine = await cloneRoutine(routine.id, `${routine.title} (CopyIcon)`);
 
       if (newRoutine) {
         // Navigate to the newly created routine
         navigate(`/routines/${newRoutine.id}`);
       }
     } catch (err) {
-      console.error('Failed to copy routine:', err);
+      console.error('Failed to copyIcon routine:', err);
       ErrorToast({
-        message: 'Error Copying Routine',
-        description: 'An error occurred while trying to copy the routine.',
+        message: 'Error CopyIconing Routine',
+        description: 'An error occurred while trying to copyIcon the routine.',
       });
     }
   };
@@ -95,13 +95,13 @@ export const RoutineDetailPage: React.FC = () => {
           <div className="flex flex-wrap gap-2 mb-6">
             {routine.difficulty && (
               <Badge className={getDifficultyColor(routine.difficulty)}>
-                <Target className="h-3 w-3 mr-1" />
+                <TargetIcon className="h-3 w-3 mr-1" />
                 {routine.difficulty}
               </Badge>
             )}
             {routine.visibility && (
               <Badge variant="outline">
-                <Users className="h-3 w-3 mr-1" />
+                <UsersIcon className="h-3 w-3 mr-1" />
                 {routine.visibility === 'PUBLIC' ? 'Public' : 'Private'}
               </Badge>
             )}
@@ -126,12 +126,12 @@ export const RoutineDetailPage: React.FC = () => {
                 // Non-owner buttons - only show if authenticated
                 <Button
                   variant="outline"
-                  onClick={handleCopyRoutine}
+                  onClick={handleCopyIconRoutine}
                   disabled={!isAuthenticated}
                   className={!isAuthenticated ? 'opacity-50 cursor-not-allowed' : ''}
                 >
-                  <Copy className="h-4 w-4 mr-2" />
-                  Copy Routine
+                  <CopyIcon className="h-4 w-4 mr-2" />
+                  CopyIcon Routine
                 </Button>
               )}
             </div>
@@ -154,3 +154,5 @@ export const RoutineDetailPage: React.FC = () => {
     </div>
   );
 };
+
+export default RoutineDetailPage;

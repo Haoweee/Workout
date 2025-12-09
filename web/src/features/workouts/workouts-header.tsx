@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 
-import { ArrowLeft, Trash2, Plus, Clock, Target } from 'lucide-react';
+import { ArrowLeftIcon, Trash2Icon, PlusIcon, ClockIcon, TargetIcon } from '@/components/ui/icons';
 
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -36,11 +36,11 @@ export const WorkoutHeader: React.FC<WorkoutHeaderProps> = ({
             </h1>
             <div className="flex items-center justify-center gap-4 text-sm text-gray-600 mt-1">
               <div className="flex items-center gap-1">
-                <Clock className="h-4 w-4" />
+                <ClockIcon className="h-4 w-4" />
                 {formatTime(currentTime ?? new Date(), startTime ?? new Date())}
               </div>
               <div className="flex items-center gap-1">
-                <Target className="h-4 w-4" />
+                <TargetIcon className="h-4 w-4" />
                 {progress?.completed}/{progress?.total} sets
               </div>
             </div>
@@ -60,7 +60,7 @@ export const WorkoutHeader: React.FC<WorkoutHeaderProps> = ({
         <Card className="w-full">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <Plus className="h-5 w-5" />
+              <PlusIcon className="h-5 w-5" />
               Quick Start
             </CardTitle>
           </CardHeader>
@@ -93,7 +93,7 @@ export const WorkoutHeader: React.FC<WorkoutHeaderProps> = ({
                 disabled={deleting}
                 className="text-red-600 hover:text-red-700 hover:border-red-200"
               >
-                <Trash2 className="h-4 w-4" />
+                <Trash2Icon className="h-4 w-4" />
               </Button>
             )}
           </div>
@@ -120,7 +120,7 @@ export const WorkoutHeader: React.FC<WorkoutHeaderProps> = ({
         }
         className="p-2"
       >
-        <ArrowLeft className="h-5 w-5" />
+        <ArrowLeftIcon className="h-5 w-5" />
       </Button>
 
       {headerContent}

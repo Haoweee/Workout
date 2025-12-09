@@ -9,6 +9,7 @@ export {
   formatDate,
   formatWeightDisplay,
   formatTimeStart,
+  formatWorkoutTitle,
 } from './formatters';
 
 // Helper utilities

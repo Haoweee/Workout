@@ -1,4 +1,4 @@
-import { Dumbbell, Check, Timer } from 'lucide-react';
+import { DumbbellIcon, CheckIcon, ClockIcon as Timer } from '@/components/ui/icons';
 
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -35,7 +35,7 @@ export const WorkoutCurrentSetForm: React.FC<CurrentSetFormProps> = ({
       <CardHeader>
         <div className="flex items-center justify-between">
           <CardTitle className="flex items-center gap-2">
-            <Dumbbell className="h-5 w-5" />
+            <DumbbellIcon className="h-5 w-5" />
             {exercise.exerciseName}
           </CardTitle>
           <div className="flex items-center gap-2">
@@ -98,7 +98,7 @@ export const WorkoutCurrentSetForm: React.FC<CurrentSetFormProps> = ({
             disabled={saving || (!currentWeight && !currentReps)}
             className="flex-1"
           >
-            <Check className="mr-2 h-4 w-4" />
+            <CheckIcon className="mr-2 h-4 w-4" />
             {saving ? 'Saving...' : 'Complete Set'}
           </Button>
           <Button variant="outline" onClick={onStartRestTimer} disabled={showRestTimer}>

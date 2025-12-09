@@ -1,4 +1,4 @@
-export const FallBackPage = () => {
+const FallBackPage = () => {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-4">
       <h1 className="text-8xl mb-8">404</h1>
@@ -12,3 +12,5 @@ export const FallBackPage = () => {
     </div>
   );
 };
+
+export default FallBackPage;

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { Plus, X } from 'lucide-react';
+import { PlusIcon, XIcon } from '@/components/ui/icons';
 
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -49,7 +49,7 @@ export const WorkoutAddExercise: React.FC<WorkoutAddExerciseProps> = ({
         <div className="flex justify-between items-center">
           <CardTitle className="text-lg">Add Exercise</CardTitle>
           <Button variant="ghost" size="sm" onClick={onClose}>
-            <X className="h-4 w-4" />
+            <XIcon Icon className="h-4 w-4" />
           </Button>
         </div>
       </CardHeader>
@@ -65,7 +65,7 @@ export const WorkoutAddExercise: React.FC<WorkoutAddExerciseProps> = ({
               className="flex-1"
             />
             <Button onClick={handleAddCustomExercise} disabled={!searchTerm.trim()}>
-              <Plus className="h-4 w-4 mr-2" />
+              <PlusIcon className="h-4 w-4 mr-2" />
               Add
             </Button>
           </div>

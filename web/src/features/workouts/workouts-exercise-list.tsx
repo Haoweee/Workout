@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 
-import { Dumbbell } from 'lucide-react';
+import { DumbbellIcon } from '@/components/ui/icons';
 
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -77,7 +77,7 @@ export const WorkoutExerciseList: React.FC<WorkoutsExerciseListProps> = ({
       ) : (
         <Card>
           <CardContent className="p-8 text-center">
-            <Dumbbell className="h-12 w-12 text-gray-400 mx-auto mb-4" />
+            <DumbbellIcon className="h-12 w-12 text-gray-400 mx-auto mb-4" />
             <h3 className="text-lg font-semibold text-gray-900 mb-2">No exercises logged</h3>
             <p className="text-gray-600 mb-4">
               This workout doesn't have any exercises logged yet.

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-import { X } from 'lucide-react';
+import { XIcon } from '@/components/ui/icons';
 
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -216,7 +216,10 @@ export const ExerciseFiltersComponent: React.FC<ExerciseFiltersProps> = ({
             {filters.primaryMuscles.map((muscle) => (
               <Badge key={muscle} variant="secondary" className="flex items-center gap-1">
                 {muscle}
-                <X className="h-3 w-3 cursor-pointer" onClick={() => removeMuscleGroup(muscle)} />
+                <XIcon
+                  className="h-3 w-3 cursor-pointer"
+                  onClick={() => removeMuscleGroup(muscle)}
+                />
               </Badge>
             ))}
           </div>

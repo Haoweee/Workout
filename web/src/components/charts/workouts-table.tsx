@@ -1,4 +1,4 @@
-import { CircleCheck, Clock, Dumbbell, Plus } from 'lucide-react';
+import { CircleCheckIcon, ClockIcon, DumbbellIcon, PlusIcon } from '@/components/ui/icons';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '../ui/button';
 import { Card, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
@@ -10,8 +10,14 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import type { Workout } from '@/services/workout.service';
-import { formatDuration, formatDate, calculateWorkoutDuration, formatTimeStart } from '@/utils';
+import type { Workout } from '@/types/workout';
+import {
+  formatDuration,
+  formatDate,
+  calculateWorkoutDuration,
+  formatTimeStart,
+  formatWorkoutTitle,
+} from '@/utils';
 
 interface WorkoutTableProps {
   conciseTable?: boolean;
@@ -27,7 +33,7 @@ export function WorkoutTable({ data, conciseTable = false, error }: WorkoutTable
       <CardHeader className="p-0 flex flex-col md:flex-row justify-between">
         <div className="flex flex-col gap-2">
           <CardTitle className="leading-none font-semibold flex items-center gap-2">
-            <Dumbbell className="h-5 w-5 text-blue-600" />
+            <DumbbellIcon className="h-5 w-5 text-blue-600" />
             {conciseTable ? 'Recent Workouts' : 'All Workouts'}
           </CardTitle>
           <CardDescription className="text-sm text-muted-foreground">
@@ -40,7 +46,7 @@ export function WorkoutTable({ data, conciseTable = false, error }: WorkoutTable
             className="bg-blue-600 hover:bg-blue-700 flex-1"
             size="sm"
           >
-            <Plus className="h-4 w-4 mr-2" />
+            <PlusIcon className="h-4 w-4 mr-2" />
             Start Workout
           </Button>
 
@@ -70,7 +76,7 @@ export function WorkoutTable({ data, conciseTable = false, error }: WorkoutTable
               onClick={() => navigate('/workouts/new')}
               className="bg-blue-600 hover:bg-blue-700"
             >
-              <Plus className="h-4 w-4 mr-2" />
+              <PlusIcon className="h-4 w-4 mr-2" />
               Start Your First Workout
             </Button>
           </div>
@@ -90,14 +96,14 @@ export function WorkoutTable({ data, conciseTable = false, error }: WorkoutTable
                 <TableRow key={workout.id} onClick={() => navigate(`/workouts/${workout.id}`)}>
                   <TableCell>{formatDate(workout.startedAt)}</TableCell>
                   <TableCell>{formatTimeStart(workout.startedAt)}</TableCell>
-                  <TableCell>{workout.title}</TableCell>
+                  <TableCell>{formatWorkoutTitle(workout.title)}</TableCell>
                   <TableCell>{formatDuration(calculateWorkoutDuration(workout))}</TableCell>
                   <TableCell className="text-right">
                     <div className="flex justify-end">
                       {workout.finishedAt ? (
-                        <CircleCheck className="h-4 w-4 text-green-500" />
+                        <CircleCheckIcon className="h-4 w-4 text-green-500" />
                       ) : (
-                        <Clock className="h-4 w-4 text-yellow-500" />
+                        <ClockIcon className="h-4 w-4 text-yellow-500" />
                       )}
                     </div>
                   </TableCell>

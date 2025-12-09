@@ -16,7 +16,7 @@ import { Input } from '@/components/ui/input';
 
 import { OAuth } from '@/features/forms/oauth';
 
-import { useLogin } from '@/hooks/auth';
+import { useLogin } from '@/hooks/auth/useLogin';
 
 import type { LoginRequest } from '@/types/api';
 

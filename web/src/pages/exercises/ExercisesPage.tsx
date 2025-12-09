@@ -7,7 +7,7 @@ import {
 
 import { useGetAllExercises } from '@/hooks/exercises';
 
-export const ExercisesPage = () => {
+const ExercisesPage = () => {
   const {
     exercises,
     pagination,
@@ -67,3 +67,5 @@ export const ExercisesPage = () => {
     </div>
   );
 };
+
+export default ExercisesPage;

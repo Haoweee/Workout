@@ -10,7 +10,7 @@ import {
 
 import { useStartWorkout } from '@/hooks/workouts';
 
-export const StartWorkoutPage: React.FC = () => {
+const StartWorkoutPage: React.FC = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const routineId = searchParams.get('routineId');
@@ -73,3 +73,5 @@ export const StartWorkoutPage: React.FC = () => {
     </div>
   );
 };
+
+export default StartWorkoutPage;

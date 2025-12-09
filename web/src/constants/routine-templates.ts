@@ -1,4 +1,4 @@
-import { Activity, Clock, Target } from 'lucide-react';
+import { ActivityIcon, ClockIcon, TargetIcon } from '@/components/ui/icons';
 
 // Smart defaults for common exercises
 export const exerciseDefaults: Record<string, { sets: string; reps: string; rest: string }> = {
@@ -168,14 +168,14 @@ export const routineTemplates = [
 
 // Popular exercises for quick add
 export const popularExercises = [
-  { name: 'Bench Press', icon: Activity },
-  { name: 'Squats', icon: Activity },
-  { name: 'Deadlifts', icon: Activity },
-  { name: 'Pull-ups', icon: Activity },
-  { name: 'Push-ups', icon: Activity },
-  { name: 'Shoulder Press', icon: Activity },
-  { name: 'Bicep Curls', icon: Activity },
-  { name: 'Plank', icon: Clock },
-  { name: 'Running', icon: Target },
-  { name: 'Cycling', icon: Target },
+  { name: 'Bench Press', icon: ActivityIcon },
+  { name: 'Squats', icon: ActivityIcon },
+  { name: 'Deadlifts', icon: ActivityIcon },
+  { name: 'Pull-ups', icon: ActivityIcon },
+  { name: 'Push-ups', icon: ActivityIcon },
+  { name: 'Shoulder Press', icon: ActivityIcon },
+  { name: 'Bicep Curls', icon: ActivityIcon },
+  { name: 'Plank', icon: ClockIcon },
+  { name: 'Running', icon: TargetIcon },
+  { name: 'Cycling', icon: TargetIcon },
 ];

@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
-import { Scale, Shield, Trash2 } from 'lucide-react';
+import { ScaleIcon, ShieldIcon, Trash2Icon } from '@/components/ui/icons';
 
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 
@@ -9,7 +9,7 @@ import { PrivacyPolicy } from '@/features/marketing/legal/privacy-policy';
 import { TermsOfService } from '@/features/marketing/legal/tos';
 import { DataDeletion } from '@/features/marketing/legal/data-deletion';
 
-export const LegalPage = () => {
+const LegalPage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [activeTab, setActiveTab] = useState('privacy-policy');
 
@@ -37,21 +37,21 @@ export const LegalPage = () => {
                 value="privacy-policy"
                 className="px-4 data-[state=active]:bg-transparent data-[state=active]:shadow-none data-[state=active]:border-b-2 data-[state=active]:border-b-black data-[state=active]:font-bold rounded-none pb-3 pt-3"
               >
-                <Shield className="w-4 h-4 mr-1" />
+                <ShieldIcon className="w-4 h-4 mr-1" />
                 Privacy Policy
               </TabsTrigger>
               <TabsTrigger
                 value="terms-of-service"
                 className="px-4 data-[state=active]:bg-transparent data-[state=active]:shadow-none data-[state=active]:border-b-2 data-[state=active]:border-b-black data-[state=active]:font-bold rounded-none pb-3 pt-3"
               >
-                <Scale className="w-4 h-4 mr-1" />
+                <ScaleIcon className="w-4 h-4 mr-1" />
                 Terms of Service
               </TabsTrigger>
               <TabsTrigger
                 value="data-deletion"
                 className="px-4 data-[state=active]:bg-transparent data-[state=active]:shadow-none data-[state=active]:border-b-2 data-[state=active]:border-b-black data-[state=active]:font-bold rounded-none pb-3 pt-3"
               >
-                <Trash2 className="w-4 h-4 mr-1" />
+                <Trash2Icon className="w-4 h-4 mr-1" />
                 Data Deletion
               </TabsTrigger>
             </TabsList>
@@ -75,3 +75,5 @@ export const LegalPage = () => {
     </div>
   );
 };
+
+export default LegalPage;

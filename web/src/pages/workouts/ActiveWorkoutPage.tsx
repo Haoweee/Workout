@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 
-import { ArrowLeft, Check, Plus } from 'lucide-react';
+import { ArrowLeftIcon, CheckIcon, PlusIcon } from '@/components/ui/icons';
 
 import { Button } from '@/components/ui/button';
 
@@ -18,7 +18,7 @@ import { WorkoutAddExercise } from '@/features/workouts/workout-add-exercise';
 
 import { useActiveWorkout } from '@/hooks/workouts';
 
-export const ActiveWorkoutPage: React.FC = () => {
+const ActiveWorkoutPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const [showAddExercise, setShowAddExercise] = useState(false);
 
@@ -73,7 +73,7 @@ export const ActiveWorkoutPage: React.FC = () => {
         <div className="text-center">
           <h1 className="text-2xl font-bold text-gray-900">Workout not found</h1>
           <Button onClick={() => window.history.back()} className="mt-4">
-            <ArrowLeft className="mr-2 h-4 w-4" />
+            <ArrowLeftIcon className="mr-2 h-4 w-4" />
             Back to Dashboard
           </Button>
         </div>
@@ -120,7 +120,7 @@ export const ActiveWorkoutPage: React.FC = () => {
             className="w-full"
             disabled={saving}
           >
-            <Plus className="mr-2 h-4 w-4" />
+            <PlusIcon className="mr-2 h-4 w-4" />
             Add Exercise to Workout
           </Button>
         </div>
@@ -150,7 +150,7 @@ export const ActiveWorkoutPage: React.FC = () => {
           {/* Add/Remove Set Buttons */}
           <div className="mb-4 flex justify-center gap-2">
             <Button onClick={addSetToCurrentExercise} variant="outline" size="sm" disabled={saving}>
-              <Plus className="mr-2 h-4 w-4" />
+              <PlusIcon className="mr-2 h-4 w-4" />
               Add Set
             </Button>
 
@@ -192,7 +192,7 @@ export const ActiveWorkoutPage: React.FC = () => {
             size="sm"
             disabled={saving}
           >
-            <Plus className="mr-2 h-4 w-4" />
+            <PlusIcon className="mr-2 h-4 w-4" />
             Add Exercise
           </Button>
         </div>
@@ -216,7 +216,7 @@ export const ActiveWorkoutPage: React.FC = () => {
             disabled={finishing}
             className="bg-green-600 hover:bg-green-700"
           >
-            <Check className="mr-2 h-4 w-4" />
+            <CheckIcon Icon className="mr-2 h-4 w-4" />
             {finishing ? 'Finishing Workout...' : 'Workout Complete!'}
           </Button>
         ) : (
@@ -234,7 +234,7 @@ export const ActiveWorkoutPage: React.FC = () => {
             disabled={finishing}
             className="text-gray-600 hover:text-gray-800"
           >
-            <Check className="mr-2 h-4 w-4" />
+            <CheckIcon Icon className="mr-2 h-4 w-4" />
             {finishing ? 'Finishing...' : 'Finish Workout Early'}
           </Button>
         )}
@@ -242,3 +242,5 @@ export const ActiveWorkoutPage: React.FC = () => {
     </div>
   );
 };
+
+export default ActiveWorkoutPage;

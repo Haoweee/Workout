@@ -6,11 +6,12 @@ import { Input } from '@/components/ui/input';
 
 import { useRegistration } from '@/context/registration-context';
 
-import { useAuth, useSendOtp } from '@/hooks/auth';
+import { useAuth } from '@/hooks/auth/useAuth';
+import { useSendOtp } from '@/hooks/auth/useSendOtp';
 
 import type { SendOtpRequest } from '@/types/api';
 
-export const ChangePasswordPage: React.FC = () => {
+const ChangePasswordPage: React.FC = () => {
   const { user } = useAuth();
   const { setUserData } = useRegistration();
   const { handleSendOtp, isLoading, error } = useSendOtp({ redirect: '/profile/verify-otp' });
@@ -57,3 +58,5 @@ export const ChangePasswordPage: React.FC = () => {
     </div>
   );
 };
+
+export default ChangePasswordPage;

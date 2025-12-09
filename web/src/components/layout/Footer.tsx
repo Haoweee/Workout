@@ -1,5 +1,5 @@
-// import AppleStoreImg from '../../../public/marketing/Apple Store.png';
-// import GooglePlayImg from '../../../public/marketing/Google Play.png';
+// import AppleStoreImg from '../../../public/marketing/Apple Store.webp';
+// import GooglePlayImg from '../../../public/marketing/Google Play.webp';
 import { Link } from 'react-router-dom';
 
 export const Footer = () => {

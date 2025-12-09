@@ -1,12 +1,28 @@
-import { useContext } from 'react';
-import { AuthContext } from '@/context/auth-context';
-import type { AuthContextType } from '@/context/auth-context';
+import { useAppSelector, useAppDispatch } from '@/hooks/redux';
+import { logout, checkAuth } from '@/store/authSlice';
 
-// Custom hook to use auth context
-export const useAuth = (): AuthContextType => {
-  const context = useContext(AuthContext);
-  if (context === undefined) {
-    throw new Error('useAuth must be used within an AuthProvider');
-  }
-  return context;
+/**
+ * Hook to access auth state and actions from Redux store
+ * Use this instead of AuthContext for components that need auth state
+ */
+export const useAuth = () => {
+  const dispatch = useAppDispatch();
+  const { user, isAuthenticated, isLoading, error } = useAppSelector((state) => state.auth);
+
+  const handleLogout = () => {
+    dispatch(logout());
+  };
+
+  const refreshAuth = () => {
+    dispatch(checkAuth());
+  };
+
+  return {
+    user,
+    isAuthenticated,
+    isLoading,
+    error,
+    logout: handleLogout,
+    refreshAuth,
+  };
 };

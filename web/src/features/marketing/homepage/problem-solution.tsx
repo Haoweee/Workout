@@ -1,15 +1,15 @@
-import GoogleSheetsPlannerImg from '../../../assets/marketing/google-sheets-planner.png';
-import WorkoutPlannerImg from '../../../assets/marketing/workout-planner.png';
+import GoogleSheetsPlannerImg from '../../../assets/marketing/google-sheets-planner.webp';
+import WorkoutPlannerImg from '../../../assets/marketing/workout-planner.webp';
 
-import { ThumbsUp, ThumbsDown, MoveRight, MoveDown } from 'lucide-react';
+import { ThumbsUpIcon, ThumbsDownIcon, MoveRightIcon, MoveDownIcon } from '@/components/ui/icons';
 
 export const ProblemSolution = () => {
   return (
     <div className="space-y-8">
       <div className="text-center">
         <div className="flex flex-row items-center justify-center gap-2 mb-4">
-          <ThumbsDown className="text-red-300" />
-          <ThumbsUp className="text-green-300" />
+          <ThumbsDownIcon className="text-red-300" />
+          <ThumbsUpIcon className="text-green-300" />
         </div>
         <h1 className="text-xl font-semibold mb-2">Problem vs Solution</h1>
         <p>Tracking workouts is frustrating and time-consuming.</p>
@@ -23,8 +23,8 @@ export const ProblemSolution = () => {
             className="w-full h-auto rounded-xl"
           />
         </div>
-        <MoveRight size={20} className="hidden md:block" />
-        <MoveDown size={16} className="md:hidden" />
+        <MoveRightIcon className="hidden md:block w-5 h-5" />
+        <MoveDownIcon className="md:hidden w-4 h-4" />
         <div className="w-full lg:flex-1 border border-gray-200 rounded-xl shadow-md">
           <img
             src={WorkoutPlannerImg}

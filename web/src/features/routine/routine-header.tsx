@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeftIcon } from '@/components/ui/icons';
 
 import { AvatarProfile } from '@/components/profile/avatar';
 import { Button } from '@/components/ui/button';
@@ -24,7 +24,7 @@ export const RoutineHeader: React.FC<RoutineHeaderProps> = ({
         }}
         className="mb-4"
       >
-        <ArrowLeft className="h-4 w-4 mr-2" />
+        <ArrowLeftIcon className="h-4 w-4 mr-2" />
         Back to Routines
       </Button>
 

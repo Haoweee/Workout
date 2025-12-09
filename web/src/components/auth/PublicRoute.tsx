@@ -1,7 +1,7 @@
 import React from 'react';
 import { Navigate, Outlet, useLocation } from 'react-router-dom';
 
-import { useAuth } from '@/hooks/auth';
+import { useAuth } from '@/hooks/auth/useAuth';
 
 type LayoutComponent = React.ComponentType<{ children: React.ReactNode }>;
 
@@ -16,7 +16,7 @@ interface PublicRouteProps {
  * - If authed, redirects to `redirectTo` or location.state.from.
  * - Wraps nested routes in the provided `layout` using <Outlet/>.
  */
-export const PublicRoute: React.FC<PublicRouteProps> = ({
+const PublicRoute: React.FC<PublicRouteProps> = ({
   redirectTo = '/',
   layout: Layout = React.Fragment,
 }) => {
@@ -42,3 +42,5 @@ export const PublicRoute: React.FC<PublicRouteProps> = ({
     </Layout>
   );
 };
+
+export default PublicRoute;

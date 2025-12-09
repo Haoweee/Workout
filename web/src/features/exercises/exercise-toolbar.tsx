@@ -1,4 +1,4 @@
-import { Search, SlidersHorizontal } from 'lucide-react';
+import { SearchIcon, SlidersHorizontalIcon } from '@/components/ui/icons';
 
 import { Button } from '@/components/ui/button';
 import { ExerciseFiltersComponent } from '@/features/exercises/exercise-filters';
@@ -46,14 +46,14 @@ export const ExerciseToolbar: React.FC<ExerciseToolbarProps> = ({
       />
       <div className="flex flex-row justify-between items-center gap-0 md:gap-2">
         <Button onClick={onSearch} variant="default">
-          <Search className="h-4 w-4 mr-1" />
+          <SearchIcon className="h-4 w-4 mr-1" />
           Search
         </Button>
         <div>
           <Sheet>
             <SheetTrigger asChild>
               <Button variant="outline">
-                <SlidersHorizontal />
+                <SlidersHorizontalIcon />
                 Filters
               </Button>
             </SheetTrigger>

@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 
-import { Dumbbell, Plus } from 'lucide-react';
+import { DumbbellIcon, PlusIcon } from '@/components/ui/icons';
 
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -42,7 +42,7 @@ export const RoutinesTab = ({
           size="sm"
           disabled={isLoading}
         >
-          <Plus className="w-4 h-4 mr-1" />
+          <PlusIcon className="w-4 h-4 mr-1" />
           New Routine
         </Button>
       </div>
@@ -67,13 +67,13 @@ export const RoutinesTab = ({
         </Card>
       ) : routines.length === 0 ? (
         <Card className="p-6 text-center">
-          <Dumbbell className="w-12 h-12 mx-auto text-gray-400 mb-4" />
+          <DumbbellIcon className="w-12 h-12 mx-auto text-gray-400 mb-4" />
           <h4 className="text-lg font-medium text-gray-900 mb-2">No Routines Yet</h4>
           <p className="text-gray-500 mb-4">
             You haven't created any workout routines yet. Start building your fitness journey!
           </p>
           <Button variant="default" onClick={handleCreateNewRoutineClick}>
-            <Plus className="w-4 h-4 mr-2" />
+            <PlusIcon className="w-4 h-4 mr-2" />
             Create Your First Routine
           </Button>
         </Card>

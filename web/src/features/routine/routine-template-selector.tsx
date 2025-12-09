@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Plus, Clock, Target, Users, Star } from 'lucide-react';
+import { PlusIcon, ClockIcon, TargetIcon, UsersIcon, StarIcon } from '@/components/ui/icons';
 
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -48,11 +48,11 @@ export const TemplateSelector: React.FC<TemplateSelectorProps> = ({
                     {/* Rating and Users */}
                     <div className="flex items-center gap-4 text-sm text-gray-500">
                       <div className="flex items-center gap-1">
-                        <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
+                        <StarIcon className="h-4 w-4 fill-yellow-400 text-yellow-400" />
                         {template.rating}
                       </div>
                       <div className="flex items-center gap-1">
-                        <Users className="h-4 w-4" />
+                        <UsersIcon className="h-4 w-4" />
                         {template.users?.toLocaleString()}
                       </div>
                       <Badge variant="outline">{template.category}</Badge>
@@ -85,18 +85,18 @@ export const TemplateSelector: React.FC<TemplateSelectorProps> = ({
                       </div>
                     </div>
 
-                    {/* Bottom section - Duration/Target and Buttons */}
+                    {/* Bottom section - Duration/TargetIcon and Buttons */}
                     <div className="mt-auto space-y-4">
-                      {/* Duration and Target */}
+                      {/* Duration and TargetIcon */}
                       <div className="flex items-center gap-4 text-sm text-gray-500 pt-2 border-t">
                         <div className="flex items-center gap-1 ">
-                          <Clock className="h-4 w-4" />
+                          <ClockIcon className="h-4 w-4" />
                           {template.description.includes('min')
                             ? template.description.split('•')[1]?.trim()
                             : 'Varies'}
                         </div>
                         <div className="flex items-center gap-1">
-                          <Target className="h-4 w-4" />
+                          <TargetIcon className="h-4 w-4" />
                           {template.days.length} day{template.days.length > 1 ? 's' : ''}
                         </div>
                       </div>
@@ -123,7 +123,7 @@ export const TemplateSelector: React.FC<TemplateSelectorProps> = ({
           onClick={onStartFromScratch}
         >
           <div className="flex flex-col items-center justify-center h-full text-gray-500">
-            <Plus className="h-8 w-8 mb-2" />
+            <PlusIcon className="h-8 w-8 mb-2" />
             <h3 className="font-semibold">Start from scratch</h3>
             <p className="text-sm text-center">Build your own routine</p>
           </div>

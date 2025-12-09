@@ -3,7 +3,7 @@ import ContributionCalendar, { type CellInfo } from './calendar';
 import { workoutService, type Workout } from '@/services/workout.service';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
-import { Activity, Calendar, TrendingUp } from 'lucide-react';
+import { ActivityIcon, CalendarIcon, TrendingUpIcon } from '@/components/ui/icons';
 
 // Workout-themed color scale: from light blue to dark blue/purple
 const WORKOUT_COLORS: [string, string, string, string, string] = [
@@ -183,7 +183,7 @@ export default function WorkoutCalendar({
       <Card className={className}>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
-            <Activity className="h-5 w-5 text-red-600" />
+            <ActivityIcon className="h-5 w-5 text-red-600" />
             Workout Activity
           </CardTitle>
         </CardHeader>
@@ -205,7 +205,7 @@ export default function WorkoutCalendar({
     <Card className={`w-full ${className}`}>
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
-          <Activity className="h-5 w-5 text-red-600" />
+          <ActivityIcon className="h-5 w-5 text-red-600" />
           Workout Activity
         </CardTitle>
         <p className="text-sm text-gray-600">Track your workout consistency over the past year</p>
@@ -217,7 +217,7 @@ export default function WorkoutCalendar({
               <div className="grid grid-cols-2 gap-4">
                 <div className="text-center p-3 bg-gray-50 rounded-lg">
                   <div className="flex items-center justify-center gap-1 mb-1">
-                    <Activity className="h-4 w-4 text-blue-600" />
+                    <ActivityIcon className="h-4 w-4 text-blue-600" />
                     <span className="text-xs text-gray-600">Total</span>
                   </div>
                   <div className="text-lg font-bold text-gray-900">{stats.totalWorkouts}</div>
@@ -226,7 +226,7 @@ export default function WorkoutCalendar({
 
                 <div className="text-center p-3 bg-gray-50 rounded-lg">
                   <div className="flex items-center justify-center gap-1 mb-1">
-                    <TrendingUp className="h-4 w-4 text-green-600" />
+                    <TrendingUpIcon className="h-4 w-4 text-green-600" />
                     <span className="text-xs text-gray-600">Current</span>
                   </div>
                   <div className="text-lg font-bold text-gray-900">{stats.currentStreak}</div>
@@ -235,7 +235,7 @@ export default function WorkoutCalendar({
 
                 <div className="text-center p-3 bg-gray-50 rounded-lg">
                   <div className="flex items-center justify-center gap-1 mb-1">
-                    <TrendingUp className="h-4 w-4 text-orange-600" />
+                    <TrendingUpIcon className="h-4 w-4 text-orange-600" />
                     <span className="text-xs text-gray-600">Longest</span>
                   </div>
                   <div className="text-lg font-bold text-gray-900">{stats.longestStreak}</div>
@@ -244,7 +244,7 @@ export default function WorkoutCalendar({
 
                 <div className="text-center p-3 bg-gray-50 rounded-lg">
                   <div className="flex items-center justify-center gap-1 mb-1">
-                    <Calendar className="h-4 w-4 text-purple-600" />
+                    <CalendarIcon className="h-4 w-4 text-purple-600" />
                     <span className="text-xs text-gray-600">This Month</span>
                   </div>
                   <div className="text-lg font-bold text-gray-900">{stats.thisMonthWorkouts}</div>

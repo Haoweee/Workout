@@ -1,13 +1,13 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { Plus, Clock, Target, Users, Star } from 'lucide-react';
+import { PlusIcon, ClockIcon, TargetIcon, UsersIcon, StarIcon } from '@/components/ui/icons';
 
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 
-import { useAuth } from '@/hooks/auth';
+import { useGuestAuth } from '@/context/GuestContext';
 
 import { routineTemplates } from '@/constants/routine-templates';
 
@@ -20,9 +20,9 @@ const difficultyColors = {
   Advanced: 'bg-red-100 text-red-800',
 };
 
-export const RoutinesPage = () => {
+const RoutinesPage = () => {
   const navigate = useNavigate();
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated } = useGuestAuth();
   const [selectedDifficulty, setSelectedDifficulty] = useState('All');
   const [selectedCategory, setSelectedCategory] = useState('All');
 
@@ -56,7 +56,7 @@ export const RoutinesPage = () => {
             size="lg"
             onClick={() => (isAuthenticated ? navigate('/routines/create') : navigate('/signup'))}
           >
-            <Plus className="h-5 w-5 mr-2" />
+            <PlusIcon className="h-5 w-5 mr-2" />
             Create Custom Routine
           </Button>
           <Button variant="outline" size="lg">
@@ -129,11 +129,11 @@ export const RoutinesPage = () => {
                 {/* Rating and Users */}
                 <div className="flex items-center gap-4 text-sm text-gray-500">
                   <div className="flex items-center gap-1">
-                    <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
+                    <StarIcon className="h-4 w-4 fill-yellow-400 text-yellow-400" />
                     {template.rating}
                   </div>
                   <div className="flex items-center gap-1">
-                    <Users className="h-4 w-4" />
+                    <UsersIcon className="h-4 w-4" />
                     {template.users?.toLocaleString()}
                   </div>
                   <Badge variant="outline">{template.category}</Badge>
@@ -170,13 +170,13 @@ export const RoutinesPage = () => {
                 <div className="mt-auto space-y-4">
                   <div className="flex items-center gap-4 text-sm text-gray-500 pt-2 border-t mt-6">
                     <div className="flex items-center gap-1">
-                      <Clock className="h-4 w-4" />
+                      <ClockIcon className="h-4 w-4" />
                       {template.description.includes('min')
                         ? template.description.split('•')[1]?.trim()
                         : 'Varies'}
                     </div>
                     <div className="flex items-center gap-1">
-                      <Target className="h-4 w-4" />
+                      <TargetIcon className="h-4 w-4" />
                       {template.days.length} day{template.days.length > 1 ? 's' : ''}
                     </div>
                   </div>
@@ -219,3 +219,5 @@ export const RoutinesPage = () => {
     </div>
   );
 };
+
+export default RoutinesPage;

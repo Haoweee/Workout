@@ -1,7 +1,7 @@
 import React from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
 
-import { useAuth } from '@/hooks/auth';
+import { useAuth } from '@/hooks/auth/useAuth';
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
@@ -14,7 +14,7 @@ interface ProtectedRouteProps {
  * Protects routes that require authentication.
  * Redirects to homepage if user is not authenticated.
  */
-export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children, redirectTo = '/' }) => {
+const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children, redirectTo = '/' }) => {
   const { isAuthenticated, isLoading } = useAuth();
   const location = useLocation();
 
@@ -35,3 +35,5 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children, redire
   // If authenticated, render the protected content
   return <>{children}</>;
 };
+
+export default ProtectedRoute;

@@ -1,4 +1,4 @@
-import { Search } from 'lucide-react';
+import { SearchIcon } from '@/components/ui/icons';
 
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -23,7 +23,7 @@ export const WorkoutRoutineList: React.FC<RoutineListProps> = ({
       <CardHeader>
         <CardTitle>Choose from Your Routines</CardTitle>
         <div className="relative">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+          <SearchIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
           <Input
             placeholder="Search routines..."
             value={searchTerm}

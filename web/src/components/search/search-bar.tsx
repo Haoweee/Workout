@@ -1,6 +1,6 @@
 import { useRef, useEffect } from 'react';
 
-import { Search } from 'lucide-react';
+import { SearchIcon } from '@/components/ui/icons';
 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -86,7 +86,7 @@ export const SearchBar = ({
 
   return (
     <div className={`relative flex-1 ${className}`} ref={containerRef}>
-      <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
+      <SearchIcon className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
       <Input
         ref={(el) => {
           if (inputRef.current !== el) {

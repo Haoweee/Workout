@@ -14,13 +14,13 @@ import {
   FieldSeparator,
 } from '@/components/ui/field';
 
-import { Loading } from '@/components/loading/spinner';
+import Loading from '@/components/loading/spinner';
 
 import { OAuth } from '@/features/forms/oauth';
 
 import { useRegistration } from '@/context/registration-context';
 
-import { useSendOtp } from '@/hooks/auth';
+import { useSendOtp } from '@/hooks/auth/useSendOtp';
 
 import type { SendOtpRequest } from '@/types/api';
 

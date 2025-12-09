@@ -1,12 +1,19 @@
-import { User, Shield, Bell, Trash2, Key, Globe } from 'lucide-react';
+import {
+  UsersIcon,
+  ShieldIcon,
+  BellIcon,
+  Trash2Icon,
+  KeyIcon,
+  GlobeIcon,
+} from '@/components/ui/icons';
 
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 
-export const AccountSettingsPage = () => {
+const AccountSettingsPage = () => {
   const settingsSections = [
     {
-      icon: User,
+      icon: UsersIcon,
       title: 'Profile Information',
       description: 'Manage your personal details and workout preferences',
       items: [
@@ -19,7 +26,7 @@ export const AccountSettingsPage = () => {
       bgColor: 'bg-blue-50',
     },
     {
-      icon: Key,
+      icon: KeyIcon,
       title: 'Security & Authentication',
       description: 'Keep your workout data secure',
       items: [
@@ -32,7 +39,7 @@ export const AccountSettingsPage = () => {
       bgColor: 'bg-green-50',
     },
     {
-      icon: Shield,
+      icon: ShieldIcon,
       title: 'Privacy & Sharing',
       description: 'Control who can see your fitness journey',
       items: [
@@ -45,7 +52,7 @@ export const AccountSettingsPage = () => {
       bgColor: 'bg-purple-50',
     },
     {
-      icon: Bell,
+      icon: BellIcon,
       title: 'Notifications',
       description: 'Stay motivated with personalized reminders',
       items: [
@@ -58,7 +65,7 @@ export const AccountSettingsPage = () => {
       bgColor: 'bg-orange-50',
     },
     {
-      icon: Globe,
+      icon: GlobeIcon,
       title: 'Data & Sync',
       description: 'Manage your workout data across devices',
       items: [
@@ -71,7 +78,7 @@ export const AccountSettingsPage = () => {
       bgColor: 'bg-teal-50',
     },
     {
-      icon: Trash2,
+      icon: Trash2Icon,
       title: 'Account Management',
       description: 'Advanced account options',
       items: [
@@ -176,3 +183,5 @@ export const AccountSettingsPage = () => {
     </div>
   );
 };
+
+export default AccountSettingsPage;

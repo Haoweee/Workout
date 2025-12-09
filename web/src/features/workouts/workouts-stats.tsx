@@ -1,4 +1,4 @@
-import { Calendar, Clock, Dumbbell, Edit2 } from 'lucide-react';
+import { CalendarIcon, ClockIcon, DumbbellIcon, Edit2Icon } from '@/components/ui/icons';
 
 import { Card, CardContent } from '@/components/ui/card';
 
@@ -20,7 +20,7 @@ export const WorkoutStats: React.FC<WorkoutStatsProps> = ({ workout, preferences
       <Card>
         <CardContent className="p-4">
           <div className="flex items-center gap-2">
-            <Calendar className="h-4 w-4 text-gray-500" />
+            <CalendarIcon className="h-4 w-4 text-gray-500" />
             <div>
               <p className="text-sm text-gray-500">Started</p>
               <p className="font-semibold">{formatDate(workout.startedAt)}</p>
@@ -32,7 +32,7 @@ export const WorkoutStats: React.FC<WorkoutStatsProps> = ({ workout, preferences
       <Card>
         <CardContent className="p-4">
           <div className="flex items-center gap-2">
-            <Clock className="h-4 w-4 text-gray-500" />
+            <ClockIcon className="h-4 w-4 text-gray-500" />
             <div>
               <p className="text-sm text-gray-500">Duration</p>
               <p className="font-semibold">
@@ -46,7 +46,7 @@ export const WorkoutStats: React.FC<WorkoutStatsProps> = ({ workout, preferences
       <Card>
         <CardContent className="p-4">
           <div className="flex items-center gap-2">
-            <Dumbbell className="h-4 w-4 text-gray-500" />
+            <DumbbellIcon className="h-4 w-4 text-gray-500" />
             <div>
               <p className="text-sm text-gray-500">Total Sets</p>
               <p className="font-semibold">
@@ -63,7 +63,7 @@ export const WorkoutStats: React.FC<WorkoutStatsProps> = ({ workout, preferences
       <Card>
         <CardContent className="p-4">
           <div className="flex items-center gap-2">
-            <Edit2 className="h-4 w-4 text-gray-500" />
+            <Edit2Icon className="h-4 w-4 text-gray-500" />
             <div>
               <p className="text-sm text-gray-500">Volume</p>
               <p className="font-semibold">

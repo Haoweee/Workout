@@ -55,3 +55,8 @@ export const formatWeightDisplay = (
     preferences.weightUnit
   );
 };
+
+export const formatWorkoutTitle = (title: string | null | undefined): string => {
+  if (title) return title.split(' - ')[0].trim();
+  return 'Untitled Workout';
+};

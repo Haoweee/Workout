@@ -9,7 +9,7 @@ import {
 
 import { useGetExerciseDetail } from '@/hooks/exercises';
 
-export const ExerciseDetailPage = () => {
+const ExerciseDetailPage = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const location = useLocation();
@@ -47,3 +47,5 @@ export const ExerciseDetailPage = () => {
     </div>
   );
 };
+
+export default ExerciseDetailPage;

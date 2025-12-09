@@ -1,6 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import { AlertMessage } from '@/components/errors/alert-message';
 import { Button } from '@/components/ui/button';
 import { ErrorToast } from '@/components/errors/toast';
 
@@ -135,9 +136,7 @@ export const RoutineForm: React.FC<RoutineFormProps> = ({ mode, existingRoutine,
 
         {/* Error Display */}
         {(createError || updateError) && (
-          <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded">
-            <p>Error: {createError || updateError}</p>
-          </div>
+          <AlertMessage message={createError || updateError || ''} type="error" />
         )}
 
         {/* Submit Button */}

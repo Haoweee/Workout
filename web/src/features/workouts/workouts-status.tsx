@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 
-import { Clock } from 'lucide-react';
+import { ClockIcon } from '@/components/ui/icons';
 
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -15,7 +15,7 @@ export const WorkoutStatus: React.FC<{ workout: OptimizedWorkout }> = ({ workout
       <CardContent className="p-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <Clock className="h-5 w-5 text-amber-600" />
+            <ClockIcon className="h-5 w-5 text-amber-600" />
             <div>
               <p className="font-semibold text-amber-900">Workout in Progress</p>
               <p className="text-amber-700 text-sm">

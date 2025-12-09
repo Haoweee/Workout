@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { GalleryVerticalEnd } from 'lucide-react';
+import { GalleryVerticalEndIcon } from '@/components/ui/icons';
 
 import { cn } from '@/lib/utils';
 
@@ -14,11 +14,11 @@ import {
   InputOTPSeparator,
   InputOTPSlot,
 } from '@/components/ui/input-otp';
-import { Loading } from '@/components/loading/spinner';
+import Loading from '@/components/loading/spinner';
 
 import { useRegistration } from '@/context/registration-context';
 
-import { useVerifyOtp } from '@/hooks/auth';
+import { useVerifyOtp } from '@/hooks/auth/useVerifyOtp';
 
 import { logger } from '@/lib/logger';
 
@@ -56,7 +56,7 @@ export function OTPForm({ className, ...props }: React.ComponentProps<'div'>) {
           <div className="flex flex-col items-center gap-2 text-center">
             <a href="#" className="flex flex-col items-center gap-2 font-medium">
               <div className="flex size-8 items-center justify-center rounded-md">
-                <GalleryVerticalEnd className="size-6" />
+                <GalleryVerticalEndIcon className="size-6" />
               </div>
               <span className="sr-only">Acme Inc.</span>
             </a>

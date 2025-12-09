@@ -3,7 +3,7 @@ import { WorkoutTable } from '@/components/charts/workouts-table';
 
 import { useGetUserWorkouts } from '@/hooks/workouts';
 
-export const WorkoutsPage: React.FC = () => {
+const WorkoutsPage: React.FC = () => {
   const { workouts, isLoading, error } = useGetUserWorkouts(15);
 
   if (isLoading) return <WorkoutTableSkeleton />;
@@ -14,3 +14,5 @@ export const WorkoutsPage: React.FC = () => {
     </div>
   );
 };
+
+export default WorkoutsPage;

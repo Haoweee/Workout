@@ -12,7 +12,7 @@ import {
 import { useUserPreferences } from '@/hooks/user';
 import { useGetWorkoutById } from '@/hooks/workouts';
 
-export const WorkoutDetailPage: React.FC = () => {
+const WorkoutDetailPage: React.FC = () => {
   const navigate = useNavigate();
   const { preferences } = useUserPreferences();
   const { id } = useParams<{ id: string }>();
@@ -45,3 +45,5 @@ export const WorkoutDetailPage: React.FC = () => {
     </div>
   );
 };
+
+export default WorkoutDetailPage;

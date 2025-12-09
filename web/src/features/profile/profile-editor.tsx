@@ -1,6 +1,6 @@
 import { useState, useRef } from 'react';
 
-import { Camera, X } from 'lucide-react';
+import { CameraIcon, XIcon } from '@/components/ui/icons';
 
 import { AlertMessage } from '@/components/errors/alert-message';
 import { AvatarProfile } from '@/components/profile/avatar';
@@ -169,7 +169,7 @@ export const ProfileEditor: React.FC<ProfileEditorProps> = ({ user }) => {
                     className="absolute inset-0 bg-black bg-opacity-50 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer"
                     onClick={handleAvatarClick}
                   >
-                    <Camera className="w-6 h-6 text-white" />
+                    <CameraIcon clIconassName="w-6 h-6 text-white" />
                   </div>
 
                   {/* Cancel Preview Button */}
@@ -181,7 +181,7 @@ export const ProfileEditor: React.FC<ProfileEditorProps> = ({ user }) => {
                       className="absolute -top-2 -right-2 w-6 h-6 rounded-full"
                       onClick={handleCancelPreview}
                     >
-                      <X className="w-3 h-3" />
+                      <XIcon className="w-3 h-3" />
                     </Button>
                   )}
                 </div>
@@ -193,7 +193,7 @@ export const ProfileEditor: React.FC<ProfileEditorProps> = ({ user }) => {
                     onClick={handleAvatarClick}
                     disabled={isUploading}
                   >
-                    <Camera className="w-4 h-4 mr-2" />
+                    <CameraIcon clIconassName="w-4 h-4 mr-2" />
                     {previewUrl ? 'Change Image' : 'Choose Image'}
                   </Button>
 

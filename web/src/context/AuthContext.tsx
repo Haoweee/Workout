@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useMemo, useCallback } from 'react';
 import type { ReactNode } from 'react';
-import type { User, LoginRequest, RegisterRequest } from '@/types/api';
+import type { User } from '@/types/user';
+import type { LoginRequest, RegisterRequest, VerifyOtpRequest } from '@/types/api';
 import { authService, userService } from '@/services';
 import { AuthContext } from './auth-context';
 import type { AuthContextType } from './auth-context';
@@ -13,9 +14,6 @@ interface AuthProviderProps {
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [justLoggedIn, setJustLoggedIn] = useState(false);
   const [isInitialized, setIsInitialized] = useState(false);
 
   // Use user presence for authentication state
@@ -50,34 +48,24 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   // Login function
   const login = useCallback(async (credentials: LoginRequest): Promise<void> => {
     setIsLoading(true);
-    setJustLoggedIn(true);
     try {
-      const authResponse = await authService.login(credentials);
-      // Set the basic user data from login response first
-      setUser(authResponse.user);
-
-      // Always fetch complete profile after login to get all fields (bio, avatarUrl, etc.)
-      try {
-        const completeProfile = await userService.getProfile();
-        setUser(completeProfile);
-      } catch (profileError) {
-        logger.warn('Failed to fetch complete profile after login:', profileError);
-        // Still proceed with the basic user data from login
-      }
+      await authService.login(credentials);
+      // Always fetch complete profile after login to get all fields (bio, avatarUrl, hasPassword, etc.)
+      const completeProfile = await userService.getProfile();
+      setUser(completeProfile);
+      // Notify useAuthCheck of auth state change
+      window.dispatchEvent(new Event('auth-change'));
     } catch (error) {
       logger.error('Login failed:', error);
       throw error; // Re-throw so components can handle the error
     } finally {
       setIsLoading(false);
-      // Reset the flag after a delay to allow initialization to run normally next time
-      setTimeout(() => setJustLoggedIn(false), 1000);
     }
   }, []);
 
   // Send OTP function
   const sendOtp = useCallback(async (userData: RegisterRequest): Promise<void> => {
     setIsLoading(true);
-    setJustLoggedIn(true);
     try {
       const authResponse = await authService.sendOtp(userData);
 
@@ -89,61 +77,21 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       throw error; // Re-throw so components can handle the error
     } finally {
       setIsLoading(false);
-      // Reset the flag after a delay to allow initialization to run normally next time
-      setTimeout(() => setJustLoggedIn(false), 1000);
     }
   }, []);
 
-  const verifyOtp = useCallback(async (userData: RegisterRequest, otp: string): Promise<void> => {
+  const verifyOtp = useCallback(async (userData: VerifyOtpRequest, otp: string): Promise<void> => {
     setIsLoading(true);
-    setJustLoggedIn(true);
     try {
-      const authResponse = await authService.verifyOtp(userData.email, otp);
-      // Set the basic user data from register response first
-      setUser(authResponse.user);
-
-      // Always fetch complete profile after registration to get all fields (bio, avatarUrl, etc.)
-      try {
-        const completeProfile = await userService.getProfile();
-        setUser(completeProfile);
-      } catch (profileError) {
-        logger.warn('Failed to fetch complete profile after registration:', profileError);
-        // Still proceed with the basic user data from registration
-      }
+      await authService.verifyOtp({ ...userData, otp });
+      // Always fetch complete profile after registration to get all fields (bio, avatarUrl, hasPassword, etc.)
+      const completeProfile = await userService.getProfile();
+      setUser(completeProfile);
     } catch (error) {
       logger.error('OTP verification failed:', error);
       throw error; // Re-throw so components can handle the error
     } finally {
       setIsLoading(false);
-      // Reset the flag after a delay to allow initialization to run normally next time
-      setTimeout(() => setJustLoggedIn(false), 1000);
-    }
-  }, []);
-
-  // Register function
-  const register = useCallback(async (userData: RegisterRequest): Promise<void> => {
-    setIsLoading(true);
-    setJustLoggedIn(true);
-    try {
-      const authResponse = await authService.register(userData);
-      // Set the basic user data from register response first
-      setUser(authResponse.user);
-
-      // Always fetch complete profile after registration to get all fields (bio, avatarUrl, etc.)
-      try {
-        const completeProfile = await userService.getProfile();
-        setUser(completeProfile);
-      } catch (profileError) {
-        logger.warn('Failed to fetch complete profile after registration:', profileError);
-        // Still proceed with the basic user data from registration
-      }
-    } catch (error) {
-      logger.error('Registration failed:', error);
-      throw error; // Re-throw so components can handle the error
-    } finally {
-      setIsLoading(false);
-      // Reset the flag after a delay to allow initialization to run normally next time
-      setTimeout(() => setJustLoggedIn(false), 1000);
     }
   }, []);
 
@@ -157,6 +105,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       // Continue with logout even if server request fails
     } finally {
       setUser(null);
+      // Notify useAuthCheck of auth state change
+      window.dispatchEvent(new Event('auth-change'));
       setIsLoading(false);
     }
   }, []);
@@ -191,7 +141,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       login,
       sendOtp,
       verifyOtp,
-      register,
       logout,
       refreshProfile,
       updateUser,
@@ -203,7 +152,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       login,
       sendOtp,
       verifyOtp,
-      register,
       logout,
       refreshProfile,
       updateUser,

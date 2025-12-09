@@ -1,4 +1,4 @@
-import { Play, Pause } from 'lucide-react';
+import { PlayIcon, PauseIcon } from '@/components/ui/icons';
 
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -25,7 +25,7 @@ export const WorkoutRestTimer: React.FC<RestTimerProps> = ({
           </div>
           <div className="flex justify-center gap-2">
             <Button variant="outline" size="sm" onClick={onToggle}>
-              {isRunning ? <Pause className="h-4 w-4" /> : <Play className="h-4 w-4" />}
+              {isRunning ? <PauseIcon className="h-4 w-4" /> : <PlayIcon className="h-4 w-4" />}
             </Button>
             <Button variant="outline" size="sm" onClick={onSkip}>
               Skip Rest

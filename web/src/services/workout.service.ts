@@ -17,6 +17,9 @@ import type {
 
 import { apiClient, apiCall } from '@/lib/api-client';
 
+// Re-export Workout type for convenience
+export type { Workout };
+
 export const workoutService = {
   // Create a new workout
   createWorkout: async (data: CreateWorkoutRequest): Promise<Workout> => {

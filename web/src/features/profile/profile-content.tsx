@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
-import { TableProperties, Dumbbell } from 'lucide-react';
+import { TablePropertiesIcon, DumbbellIcon } from '@/components/ui/icons';
 
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { RoutinesTab } from '@/components/profile/routines';
@@ -51,14 +51,14 @@ export const ProfileContent: React.FC = () => {
           value="workouts"
           className="px-4 data-[state=active]:bg-transparent data-[state=active]:shadow-none data-[state=active]:border-b-2 data-[state=active]:border-b-black data-[state=active]:font-bold rounded-none pb-3 pt-3"
         >
-          <Dumbbell className="w-4 h-4 mr-1" />
+          <DumbbellIcon className="w-4 h-4 mr-1" />
           Workouts
         </TabsTrigger>
         <TabsTrigger
           value="routines"
           className="px-4 data-[state=active]:bg-transparent data-[state=active]:shadow-none data-[state=active]:border-b-2 data-[state=active]:border-b-black data-[state=active]:font-bold rounded-none pb-3 pt-3"
         >
-          <TableProperties className="w-4 h-4 mr-1" />
+          <TablePropertiesIcon className="w-4 h-4 mr-1" />
           Routines
         </TabsTrigger>
       </TabsList>

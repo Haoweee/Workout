@@ -1,18 +1,13 @@
+import Loading from '@/components/loading/spinner';
+
 import { ProfileHeader, ProfileEditor, ProfileContent } from '@/features/profile';
 
 import { useAuth } from '@/hooks/auth';
 
-export const ProfilePage: React.FC = () => {
+const ProfilePage: React.FC = () => {
   const { user } = useAuth();
 
-  if (!user) {
-    return (
-      <div className="flex justify-center items-center min-h-[400px]">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
-        <span className="ml-3 text-lg">Loading profile...</span>
-      </div>
-    );
-  }
+  if (!user) return <Loading />;
 
   return (
     <div className="min-h-screen bg-gray-50 max-w-[95%] mx-auto">
@@ -26,3 +21,5 @@ export const ProfilePage: React.FC = () => {
     </div>
   );
 };
+
+export default ProfilePage;

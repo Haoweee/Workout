@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-import { TrendingUp } from 'lucide-react';
+import { TrendingUpIcon } from '@/components/ui/icons';
 
 import { ChartLineDefault } from '@/components/charts/line';
 import type { ChartConfig } from '@/components/ui/chart';
@@ -99,7 +99,7 @@ export const WorkoutsTab: React.FC = () => {
               <div className="flex-1 h-full">
                 <ChartLineDefault
                   header="Overall Progress"
-                  headerIcon={TrendingUp}
+                  headerIcon={TrendingUpIcon}
                   headerDescription={
                     overallProgress.length > 0
                       ? `Past 6 weeks: ${overallProgress[0].month || 'Unknown'} - ${
@@ -130,7 +130,7 @@ export const WorkoutsTab: React.FC = () => {
         {/* <div className="grid grid-cols-1 xl:grid-cols-3 gap-4">
           <ChartRadarDefault
             header="Muscle Group Focus"
-            headerIcon={TrendingUp}
+            headerIcon={TrendingUpIcon}
             headerDescription="Volume-weighted muscle group distribution over the last 6 months"
             hasFooter={true}
             chartData={
@@ -145,7 +145,7 @@ export const WorkoutsTab: React.FC = () => {
           />
           <ChartAreaGradient
             header="Recovery vs Performance"
-            headerIcon={TrendingUp}
+            headerIcon={TrendingUpIcon}
             headerDescription="Comparing recovery and performance over the last 6 months"
             hasFooter={true}
             chartData={[]} // Placeholder - skip recovery vs performance for now
@@ -153,7 +153,7 @@ export const WorkoutsTab: React.FC = () => {
           />
           <ChartBarDefault
             header="Volume Over Time"
-            headerIcon={TrendingUp}
+            headerIcon={TrendingUpIcon}
             headerDescription="Volume lifted in the last 6 months"
             hasFooter={true}
             chartData={volumeOverTime.map(item => ({

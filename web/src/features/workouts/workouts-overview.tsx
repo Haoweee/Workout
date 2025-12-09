@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { Trash2 } from 'lucide-react';
+import { Trash2Icon } from '@/components/ui/icons';
 
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -134,7 +134,7 @@ export const WorkoutOverview: React.FC<WorkoutOverviewProps> = ({
                           }}
                           disabled={isRemoving}
                         >
-                          <Trash2 className="h-3 w-3" />
+                          <Trash2Icon className="h-3 w-3" />
                         </Button>
                       )}
 

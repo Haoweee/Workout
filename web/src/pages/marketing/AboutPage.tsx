@@ -1,6 +1,6 @@
-import GymImg from '@/assets/marketing/gym.jpg';
+import GymImg from '@/assets/marketing/gym.webp';
 
-export const AboutPage = () => {
+const AboutPage = () => {
   return (
     <div className="max-w-[1000px] mx-auto py-12">
       <h1 className="text-lg font-semibold">About Us</h1>
@@ -9,7 +9,7 @@ export const AboutPage = () => {
         <br />
         Gym Culture
       </p>
-      <img src={GymImg} alt="Gym" className="w-full h-auto my-4 rounded-xl" />
+      <img src={GymImg} alt="Gym" className="w-full h-auto my-4 rounded-xl" loading="lazy" />
       <p className="text-gray-600 mb-6">
         We are committed to providing you with the best workout experience possible. Our platform is
         designed to help you achieve your fitness goals through personalized workout plans, expert
@@ -31,3 +31,5 @@ export const AboutPage = () => {
     </div>
   );
 };
+
+export default AboutPage;

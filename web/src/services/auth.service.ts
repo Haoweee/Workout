@@ -138,4 +138,10 @@ export const authService = {
       return false;
     }
   },
+
+  // Get current user data
+  getCurrentUser: async () => {
+    const response = await apiClient.get('/auth/me');
+    return response.data.user || response.data; // Adjust based on your API response structure
+  },
 };

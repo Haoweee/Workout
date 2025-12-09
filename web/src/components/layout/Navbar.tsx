@@ -1,15 +1,15 @@
 import React, { useState } from 'react';
 import {
-  LogOut,
-  UserRound,
-  Dumbbell,
-  // Calendar,
-  Plus,
-  List,
-  Menu,
-  Settings,
-  ChevronDown,
-} from 'lucide-react';
+  LogOutIcon,
+  UserRoundIcon,
+  DumbbellIcon,
+  // CalendarIcon,
+  PlusIcon,
+  ListIcon,
+  MenuIcon,
+  SettingsIcon,
+  ChevronDownIcon,
+} from '@/components/ui/icons';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '@/hooks/auth/useAuth';
 import { useLogout } from '@/hooks/auth/useLogout';
@@ -43,6 +43,7 @@ export const Navbar: React.FC<NavbarProps> = ({ className = '' }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const { user, isAuthenticated, isLoading } = useAuth();
+  console.log('User in Navbar:', user);
   const { handleLogout } = useLogout();
   const [menuOpen, setMenuOpen] = useState(false);
   const [mobileWorkoutsOpen, setMobileWorkoutsOpen] = useState(false);
@@ -101,10 +102,10 @@ export const Navbar: React.FC<NavbarProps> = ({ className = '' }) => {
                       className="flex items-center justify-between w-full p-3 text-left text-lg font-medium text-gray-900"
                     >
                       <span className="flex items-center gap-2">
-                        <Dumbbell className="h-5 w-5" />
+                        <DumbbellIcon className="h-5 w-5" />
                         Workouts
                       </span>
-                      <ChevronDown
+                      <ChevronDownIcon
                         className={`h-5 w-5 transition-transform ${
                           mobileWorkoutsOpen ? 'rotate-180' : ''
                         }`}
@@ -120,7 +121,7 @@ export const Navbar: React.FC<NavbarProps> = ({ className = '' }) => {
                           disabled={!isAuthenticated}
                         >
                           <div className="flex items-center gap-2">
-                            <Dumbbell className="h-4 w-4" />
+                            <DumbbellIcon className="h-4 w-4" />
                             <span>My Workouts</span>
                           </div>
                           <p className="text-xs text-gray-500 mt-1">
@@ -135,7 +136,7 @@ export const Navbar: React.FC<NavbarProps> = ({ className = '' }) => {
                           disabled={!isAuthenticated}
                         >
                           <div className="flex items-center gap-2">
-                            <Plus className="h-4 w-4" />
+                            <PlusIcon className="h-4 w-4" />
                             <span>Start Workout</span>
                           </div>
                           <p className="text-xs text-gray-500 mt-1">Begin a new workout session</p>
@@ -151,10 +152,10 @@ export const Navbar: React.FC<NavbarProps> = ({ className = '' }) => {
                       className="flex items-center justify-between w-full p-3 text-left text-lg font-medium text-gray-900"
                     >
                       <span className="flex items-center gap-2">
-                        <List className="h-5 w-5" />
+                        <ListIcon className="h-5 w-5" />
                         Routines
                       </span>
-                      <ChevronDown
+                      <ChevronDownIcon
                         className={`h-5 w-5 transition-transform ${
                           mobileRoutinesOpen ? 'rotate-180' : ''
                         }`}
@@ -170,7 +171,7 @@ export const Navbar: React.FC<NavbarProps> = ({ className = '' }) => {
                           disabled={!isAuthenticated}
                         >
                           <div className="flex items-center gap-2">
-                            <List className="h-4 w-4" />
+                            <ListIcon className="h-4 w-4" />
                             <span>My Routines</span>
                           </div>
                           <p className="text-xs text-gray-500 mt-1">
@@ -185,7 +186,7 @@ export const Navbar: React.FC<NavbarProps> = ({ className = '' }) => {
                           disabled={!isAuthenticated}
                         >
                           <div className="flex items-center gap-2">
-                            <Plus className="h-4 w-4" />
+                            <PlusIcon className="h-4 w-4" />
                             <span>Create Routine</span>
                           </div>
                           <p className="text-xs text-gray-500 mt-1">Build a new workout routine</p>
@@ -243,14 +244,14 @@ export const Navbar: React.FC<NavbarProps> = ({ className = '' }) => {
                         onClick={() => handleMobileNavigation('/profile?tab=workouts')}
                         className="flex items-center gap-2 w-full text-left p-3 rounded-lg text-sm hover:bg-gray-50"
                       >
-                        <UserRound className="h-4 w-4" />
+                        <UserRoundIcon className="h-4 w-4" />
                         <span>Profile</span>
                       </button>
                       <button
                         onClick={() => handleMobileNavigation('/profile/settings')}
                         className="flex items-center gap-2 w-full text-left p-3 rounded-lg text-sm hover:bg-gray-50"
                       >
-                        <Settings className="h-4 w-4" />
+                        <SettingsIcon className="h-4 w-4" />
                         <span>Settings</span>
                       </button>
                       <button
@@ -260,7 +261,7 @@ export const Navbar: React.FC<NavbarProps> = ({ className = '' }) => {
                         }}
                         className="flex items-center gap-2 w-full text-left p-3 rounded-lg text-sm hover:bg-gray-50 text-red-600"
                       >
-                        <LogOut className="h-4 w-4" />
+                        <LogOutIcon className="h-4 w-4" />
                         <span>Logout</span>
                       </button>
                     </div>
@@ -311,7 +312,7 @@ export const Navbar: React.FC<NavbarProps> = ({ className = '' }) => {
                         }}
                       >
                         <div className="flex items-center gap-2">
-                          <Dumbbell className="h-4 w-4" />
+                          <DumbbellIcon className="h-4 w-4" />
                           <div className="text-sm font-medium leading-none">My Workouts</div>
                         </div>
                         <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
@@ -329,7 +330,7 @@ export const Navbar: React.FC<NavbarProps> = ({ className = '' }) => {
                         }}
                       >
                         <div className="flex items-center gap-2">
-                          <Plus className="h-4 w-4" />
+                          <PlusIcon className="h-4 w-4" />
                           <div className="text-sm font-medium leading-none">Start Workout</div>
                         </div>
                         <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
@@ -357,7 +358,7 @@ export const Navbar: React.FC<NavbarProps> = ({ className = '' }) => {
                         }}
                       >
                         <div className="flex items-center gap-2">
-                          <List className="h-4 w-4" />
+                          <ListIcon className="h-4 w-4" />
                           <div className="text-sm font-medium leading-none">My Routines</div>
                         </div>
                         <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
@@ -376,7 +377,7 @@ export const Navbar: React.FC<NavbarProps> = ({ className = '' }) => {
                         }}
                       >
                         <div className="flex items-center gap-2">
-                          <Plus className="h-4 w-4" />
+                          <PlusIcon className="h-4 w-4" />
                           <div className="text-sm font-medium leading-none">Create Routine</div>
                         </div>
                         <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
@@ -427,7 +428,7 @@ export const Navbar: React.FC<NavbarProps> = ({ className = '' }) => {
             {/* Mobile Menu Button - Shows on smaller screens, replaces login/signup */}
             <div className="flex md:hidden shrink-0">
               <Button variant="ghost" size="icon" onClick={handleMenuToggle}>
-                <Menu className="h-5 w-5" />
+                <MenuIcon className="h-5 w-5" />
               </Button>
             </div>
 
@@ -454,11 +455,11 @@ export const Navbar: React.FC<NavbarProps> = ({ className = '' }) => {
                     <DropdownMenuLabel>{user.fullName || 'Full Name'}</DropdownMenuLabel>
                     <DropdownMenuSeparator />
                     <DropdownMenuItem onClick={() => navigate('/profile?tab=workouts')}>
-                      <UserRound className="h-4 w-4 mr-2" />
+                      <UserRoundIcon className="h-4 w-4 mr-2" />
                       Profile
                     </DropdownMenuItem>
                     <DropdownMenuItem onClick={() => navigate('/profile/settings')}>
-                      <Settings className="h-4 w-4 mr-2" />
+                      <SettingsIcon className="h-4 w-4 mr-2" />
                       Settings
                     </DropdownMenuItem>
                     <DropdownMenuSeparator />
@@ -466,7 +467,7 @@ export const Navbar: React.FC<NavbarProps> = ({ className = '' }) => {
                       onClick={handleLogout}
                       className="text-red-600 focus:text-red-600"
                     >
-                      <LogOut className="h-4 w-4 mr-2" />
+                      <LogOutIcon className="h-4 w-4 mr-2" />
                       Logout
                     </DropdownMenuItem>
                   </DropdownMenuContent>

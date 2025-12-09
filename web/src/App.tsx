@@ -1,20 +1,18 @@
-import { AuthProvider } from '@/context/AuthContext';
-import { UserPreferencesProvider } from '@/context/UserPreferencesContext';
+import { Provider } from 'react-redux';
+import { store } from '@/store';
 import { AppRouter } from '@/router/AppRouter';
 
 /**
  * Root App Component
  *
- * Wrapped with AuthProvider for authentication state management
- * and UserPreferencesProvider for user preferences (weight units, theme, etc.)
+ * Providers are now loaded conditionally within the routers
+ * to prevent unnecessary loading for guest users
  */
 function App() {
   return (
-    <AuthProvider>
-      <UserPreferencesProvider>
-        <AppRouter />
-      </UserPreferencesProvider>
-    </AuthProvider>
+    <Provider store={store}>
+      <AppRouter />
+    </Provider>
   );
 }
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import { TrendingUp } from 'lucide-react';
+import { TrendingUp } from '@/components/ui/icons';
 import { Area, AreaChart, CartesianGrid, XAxis } from 'recharts';
 
 import {

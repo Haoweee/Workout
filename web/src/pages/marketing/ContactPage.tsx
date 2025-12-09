@@ -1,7 +1,7 @@
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 
-export const ContactPage = () => {
+const ContactPage = () => {
   return (
     <div className="max-w-[800px] mx-auto space-y-12 py-8">
       <h1 className="text-3xl font-bold mb-6 text-center">Contact our team</h1>
@@ -71,3 +71,5 @@ export const ContactPage = () => {
     </div>
   );
 };
+
+export default ContactPage;

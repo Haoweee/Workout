@@ -1,4 +1,4 @@
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { ChevronLeftIcon, ChevronRightIcon } from '@/components/ui/icons';
 
 import { Button } from '@/components/ui/button';
 
@@ -13,7 +13,7 @@ export const WorkoutExerciseNavigation: React.FC<ExerciseNavigationProps> = ({
   return (
     <div className="flex justify-between mb-6">
       <Button variant="outline" onClick={onPrevious} disabled={currentExerciseIndex === 0}>
-        <ChevronLeft className="mr-2 h-4 w-4" />
+        <ChevronLeftIcon className="mr-2 h-4 w-4" />
         Previous Exercise
       </Button>
 
@@ -30,7 +30,7 @@ export const WorkoutExerciseNavigation: React.FC<ExerciseNavigationProps> = ({
         disabled={currentExerciseIndex === totalExercises - 1}
       >
         Next Exercise
-        <ChevronRight className="ml-2 h-4 w-4" />
+        <ChevronRightIcon className="ml-2 h-4 w-4" />
       </Button>
     </div>
   );

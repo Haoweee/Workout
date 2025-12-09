@@ -1,6 +1,13 @@
 import { useState } from 'react';
 
-import { Play, CheckCircle, Clock, Users, Target, Trophy } from 'lucide-react';
+import {
+  PlayIcon as Play,
+  CheckCircleIcon as CheckCircle,
+  ClockIcon as Clock,
+  UsersIcon as Users,
+  TargetIcon as Target,
+  TrophyIcon as Trophy,
+} from '@/components/ui/icons';
 
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -61,7 +68,7 @@ const tutorials = [
 
 const categories = ['All', 'Basics', 'Routines', 'Tracking'];
 
-export const GettingStartedPage = () => {
+const GettingStartedPage = () => {
   const [selectedCategory] = useState('All');
   const [completedTutorials, setCompletedTutorials] = useState<Set<number>>(new Set());
 
@@ -259,3 +266,5 @@ export const GettingStartedPage = () => {
     </div>
   );
 };
+
+export default GettingStartedPage;

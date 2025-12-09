@@ -17,7 +17,7 @@ import type { Routine } from '@/types/routine';
  *
  * A page for editing existing workout routines
  */
-export const EditRoutinePage: React.FC = () => {
+const EditRoutinePage: React.FC = () => {
   const navigate = useNavigate();
   const { id } = useParams<{ id: string }>();
   const { routine, isLoading, error } = useGetRoutineById(id || '');
@@ -40,3 +40,5 @@ export const EditRoutinePage: React.FC = () => {
     </div>
   );
 };
+
+export default EditRoutinePage;

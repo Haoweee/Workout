@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Trash, Activity } from 'lucide-react';
+import { Trash2Icon, ActivityIcon } from '@/components/ui/icons';
 
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -26,7 +26,7 @@ export const ExerciseList: React.FC<ExerciseListProps> = ({
 
       {currentDay.exercises.length === 0 ? (
         <div className="text-center py-8 border-2 border-dashed border-gray-200 rounded-lg">
-          <Activity className="h-8 w-8 text-gray-400 mx-auto mb-2" />
+          <ActivityIcon className="h-8 w-8 text-gray-400 mx-auto mb-2" />
           <p className="text-gray-500 text-sm">No exercises added yet</p>
           <p className="text-gray-400 text-xs">
             Search above or click a popular exercise to get started
@@ -106,7 +106,7 @@ export const ExerciseList: React.FC<ExerciseListProps> = ({
                     onClick={() => onRemoveExercise(exercise.id)}
                     className="text-red-500 hover:text-red-700"
                   >
-                    <Trash className="h-4 w-4" />
+                    <Trash2Icon className="h-4 w-4" />
                   </Button>
                 </div>
               </div>

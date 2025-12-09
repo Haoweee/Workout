@@ -1,7 +1,22 @@
-import React from 'react';
+import React, { createContext, useContext } from 'react';
 import { Outlet } from 'react-router-dom';
 
-import { useAuth } from '@/hooks/auth';
+import { useAuth } from '@/hooks/auth/useAuth';
+
+// Create context to share auth state with child components
+const MixedRouteContext = createContext<{
+  isAuthenticated: boolean;
+  user: any;
+} | null>(null);
+
+export const useMixedRouteAuth = () => {
+  const context = useContext(MixedRouteContext);
+  if (!context) {
+    // Fallback to useAuth if not in MixedRoute context
+    return useAuth();
+  }
+  return context;
+};
 
 type LayoutComponent = React.ComponentType<{ children: React.ReactNode }>;
 
@@ -17,11 +32,11 @@ interface MixedRouteProps {
  * - Renders different layouts based on auth status.
  * - Uses <Outlet/> so you can nest pages under this route in your Router.
  */
-export const MixedRoute: React.FC<MixedRouteProps> = ({
+const MixedRoute: React.FC<MixedRouteProps> = ({
   authedLayout: AuthedLayout,
   guestLayout: GuestLayout,
 }) => {
-  const { isLoading, isAuthenticated } = useAuth();
+  const { isLoading, isAuthenticated, user } = useAuth();
 
   if (isLoading) {
     return (
@@ -37,8 +52,12 @@ export const MixedRoute: React.FC<MixedRouteProps> = ({
     : (GuestLayout ?? React.Fragment);
 
   return (
-    <Layout>
-      <Outlet />
-    </Layout>
+    <MixedRouteContext.Provider value={{ isAuthenticated, user }}>
+      <Layout>
+        <Outlet />
+      </Layout>
+    </MixedRouteContext.Provider>
   );
 };
+
+export default MixedRoute;

@@ -1,5 +1,6 @@
 import { createContext } from 'react';
-import type { User, LoginRequest, SendOtpRequest, VerifyOtpRequest } from '@/types/api';
+import type { LoginRequest, SendOtpRequest, VerifyOtpRequest } from '@/types/api';
+import type { User } from '@/types/user';
 
 export interface AuthContextType {
   // State
