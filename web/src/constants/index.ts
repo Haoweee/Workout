@@ -32,7 +32,7 @@ export const ROUTES = {
   PROFILE: '/profile',
 } as const;
 
-export const PROTECTED_ROUTES = [ROUTES.PROFILE, ROUTES.ROUTINES, ROUTES.EXERCISES];
+export const PROTECTED_ROUTES = [ROUTES.PROFILE, ROUTES.ROUTINES];
 
 // Storage keys
 export const STORAGE_KEYS = {

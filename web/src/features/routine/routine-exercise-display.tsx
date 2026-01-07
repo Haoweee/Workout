@@ -33,36 +33,52 @@ export const RoutineExerciseDisplay: React.FC<{ routine: Routine }> = ({ routine
             return (
               <div className="space-y-8">
                 {Object.entries(exercisesByDay).map(([dayIndex, exercises]) => (
-                  <div key={dayIndex} className="mb-6">
-                    <h2 className="font-bold text-xl mb-2">{getDayOfWeek(Number(dayIndex))}</h2>
-                    <Table className="w-full table-fixed">
-                      <TableHeader>
-                        <TableRow>
-                          <TableHead className="w-1/2 text-left font-bold">Exercise</TableHead>
-                          <TableHead className="w-1/4 text-right font-bold">Sets</TableHead>
-                          <TableHead className="w-1/12 text-right font-bold">Reps</TableHead>
-                          <TableHead className="w-1/12 text-right font-bold">Rest</TableHead>
-                        </TableRow>
-                      </TableHeader>
-                      <TableBody>
-                        {exercises.map((exercise) => (
-                          <TableRow key={exercise.id}>
-                            <TableCell className="w-1/2 text-left font-medium">
-                              <div className="flex items-center gap-2">
-                                {exercise.customExerciseName ||
-                                  exercise.exercise?.name ||
-                                  'Unknown Exercise'}
-                              </div>
-                            </TableCell>
-                            <TableCell className="w-1/4 text-right">{exercise.sets}</TableCell>
-                            <TableCell className="w-1/12 text-right">{exercise.reps}</TableCell>
-                            <TableCell className="w-1/12 text-right">
-                              {exercise.restSeconds}
-                            </TableCell>
+                  <div key={dayIndex} className="mb-4 sm:mb-6">
+                    <h2 className="font-bold text-lg sm:text-xl mb-2">
+                      {getDayOfWeek(Number(dayIndex))}
+                    </h2>
+                    <div className="overflow-x-auto">
+                      <Table className="w-full">
+                        <TableHeader>
+                          <TableRow>
+                            <TableHead className="text-left font-bold  py-2 sm:py-3">
+                              Exercise
+                            </TableHead>
+                            <TableHead className="text-right font-bold py-2 sm:py-3">
+                              Sets
+                            </TableHead>
+                            <TableHead className="text-right font-bold py-2 sm:py-3">
+                              Reps
+                            </TableHead>
+                            <TableHead className="text-right font-bold py-2 sm:py-3">
+                              Rest
+                            </TableHead>
                           </TableRow>
-                        ))}
-                      </TableBody>
-                    </Table>
+                        </TableHeader>
+                        <TableBody>
+                          {exercises.map((exercise) => (
+                            <TableRow key={exercise.id}>
+                              <TableCell className="text-left font-medium py-2 sm:py-3">
+                                <div className="flex items-center gap-2">
+                                  {exercise.customExerciseName ||
+                                    exercise.exercise?.name ||
+                                    'Unknown Exercise'}
+                                </div>
+                              </TableCell>
+                              <TableCell className="text-right py-2 sm:py-3">
+                                {exercise.sets}
+                              </TableCell>
+                              <TableCell className="text-right py-2 sm:py-3">
+                                {exercise.reps}
+                              </TableCell>
+                              <TableCell className="text-right py-2 sm:py-3">
+                                {exercise.restSeconds}
+                              </TableCell>
+                            </TableRow>
+                          ))}
+                        </TableBody>
+                      </Table>
+                    </div>
                   </div>
                 ))}
               </div>
